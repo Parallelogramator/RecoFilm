@@ -1,0 +1,10 @@
+name: RecoFilm
+dependencies:
+  - python=3.11
+  - fastapi
+  - uvicorn
+  - jinja2
+  - sqlite
+  - pip
+  - pip:
+      - pydantic
