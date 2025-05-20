@@ -11,7 +11,7 @@ def get_user(db: Session, user_id: int) -> Optional[models_db.User]:
 def get_user_by_username(db: Session, username: str) -> Optional[models_db.User]:
     return db.query(models_db.User).filter(models_db.User.username == username).first()
 
-def create_user(db: Session, user: schemas_db.UserCreate) -> models_db.User: # ИЗМЕНЕНИЕ: тип user
+def create_user(db: Session, user: schemas_db.UserCreate) -> models_db.User:
     db_user = models_db.User(username=user.username, email=user.email)
     db.add(db_user)
     db.commit()
@@ -25,7 +25,7 @@ def get_movie(db: Session, movie_id: int) -> Optional[models_db.Movie]:
 def get_movies(db: Session, skip: int = 0, limit: int = 100) -> List[models_db.Movie]:
     return db.query(models_db.Movie).offset(skip).limit(limit).all()
 
-def create_movie(db: Session, movie: schemas_db.MovieCreate) -> models_db.Movie: # ИЗМЕНЕНИЕ: тип movie
+def create_movie(db: Session, movie: schemas_db.MovieCreate) -> models_db.Movie:
     db_movie = models_db.Movie(
         title=movie.title,
         year=movie.year,
@@ -46,7 +46,7 @@ def get_movies_by_ids(db: Session, movie_ids: List[int]) -> List[models_db.Movie
 
 # --- UserMovieInteraction CRUD ---
 def create_user_movie_interaction(
-    db: Session, user_id: int, interaction: schemas_db.UserMovieInteractionCreate # ИЗМЕНЕНИЕ: тип interaction
+    db: Session, user_id: int, interaction: schemas_db.UserMovieInteractionCreate
 ) -> models_db.UserMovieInteraction:
     db_interaction = models_db.UserMovieInteraction(
         user_id=user_id,
