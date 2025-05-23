@@ -1,11 +1,11 @@
-from fastapi import Depends, HTTPException, status, Response, APIRouter, Request
+from fastapi import Depends, HTTPException, status, Response, APIRouter, Request, Query
 from fastapi.responses import HTMLResponse, RedirectResponse
 from sqlalchemy.orm import Session
 from typing import List
 import os
 import sys
 
-from film_advisor_lib import recommender
+from film_advisor_lib.main import get_movie_recommendations_by_user_id
 
 from . import crud
 from .database import get_db_dependency
@@ -75,9 +75,9 @@ def api_get_recommendations_for_user(
     finally:
         temp_db.close()
 
-    recommended_movies_db_models = recommender.get_movie_recommendations_by_user_id(
+    recommended_movies_db_models = get_movie_recommendations_by_user_id(
         user_id=user_id,
-        num_recommendations=num_recs
+        count=num_recs
     )
 
     return recommended_movies_db_models
