@@ -21,6 +21,12 @@ def print_user_movies(session: Session, user_id: int, username: str):
         for movie in movies:
             print(f"  - {movie['movie_name']} (ID: {movie['movie_id']}, Оценка: {movie['rate']}, Жанры: {movie['genres']})")
 
+def get_movie_recommendations_by_user_id(user_id: int, count: int):
+    session = SessionLocal()
+    recommendations = get_recommended_movies(session, user_id, n=count)
+    return recommendations
+
+
 def main():
     session = SessionLocal()
     try:
