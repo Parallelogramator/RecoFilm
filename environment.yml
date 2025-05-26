@@ -6,5 +6,6 @@ dependencies:
   - jinja2
   - sqlite
   - pip
+  - sqlalchemy
   - pip:
       - pydantic
