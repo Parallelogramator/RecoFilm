@@ -1,7 +1,7 @@
-from database import SessionLocal, engine, Base
-from db_service import add_user, add_movie, add_user_movie_relation, get_user_movies_grouped_by_status
-from recommendation_service import get_recommended_movies, get_user_genre_profile, create_movies_ratings
-from models import WatchStatusEnum, User, AllMovie, UserMovie
+from .database import SessionLocal, engine, Base
+from .db_service import add_user, add_movie, add_user_movie_relation, get_user_movies_grouped_by_status
+from .recommendation_service import get_recommended_movies, get_user_genre_profile, create_movies_ratings
+from .models import WatchStatusEnum, User, AllMovie, UserMovie
 from sqlalchemy.orm import Session
 from sqlalchemy import inspect
 import time

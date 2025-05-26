@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from models import UserMovie, AllMovie, WatchStatusEnum
+from .models import UserMovie, AllMovie, WatchStatusEnum
 from typing import List, Dict
 import pandas as pd
 import pickle

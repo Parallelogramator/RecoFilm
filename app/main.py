@@ -6,6 +6,8 @@ from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
 from starlette.responses import HTMLResponse, RedirectResponse
 
+from .database import get_db_dependency
+
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(current_dir))
 if project_root not in sys.path:
