@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from models import User, AllMovie, UserMovie, WatchStatusEnum
+from .models import User, AllMovie, UserMovie, WatchStatusEnum
 
 def add_user(session: Session, username: str) -> User:
     user = session.query(User).filter(User.username == username).first()
