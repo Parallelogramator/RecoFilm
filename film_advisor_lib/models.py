@@ -1,8 +1,8 @@
-# Pydantic модели или dataclasses
-from sqlalchemy import Column, Integer, String, ForeignKey, Enum, Float, Index
+from sqlalchemy import Column, Integer, String, Float, Text, Enum as SQLAlchemyEnum, ForeignKey
 from sqlalchemy.orm import relationship
-from .database import Base
 import enum
+
+from .database import Base
 
 class WatchStatusEnum(enum.Enum):
     watched = "просмотрено"
@@ -10,33 +10,44 @@ class WatchStatusEnum(enum.Enum):
     dropped = "брошено"
     watching = "смотрю"
 
+
 class User(Base):
     __tablename__ = "users"
-
     id = Column(Integer, primary_key=True)
-    username = Column(String, unique=True)
+    username = Column(String, unique=True, index=True, nullable=False)
     movies = relationship("UserMovie", back_populates="user")
 
-class AllMovie(Base):
-    __tablename__ = "all_movies"
+
+class Movie(Base):
+    __tablename__ = "movies"
 
     id = Column(Integer, primary_key=True)
     title = Column(String, nullable=False)
-    genres = Column(String)
+    year = Column(Integer, nullable=True)
+    genres_str = Column("genres", String, nullable=True)
 
-    __table_args__ = (
-        Index('idx_all_movies_id', 'id'),
-        Index('idx_all_movies_genres', 'genres'),
-    )
+    description = Column(Text, nullable=True)
+    rating_imdb = Column(Float, nullable=True)
+    interactions = relationship("UserMovieInteraction", back_populates="movie")
+
+    @property
+    def genres(self) -> list[str]:
+        if self.genres_str:
+            return [genre.strip() for genre in self.genres_str.split(',') if genre.strip()]
+        return []
+
+    @genres.setter
+    def genres(self, value: list[str]):
+        self.genres_str = ",".join(genre.strip() for genre in value if genre.strip()) if value else ""
 
 class UserMovie(Base):
     __tablename__ = "user_movies"
 
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey("users.id"))
-    movie_id = Column(Integer, ForeignKey("all_movies.id"))
-    status = Column(Enum(WatchStatusEnum))
+    movie_id = Column(Integer, ForeignKey("movies.id"))
+    status = Column(SQLAlchemyEnum(WatchStatusEnum))
     rate = Column(Float)
 
     user = relationship("User", back_populates="movies")
-    movie = relationship("AllMovie")
+    movie = relationship("Movie", back_populates="interactions")

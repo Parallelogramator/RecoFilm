@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from .models import User, AllMovie, UserMovie, WatchStatusEnum
+from .models import User, Movie, UserMovie, WatchStatusEnum
 
 def add_user(session: Session, username: str) -> User:
     user = session.query(User).filter(User.username == username).first()
@@ -10,20 +10,20 @@ def add_user(session: Session, username: str) -> User:
         session.commit()
     return user
 
-def add_movie(session: Session, movie_id: int, title: str, genres: str) -> AllMovie:
-    movie = session.query(AllMovie).filter(AllMovie.id == movie_id).first()
+def add_movie(session: Session, movie_id: int, title: str, genres: str) -> Movie:
+    movie = session.query(Movie).filter(Movie.id == movie_id).first()
     if movie:
         # Обновляем существующий фильм
         movie.title = title
         movie.genres = genres
     else:
-        movie = AllMovie(id=movie_id, title=title, genres=genres)
+        movie = Movie(id=movie_id, title=title, genres=genres)
         session.add(movie)
     try:
         session.commit()
     except IntegrityError:
         session.rollback()
-        movie = session.query(AllMovie).filter(AllMovie.id == movie_id).first()
+        movie = session.query(Movie).filter(Movie.id == movie_id).first()
     return movie
 
 def add_user_movie_relation(
@@ -52,8 +52,8 @@ def add_user_movie_relation(
     return relation
 
 def get_user_movies_grouped_by_status(session: Session, user_id: int) -> dict:
-    movies = session.query(UserMovie.status, AllMovie.id, AllMovie.title, AllMovie.genres, UserMovie.rate).\
-        join(AllMovie, AllMovie.id == UserMovie.movie_id).\
+    movies = session.query(UserMovie.status, Movie.id, Movie.title, Movie.genres, UserMovie.rate).\
+        join(Movie, Movie.id == UserMovie.movie_id).\
         filter(UserMovie.user_id == user_id).all()
     
     grouped = {

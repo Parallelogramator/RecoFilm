@@ -1,7 +1,7 @@
 import pandas as pd
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine
-from models import AllMovie
+from models import Movie
 from database import Base
 
 # Настройка базы данных
@@ -19,7 +19,7 @@ def load_movies():
         print(f"Всего фильмов в movies.csv: {len(movies_df)}")
 
         # Получаем существующие ID из all_movies
-        existing_ids = {row[0] for row in session.query(AllMovie.id).all()}
+        existing_ids = {row[0] for row in session.query(Movie.id).all()}
 
         # Фильтруем новые фильмы
         new_movies = movies_df[~movies_df['movieId'].isin(existing_ids)]
@@ -37,14 +37,14 @@ def load_movies():
 
         # Вставляем фильмы
         if movies_to_insert:
-            session.bulk_insert_mappings(AllMovie, movies_to_insert)
+            session.bulk_insert_mappings(Movie, movies_to_insert)
             session.commit()
             print("Фильмы успешно загружены в таблицу all_movies.")
         else:
             print("Нет новых фильмов для загрузки.")
 
         # Проверяем общее количество фильмов
-        total_movies = session.query(AllMovie).count()
+        total_movies = session.query(Movie).count()
         print(f"Всего фильмов в all_movies: {total_movies}")
 
     except FileNotFoundError:

@@ -13,15 +13,7 @@ project_root = os.path.dirname(os.path.dirname(current_dir))
 if project_root not in sys.path:
     sys.path.append(project_root)
 
-
 from . import crud, users, movies
-
-
-try:
-    from film_advisor_lib import recommender
-except ImportError as e:
-    print(f"Error importing film_advisor_lib in backend: {e}")
-    raise
 
 app = FastAPI(
     title="RecoFilm",
@@ -34,10 +26,6 @@ app = FastAPI(
 def index(db: Session = Depends(get_db_dependency)):
     movies = crud.get_movies(db, skip=0, limit=10)
     return movies
-
-
-
-
 
 
 app.include_router(users.router, tags=["users"], prefix="/users")

@@ -44,11 +44,11 @@ def get_movies_by_ids(db: Session, movie_ids: List[int]) -> List[models_db.Movie
     return db.query(models_db.Movie).filter(models_db.Movie.id.in_(movie_ids)).all()
 
 
-# --- UserMovieInteraction CRUD ---
+# --- UserMovie CRUD ---
 def create_user_movie_interaction(
-    db: Session, user_id: int, interaction: schemas_db.UserMovieInteractionCreate
-) -> models_db.UserMovieInteraction:
-    db_interaction = models_db.UserMovieInteraction(
+    db: Session, user_id: int, interaction: schemas_db.UserMovieCreate
+) -> models_db.UserMovie:
+    db_interaction = models_db.UserMovie(
         user_id=user_id,
         movie_id=interaction.movie_id,
         status=interaction.status
@@ -58,19 +58,19 @@ def create_user_movie_interaction(
     db.refresh(db_interaction)
     return db_interaction
 
-def get_user_interactions(db: Session, user_id: int) -> List[models_db.UserMovieInteraction]:
-    return db.query(models_db.UserMovieInteraction).filter(models_db.UserMovieInteraction.user_id == user_id).all()
+def get_user_interactions(db: Session, user_id: int) -> List[models_db.UserMovie]:
+    return db.query(models_db.UserMovie).filter(models_db.UserMovie.user_id == user_id).all()
 
 def get_user_liked_movies(db: Session, user_id: int) -> List[models_db.Movie]:
     return db.query(models_db.Movie)\
-        .join(models_db.UserMovieInteraction, models_db.Movie.id == models_db.UserMovieInteraction.movie_id)\
-        .filter(models_db.UserMovieInteraction.user_id == user_id)\
-        .filter(models_db.UserMovieInteraction.status == InteractionStatusEnum.LIKED)\
+        .join(models_db.UserMovie, models_db.Movie.id == models_db.UserMovie.movie_id)\
+        .filter(models_db.UserMovie.user_id == user_id)\
+        .filter(models_db.UserMovie.status == InteractionStatusEnum.LIKED)\
         .all()
 
 def get_user_interacted_movie_ids(db: Session, user_id: int) -> Set[int]:
-    interactions = db.query(models_db.UserMovieInteraction.movie_id)\
-        .filter(models_db.UserMovieInteraction.user_id == user_id)\
+    interactions = db.query(models_db.UserMovie.movie_id)\
+        .filter(models_db.UserMovie.user_id == user_id)\
         .distinct()\
         .all()
     return {interaction.movie_id for interaction in interactions}

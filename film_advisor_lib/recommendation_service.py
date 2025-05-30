@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from .models import UserMovie, AllMovie, WatchStatusEnum
+from .models import UserMovie, Movie, WatchStatusEnum
 from typing import List, Dict
 import pandas as pd
 import pickle
@@ -82,8 +82,8 @@ def get_user_genre_profile(session: Session, user_id: int) -> Dict[str, float]:
     """Создаёт жанровый профиль пользователя на основе его фильмов."""
     start_time = time.time()
     user_movies = (
-        session.query(UserMovie.status, UserMovie.rate, AllMovie.genres)
-        .join(AllMovie, AllMovie.id == UserMovie.movie_id)
+        session.query(UserMovie.status, UserMovie.rate, Movie.genres)
+        .join(Movie, Movie.id == UserMovie.movie_id)
         .filter(UserMovie.user_id == user_id)
         .all()
     )

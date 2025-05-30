@@ -36,11 +36,11 @@ def api_read_user(user_id: int, db: Session = Depends(get_db_dependency)):
     return db_user
 
 
-@router.post("/{user_id}/interactions/", response_model=models_api.UserMovieInteractionAPI,
+@router.post("/{user_id}/interactions/", response_model=models_api.UserMovieAPI,
           summary="Добавить взаимодействие")
 def api_create_user_movie_interaction(
         user_id: int,
-        interaction: models_api.UserMovieInteractionCreateAPI,
+        interaction: models_api.UserMovieCreateAPI,
         db: Session = Depends(get_db_dependency)
 ):
     db_user = crud.get_user(db, user_id=user_id)
@@ -50,11 +50,11 @@ def api_create_user_movie_interaction(
     if not db_movie:
         raise HTTPException(status_code=404, detail="Movie not found")
 
-    interaction_core_create = schemas_db.UserMovieInteractionCreate(**interaction.model_dump())
+    interaction_core_create = schemas_db.UserMovieCreate(**interaction.model_dump())
     return crud.create_user_movie_interaction(db=db, user_id=user_id, interaction=interaction_core_create)
 
 
-@router.get("/{user_id}/interactions/", response_model=List[models_api.UserMovieInteractionAPI],
+@router.get("/{user_id}/interactions/", response_model=List[models_api.UserMovieAPI],
          summary="Все взаимодействия пользователя")
 def api_get_user_interactions(user_id: int, db: Session = Depends(get_db_dependency)):
     interactions = crud.get_user_interactions(db=db, user_id=user_id)

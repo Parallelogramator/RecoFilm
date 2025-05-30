@@ -38,16 +38,16 @@ class MovieAPI(MovieBaseAPI):
         from_attributes = True
 
 
-class UserMovieInteractionBaseAPI(BaseModel):
+class UserMovieBaseAPI(BaseModel):
     movie_id: int
     status: InteractionStatusEnum
 
 
-class UserMovieInteractionCreateAPI(UserMovieInteractionBaseAPI):
+class UserMovieCreateAPI(UserMovieBaseAPI):
     pass
 
 
-class UserMovieInteractionAPI(UserMovieInteractionBaseAPI):
+class UserMovieAPI(UserMovieBaseAPI):
     id: int
     user_id: int
 
