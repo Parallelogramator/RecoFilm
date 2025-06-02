@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="23fdeffd-dd1b-4f64-b0bc-e95df02254e8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/film_advisor_lib/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/film_advisor_lib/db_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/db_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/film_advisor_lib/load_all_movies.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/load_all_movies.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/film_advisor_lib/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/film_advisor_lib/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/models_db.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/film_advisor_lib/recommendation_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/recommendation_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,16 +27,16 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "SerjHran1tel"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;SerjHran1tel&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
-    "url": "https://github.com/Parallelogramator/RecoFilm",
-    "accountId": "bf7c579f-5b66-4110-a3da-b808162c3ad8"
+    "url": "https://github.com/Parallelogramator/RecoFilm.git",
+    "accountId": "520ccefb-c0e6-4c9d-a7e6-daaded6cb610"
   }
 }]]></component>
   <component name="ProjectColorInfo">{
@@ -39,18 +49,29 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "Front",
-    "last_opened_file_path": "F:/Programming/RecoFilm",
+    "last_opened_file_path": "C:/Users/Silko/Desktop/projects/Programming/RecoFilm/film_advisor_lib",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Silko\Desktop\projects\Programming\RecoFilm\film_advisor_lib" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-PY-251.25410.159" />
+        <option value="bundled-python-sdk-e0ed3721d81e-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.25410.159" />
       </set>
     </attachedChunks>
   </component>
@@ -64,6 +85,7 @@
       <updated>1747421423690</updated>
       <workItem from="1747421424764" duration="97000" />
       <workItem from="1747421537704" duration="93000" />
+      <workItem from="1748902715441" duration="356000" />
     </task>
     <servers />
   </component>

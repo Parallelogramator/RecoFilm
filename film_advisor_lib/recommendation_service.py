@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from .models import UserMovie, Movie, WatchStatusEnum
+from sqlalchemy.sql import func
+from .models_db import UserMovie, Movie, InteractionStatusEnum
 from typing import List, Dict
-import pandas as pd
 import pickle
 import os
 from collections import defaultdict
@@ -13,12 +13,9 @@ def create_movies_ratings(
     ratings_file: str = "./ml-32m/ratings.csv",
     cache_file: str = "movies_ratings.pkl",
     min_ratings: int = 10,
-    min_avg_rating: float = 3.0,
-    chunksize: int = 5000000
-) -> pd.DataFrame:
-    """Создаёт и кэширует DataFrame с фильмами и средними рейтингами."""
+    min_avg_rating: float = 3.0
+) -> dict:
     start_time = time.time()
-    # Проверяем, существует ли кэш и актуален ли он
     if os.path.exists(cache_file):
         try:
             with open(cache_file, "rb") as f:
@@ -27,62 +24,56 @@ def create_movies_ratings(
                 movies_timestamp = os.path.getmtime(movies_file)
                 ratings_timestamp = os.path.getmtime(ratings_file)
                 if cache_timestamp >= max(movies_timestamp, ratings_timestamp):
-                    print(f"Загрузка кэша фильмов: {time.time() - start_time:.2f} сек")
-                    return cache_data["movies_df"]
-                print("Кэш фильмов устарел, пересчитываем...")
+                    print(f"Loaded cache: {time.time() - start_time:.2f} sec")
+                    return cache_data["movies_dict"]
+                print("Cache outdated, recalculating...")
         except Exception as e:
-            print(f"Ошибка при загрузке кэша фильмов: {e}. Пересчитываем...")
-    
-    # Загружаем и обрабатываем данные
+            print(f"Error loading cache: {e}. Recalculating...")
+
     try:
+        import pandas as pd
         movies_df = pd.read_csv(movies_file)
-        ratings_df = pd.read_csv(ratings_file, usecols=['movieId', 'rating'], chunksize=chunksize)
-        
-        # Вычисляем средние рейтинги и количество оценок
-        rating_stats = pd.concat(
-            chunk.groupby('movieId')['rating'].agg(['mean', 'count'])
-            for chunk in ratings_df
-        ).groupby('movieId').sum()
-        rating_stats.columns = ['mean_rating', 'rating_count']
-        rating_stats = rating_stats.reset_index()
-        
-        # Фильтруем по минимальному количеству оценок и рейтингу
+        ratings_df = pd.read_csv(ratings_file, usecols=['movieId', 'rating'])
+
+        rating_stats = ratings_df.groupby('movieId')['rating'].agg(['mean', 'count']).reset_index()
+        rating_stats.columns = ['movieId', 'mean_rating', 'rating_count']
         rating_stats = rating_stats[
             (rating_stats['rating_count'] >= min_ratings) &
             (rating_stats['mean_rating'] >= min_avg_rating)
         ]
-        
-        # Объединяем с фильмами
         movies_df = pd.merge(rating_stats, movies_df, on='movieId', how='inner')
-        
-        # Исключаем фильмы без жанров
         movies_df = movies_df[
             (movies_df['genres'] != '(no genres listed)') &
             (movies_df['genres'].notna())
         ]
-        
-        # Сохраняем в кэш
-        cache_data = {
-            "movies_df": movies_df,
-            "timestamp": datetime.now().timestamp()
+
+        movies_dict = {
+            row['movieId']: {
+                "title": row['title'],
+                "genres": row['genres'].split('|'),
+                "mean_rating": row['mean_rating'],
+                "rating_count": row['rating_count']
+            }
+            for _, row in movies_df.iterrows()
         }
+
+        cache_data = {"movies_dict": movies_dict, "timestamp": datetime.now().timestamp()}
         with open(cache_file, "wb") as f:
             pickle.dump(cache_data, f)
-        print(f"Кэш фильмов сохранён в {cache_file}")
-        print(f"Создание movies_ratings: {time.time() - start_time:.2f} сек")
-        return movies_df
+        print(f"Cache saved to {cache_file}")
+        print(f"Created movies_ratings: {time.time() - start_time:.2f} sec")
+        return movies_dict
     except FileNotFoundError:
-        print(f"Ошибка: Файл {movies_file} или {ratings_file} не найден.")
-        return pd.DataFrame()
+        print(f"Error: File {movies_file} or {ratings_file} not found.")
+        return {}
     except Exception as e:
-        print(f"Ошибка при обработке данных: {e}")
-        return pd.DataFrame()
+        print(f"Error processing data: {e}")
+        return {}
 
 def get_user_genre_profile(session: Session, user_id: int) -> Dict[str, float]:
-    """Создаёт жанровый профиль пользователя на основе его фильмов."""
     start_time = time.time()
     user_movies = (
-        session.query(UserMovie.status, UserMovie.rate, Movie.genres)
+        session.query(UserMovie.status, UserMovie.rate, Movie.genres_str)
         .join(Movie, Movie.id == UserMovie.movie_id)
         .filter(UserMovie.user_id == user_id)
         .all()
@@ -92,61 +83,23 @@ def get_user_genre_profile(session: Session, user_id: int) -> Dict[str, float]:
     for status, rate, genres in user_movies:
         if not genres or genres == "(no genres listed)":
             continue
-        
         genre_list = genres.split("|")
-        if status == WatchStatusEnum.watched:
+        weight = 0.0
+        if status == InteractionStatusEnum.WATCHED:
             weight = rate if rate is not None else 1.0
-        elif status == WatchStatusEnum.planned:
+        elif status == InteractionStatusEnum.LIKED:
+            weight = 1.5
+        elif status == InteractionStatusEnum.WANT_TO_WATCH:
             weight = 0.5
-        elif status == WatchStatusEnum.watching:
+        elif status == InteractionStatusEnum.WATCHING:
             weight = 0.75
-        elif status == WatchStatusEnum.dropped:
+        elif status == InteractionStatusEnum.DROPPED:
             weight = -0.5
-        
         for genre in genre_list:
             genre_weights[genre] += weight
-    
-    print(f"Создание жанрового профиля: {time.time() - start_time:.2f} сек")
-    return dict(genre_weights)
 
-def get_top_n_by_genres(
-    df: pd.DataFrame,
-    genres: List[str],
-    genre_weights: Dict[str, float],
-    exclude_movie_ids: set,
-    n: int = 10
-) -> pd.DataFrame:
-    """
-    Возвращает топ-N фильмов по среднему рейтингу и жанровому скору, исключая указанные фильмы.
-    
-    :param df: DataFrame с колонками ['movieId', 'mean_rating', 'title', 'genres', 'rating_count']
-    :param genres: Список жанров для фильтрации
-    :param genre_weights: Словарь с весами жанров из профиля пользователя
-    :param exclude_movie_ids: Множество movieId для исключения
-    :param n: Количество фильмов в топе
-    :return: DataFrame с топ-N фильмами
-    """
-    start_time = time.time()
-    filtered_df = df[
-        ~df['movieId'].isin(exclude_movie_ids) &
-        df['genres'].apply(
-            lambda x: any(genre in x.split('|') for genre in genres) if pd.notna(x) else False
-        )
-    ].copy()
-    
-    # Вычисляем жанровый скор
-    filtered_df['genre_score'] = filtered_df['genres'].apply(
-        lambda x: sum(genre_weights.get(genre, 0.0) for genre in x.split('|'))
-    )
-    
-    # Комбинируем жанровый скор и рейтинг
-    filtered_df['final_score'] = filtered_df['genre_score'] * (filtered_df['mean_rating'] / 5.0)
-    
-    # Сортируем по финальному скору
-    top_n = filtered_df.sort_values(by='final_score', ascending=False).head(n)
-    
-    print(f"get_top_n_by_genres: {time.time() - start_time:.2f} сек")
-    return top_n[['movieId', 'title', 'mean_rating', 'genres', 'final_score']]
+    print(f"Created genre profile: {time.time() - start_time:.2f} sec")
+    return dict(genre_weights)
 
 def get_recommended_movies(
     session: Session,
@@ -157,52 +110,40 @@ def get_recommended_movies(
     min_avg_rating: float = 3.0,
     min_ratings: int = 10
 ) -> List[Dict]:
-    """
-    Возвращает список из n рекомендованных фильмов для пользователя.
-    Каждый фильм: {"movie_id": int, "title": str, "genres": list, "avg_rating": float}.
-    """
     start_time = time.time()
-    
-    # Получаем жанровый профиль пользователя
     genre_profile = get_user_genre_profile(session, user_id)
     if not genre_profile:
-        print("Нет данных о жанровых предпочтениях пользователя.")
+        print("No genre preference data for user.")
         return []
-    
-    # Получаем релевантные жанры (с положительным весом)
+
     relevant_genres = [genre for genre, weight in genre_profile.items() if weight > 0]
     if not relevant_genres:
-        print("Нет релевантных жанров для рекомендаций.")
+        print("No relevant genres for recommendations.")
         return []
-    
-    # Получаем фильмы пользователя (чтобы исключить их)
-    user_movie_ids = {
-        movie.movie_id
-        for movie in session.query(UserMovie.movie_id)
-        .filter(UserMovie.user_id == user_id)
-        .all()
-    }
-    
-    # Загружаем фильмы с рейтингами
-    movies_df = create_movies_ratings(movies_file, ratings_file, min_ratings=min_ratings, min_avg_rating=min_avg_rating)
-    if movies_df.empty:
-        print("Не удалось загрузить данные фильмов. Рекомендации невозможны.")
+
+    user_movie_ids = {movie.movie_id for movie in session.query(UserMovie.movie_id).filter(UserMovie.user_id == user_id).all()}
+    movies_dict = create_movies_ratings(movies_file, ratings_file, min_ratings=min_ratings, min_avg_rating=min_avg_rating)
+    if not movies_dict:
+        print("Failed to load movie data. Recommendations not possible.")
         return []
-    
-    # Получаем топ-N фильмов
-    top_n = get_top_n_by_genres(movies_df, relevant_genres, genre_profile, user_movie_ids, n=n)
-    
-    # Формируем результат
-    result = [
-        {
-            "movie_id": int(row['movieId']),
-            "title": row['title'],
-            "genres": row['genres'].split('|'),
-            "avg_rating": row['mean_rating'],
-            "score": row['final_score']
-        }
-        for _, row in top_n.iterrows()
-    ]
-    
-    print(f"Общее время рекомендаций: {time.time() - start_time:.2f} сек")
+
+    recommendations = []
+    for movie_id, movie_data in movies_dict.items():
+        if movie_id in user_movie_ids:
+            continue
+        if not any(genre in movie_data['genres'] for genre in relevant_genres):
+            continue
+        genre_score = sum(genre_profile.get(genre, 0.0) for genre in movie_data['genres'])
+        final_score = genre_score * (movie_data['mean_rating'] / 5.0)
+        recommendations.append({
+            "movie_id": movie_id,
+            "title": movie_data['title'],
+            "genres": movie_data['genres'],
+            "avg_rating": movie_data['mean_rating'],
+            "score": final_score
+        })
+
+    recommendations.sort(key=lambda x: x['score'], reverse=True)
+    result = recommendations[:n]
+    print(f"Total recommendation time: {time.time() - start_time:.2f} sec")
     return result
