@@ -1,1 +1,324 @@
-body { font-family: sans-serif; background-color: #f9f9f9; margin: 2em; }
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Светлая пастельная тема */
+body.light-theme {
+    --primary: #81b29a;           /* зелёный шалфей */
+    --primary-dark: #3d5a40;
+    --primary-light: #dbead7;
+    --secondary: #e07a5f;         /* терракотовый */
+    --dark: #2f2f2f;              /* основной текст */
+    --light: #f0e9dc;             /* насыщенный бежевый фон */
+    --gray: #a1a1a1;
+    --gray-light: #e1dbcd;        /* фон карточек */
+    --header-gradient: linear-gradient(135deg, #3d5a40 0%, #81b29a 100%);
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Тёмная серая тема */
+body.dark-theme {
+    --primary: #6b7280;           /* серый */
+    --primary-dark: #374151;
+    --primary-light: #4b5563;
+    --secondary: #9ca3af;
+    --dark: #d1d5db;              /* светлый текст */
+    --light: #111827;             /* тёмный фон */
+    --gray: #9ca3af;
+    --gray-light: #1f2937;        /* фон карточек */
+    --header-gradient: linear-gradient(135deg, #1f2937 0%, #374151 100%);
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--light);
+    color: var(--dark);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* По умолчанию светлая тема */
+body:not(.dark-theme) {
+    background-color: var(--light);
+}
+
+header {
+    background: var(--header-gradient);
+    color: white;
+    padding: 1.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: background 0.3s ease;
+}
+
+header h1 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 1rem;
+    letter-spacing: -1px;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    color: white;
+    position: relative;
+    display: inline-block;
+    padding: 0 1rem;
+}
+
+header h1::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+    border-radius: 3px;
+}
+
+header .header-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    position: relative;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+nav a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--secondary);
+    transition: width 0.3s ease;
+}
+
+nav a:hover::after {
+    width: 70%;
+}
+
+.theme-toggle {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    margin-left: 1rem;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.2);
+}
+
+main {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    flex: 1;
+}
+
+h1, h2 {
+    color: var(--primary-dark);
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+}
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-top: 2rem;
+}
+
+ul {
+    list-style-type: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+li {
+    background-color: var(--gray-light);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--primary);
+    position: relative;
+    overflow: hidden;
+}
+
+li::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+}
+
+li:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+.movie-title {
+    font-weight: 600;
+    font-size: 1.2rem;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+}
+
+.movie-year {
+    color: var(--gray);
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.movie-genres {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.genre-tag {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.status-watched {
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.status-planned {
+    background-color: #fef9c3;
+    color: #854d0e;
+}
+
+.status-abandoned {
+    background-color: #fee2e2;
+    color: #991b1b;
+}
+
+p {
+    font-size: 1.1rem;
+    color: var(--gray);
+    text-align: center;
+    padding: 2rem;
+    background-color: var(--gray-light);
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    margin: 2rem 0;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    background: var(--header-gradient);
+    color: white;
+    margin-top: auto;
+}
+
+footer p {
+    background-color: transparent;
+    box-shadow: none;
+    color: white;
+    padding: 0;
+    margin: 0;
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+main > * {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8rem;
+    }
+
+    nav {
+        gap: 0.5rem;
+    }
+
+    nav a {
+        font-size: 0.95rem;
+        padding: 0.5rem;
+    }
+
+    main {
+        padding: 0 1rem;
+    }
+
+    h1 {
+        font-size: 2rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    ul {
+        grid-template-columns: 1fr;
+    }
+}

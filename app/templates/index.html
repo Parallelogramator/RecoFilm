@@ -1,2 +1,26 @@
 {% extends 'base.html' %}
-{% block content %}<h1>Welcome to Film Advisor</h1>{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1>Добро пожаловать в Film Advisor</h1>
+    <p>Откройте для себя мир кино с персонализированными рекомендациями</p>
+</div>
+
+<h2>Популярные фильмы</h2>
+{% if movies %}
+<ul>
+    {% for movie in movies %}
+    <li>
+        <div class="movie-title">{{ movie.title }}</div>
+        <div class="movie-year">{{ movie.year or 'Год не указан' }}</div>
+        <div class="movie-genres">
+            {% for genre in movie.genres %}
+            <span class="genre-tag">{{ genre }}</span>
+            {% endfor %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Фильмы пока отсутствуют. Добавьте фильм через API!</p>
+{% endif %}
+{% endblock %}

@@ -1,2 +1,26 @@
 {% extends 'base.html' %}
-{% block content %}<h1>Your Library</h1>{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1>Ваша библиотека</h1>
+    <p>Все фильмы, которые вы добавили в свою коллекцию</p>
+</div>
+
+{% if interactions %}
+<ul>
+    {% for interaction in interactions %}
+    <li>
+        <div class="movie-title">{{ interaction.movie.title }}</div>
+        <div class="movie-year">{{ interaction.movie.year or 'Год не указан' }}</div>
+        <div class="movie-genres">
+            {% for genre in interaction.movie.genres %}
+            <span class="genre-tag">{{ genre }}</span>
+            {% endfor %}
+        </div>
+        <span class="status-tag status-{{ interaction.status.value }}">{{ interaction.status.value }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>У вас пока нет взаимодействий.</p>
+{% endif %}
+{% endblock %}

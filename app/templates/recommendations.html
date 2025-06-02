@@ -1,2 +1,25 @@
 {% extends 'base.html' %}
-{% block content %}<h1>Recommendations</h1>{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1>Персональные рекомендации</h1>
+    <p>Фильмы, подобранные специально для вас</p>
+</div>
+
+{% if recommendations %}
+<ul>
+    {% for movie in recommendations %}
+    <li>
+        <div class="movie-title">{{ movie.title }}</div>
+        <div class="movie-year">{{ movie.year or 'Год не указан' }}</div>
+        <div class="movie-genres">
+            {% for genre in movie.genres %}
+            <span class="genre-tag">{{ genre }}</span>
+            {% endfor %}
+        </div>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Рекомендации пока недоступны.</p>
+{% endif %}
+{% endblock %}

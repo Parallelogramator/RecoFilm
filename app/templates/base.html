@@ -1,2 +1,48 @@
 <!DOCTYPE html>
-<html><head><title>Film Advisor</title><link rel="stylesheet" href="/static/style.css"></head><body>{% block content %}{% endblock %}</body></html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film Advisor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body class="light-theme"> <!-- Добавлен класс по умолчанию -->
+    <header>
+        <div class="header-container">
+            <h1>FILM ADVISOR</h1>
+            <nav>
+                <a href="/">Главная</a>
+                <a href="/recommendations">Рекомендации</a>
+                <a href="/library">Библиотека</a>
+                <button id="theme-toggle" class="theme-toggle" aria-label="Переключить тему">🌓</button>
+            </nav>
+        </div>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2025 Film Advisor. Все права защищены.</p>
+    </footer>
+    <script>
+        const toggleBtn = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        // Проверяем сохранённую тему и применяем
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.replace('light-theme', 'dark-theme');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            if (body.classList.contains('light-theme')) {
+                body.classList.replace('light-theme', 'dark-theme');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.replace('dark-theme', 'light-theme');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+</html>

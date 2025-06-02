@@ -1,5 +1,6 @@
 from fastapi import Depends, HTTPException, status, Response, APIRouter, Request, Query
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from typing import List
 import os
@@ -13,11 +14,10 @@ from . import schemas_db
 from . import models_api
 
 router = APIRouter()
-
+templates = Jinja2Templates(directory="templates")
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.dirname(os.path.dirname(current_dir))
-
 
 @router.post("/", response_model=models_api.UserAPI, summary="Создать пользователя")
 def api_create_user(user: models_api.UserCreateAPI, db: Session = Depends(get_db_dependency)):
@@ -27,14 +27,12 @@ def api_create_user(user: models_api.UserCreateAPI, db: Session = Depends(get_db
     user_core_create = schemas_db.UserCreate(**user.model_dump())
     return crud.create_user(db=db, user=user_core_create)
 
-
 @router.get("/{user_id}", response_model=models_api.UserAPI, summary="Получить пользователя по ID")
 def api_read_user(user_id: int, db: Session = Depends(get_db_dependency)):
     db_user = crud.get_user(db, user_id=user_id)
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
     return db_user
-
 
 @router.post("/{user_id}/interactions/", response_model=models_api.UserMovieAPI,
           summary="Добавить взаимодействие")
@@ -53,13 +51,11 @@ def api_create_user_movie_interaction(
     interaction_core_create = schemas_db.UserMovieCreate(**interaction.model_dump())
     return crud.create_user_movie_interaction(db=db, user_id=user_id, interaction=interaction_core_create)
 
-
 @router.get("/{user_id}/interactions/", response_model=List[models_api.UserMovieAPI],
          summary="Все взаимодействия пользователя")
 def api_get_user_interactions(user_id: int, db: Session = Depends(get_db_dependency)):
     interactions = crud.get_user_interactions(db=db, user_id=user_id)
     return interactions
-
 
 @router.get("/{user_id}/recommendations/", response_model=List[models_api.MovieAPI],
          summary="Получить рекомендации")
@@ -81,3 +77,16 @@ def api_get_recommendations_for_user(
     )
 
     return recommended_movies_db_models
+
+@router.get("/{user_id}/recommendations", response_class=HTMLResponse, summary="Страница рекомендаций")
+def recommendations(request: Request, user_id: int, db: Session = Depends(get_db_dependency)):
+    db_user = crud.get_user(db, user_id=user_id)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="Пользователь не найден")
+    recommendations = get_movie_recommendations_by_user_id(user_id=user_id, count=5)
+    return templates.TemplateResponse("recommendations.html", {"request": request, "recommendations": recommendations})
+
+@router.get("/{user_id}/library", response_class=HTMLResponse, summary="Страница библиотеки")
+def library(request: Request, user_id: int, db: Session = Depends(get_db_dependency)):
+    interactions = crud.get_user_interactions(db=db, user_id=user_id)
+    return templates.TemplateResponse("library.html", {"request": request, "interactions": interactions})

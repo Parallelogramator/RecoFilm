@@ -1,23 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="23fdeffd-dd1b-4f64-b0bc-e95df02254e8" name="Changes" comment="errors">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/crud.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/crud.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models_api.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/models_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/schemas_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/schemas_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/db_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/db_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/load_all_movies.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/load_all_movies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/recommendation_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/recommendation_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/recommender.py" beforeDir="false" />
+    <list default="true" id="23fdeffd-dd1b-4f64-b0bc-e95df02254e8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,21 +12,21 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Front" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;SerjHran1tel&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "SerjHran1tel"
   }
-}</component>
+}]]></component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
-    "url": "https://github.com/Parallelogramator/RecoFilm.git",
-    "accountId": "c22091d5-d613-41cc-b92d-deca6f87ddd9"
+    "url": "https://github.com/Parallelogramator/RecoFilm",
+    "accountId": "bf7c579f-5b66-4110-a3da-b808162c3ad8"
   }
 }]]></component>
   <component name="ProjectColorInfo">{
@@ -56,38 +41,16 @@
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "Backend",
-    "last_opened_file_path": "F:/Programming/RecoFilm/app/main.py",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
+    "git-widget-placeholder": "Front",
+    "last_opened_file_path": "F:/Programming/RecoFilm",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="Unnamed" type="Python.FastAPI" nameIsGenerated="true">
-      <option name="file" value="F:\Programming\RecoFilm\app\main.py" />
-      <module name="RecoFilm" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="$PROJECT_DIR$/.venv/Scripts/python.exe" />
-      <option name="SDK_NAME" value="Python 3.9 (RecoFilm)" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="launchJavascriptDebuger" value="false" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-PY-243.24978.54" />
-        <option value="bundled-python-sdk-91e3b7efe1d4-466328ff949b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.24978.54" />
+        <option value="bundled-python-sdk-fb887030ada0-aa17d162503b-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-243.21565.199" />
       </set>
     </attachedChunks>
   </component>
@@ -101,8 +64,6 @@
       <updated>1747421423690</updated>
       <workItem from="1747421424764" duration="97000" />
       <workItem from="1747421537704" duration="93000" />
-      <workItem from="1748533819556" duration="3000" />
-      <workItem from="1748588548532" duration="1492000" />
     </task>
     <servers />
   </component>
@@ -119,11 +80,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/RecoFilm$main.coverage" NAME="main Coverage Results" MODIFIED="1748274828055" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/RecoFilm$Unnamed.coverage" NAME="Unnamed Coverage Results" MODIFIED="1748436425190" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
-    <SUITE FILE_PATH="coverage/RecoFilm$users.coverage" NAME="users Coverage Results" MODIFIED="1747988238685" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
-    <SUITE FILE_PATH="coverage/RecoFilm$recommender.coverage" NAME="recommender Coverage Results" MODIFIED="1748185896194" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/film_advisor_lib" />
   </component>
 </project>
