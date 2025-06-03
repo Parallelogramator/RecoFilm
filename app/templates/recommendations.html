@@ -10,7 +10,10 @@
     {% for movie in recommendations %}
     <li>
         <div class="movie-title">{{ movie.title }}</div>
-        <div class="movie-year">{{ movie.year or 'Год не указан' }}</div>
+        <div class="movie-info">
+            <div class="movie-year">Год: {{ movie.year or 'не указан' }}</div>
+            <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'не указан' }}</div>
+        </div>
         <div class="movie-genres">
             {% for genre in movie.genres %}
             <span class="genre-tag">{{ genre }}</span>

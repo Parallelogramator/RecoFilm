@@ -208,10 +208,21 @@ li:hover {
     margin-bottom: 0.5rem;
 }
 
+.movie-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
 .movie-year {
     color: var(--gray);
     font-size: 0.9rem;
-    margin-bottom: 0.5rem;
+}
+
+.movie-rating {
+    color: var(--gray);
+    font-size: 0.9rem;
 }
 
 .movie-genres {
@@ -324,5 +335,11 @@ main > * {
 
     ul {
         grid-template-columns: 1fr;
+    }
+
+    .movie-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
     }
 }

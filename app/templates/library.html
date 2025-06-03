@@ -10,7 +10,10 @@
     {% for interaction in interactions %}
     <li>
         <div class="movie-title">{{ interaction.movie.title }}</div>
-        <div class="movie-year">{{ interaction.movie.year or 'Год не указан' }}</div>
+        <div class="movie-info">
+            <div class="movie-year">Год: {{ interaction.movie.year or 'не указан' }}</div>
+            <div class="movie-rating">IMDB: {{ interaction.movie.rating_imdb or 'не указан' }}</div>
+        </div>
         <div class="movie-genres">
             {% for genre in interaction.movie.genres %}
             <span class="genre-tag">{{ genre }}</span>
