@@ -5,7 +5,6 @@ from .models_db import InteractionStatusEnum
 
 class UserBaseAPI(BaseModel):
     username: str
-    email: Optional[str] = None
 
 
 class UserCreateAPI(UserBaseAPI):

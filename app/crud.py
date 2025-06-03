@@ -12,7 +12,7 @@ def get_user_by_username(db: Session, username: str) -> Optional[models_db.User]
     return db.query(models_db.User).filter(models_db.User.username == username).first()
 
 def create_user(db: Session, user: schemas_db.UserCreate) -> models_db.User:
-    db_user = models_db.User(username=user.username, email=user.email)
+    db_user = models_db.User(username=user.username)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
