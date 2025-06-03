@@ -22,15 +22,15 @@ body.light-theme {
 /* Тёмная серая тема */
 body.dark-theme {
     --primary: #6b7280;           /* серый */
-    --primary-dark: #374151;
+    --primary-dark: #b0b7c2;      /* для заголовков, навигации, полоски, Film Advisor и футера */
     --primary-light: #4b5563;
     --secondary: #9ca3af;
-    --dark: #d1d5db;              /* светлый текст */
+    --dark: #d1d5db;              /* мелкий текст */
     --light: #111827;             /* тёмный фон */
     --gray: #9ca3af;
-    --gray-light: #1f2937;        /* фон карточек */
+    --gray-light: #374151;        /* светлее фон карточек для контраста */
     --header-gradient: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* увеличена тень */
 }
 
 body {
@@ -67,7 +67,7 @@ header h1 {
     margin-bottom: 1rem;
     letter-spacing: -1px;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    color: white;
+    color: var(--primary-dark); /* используем primary-dark для Film Advisor */
     position: relative;
     display: inline-block;
     padding: 0 1rem;
@@ -80,7 +80,7 @@ header h1::before {
     left: 0;
     width: 100%;
     height: 3px;
-    background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,255,255,0.2));
+    background: linear-gradient(90deg, var(--primary-dark), rgba(255,255,255,0.2));
     border-radius: 3px;
 }
 
@@ -98,7 +98,7 @@ nav {
 }
 
 nav a {
-    color: white;
+    color: var(--primary-dark);
     text-decoration: none;
     font-weight: 500;
     font-size: 1.1rem;
@@ -239,6 +239,10 @@ li:hover {
     margin-top: 0.5rem;
 }
 
+body.dark-theme .status-tag {
+    color: #111827; /* тёмный текст для лучшей читаемости */
+}
+
 .status-watched {
     background-color: #dcfce7;
     color: #166534;
@@ -276,7 +280,7 @@ footer {
 footer p {
     background-color: transparent;
     box-shadow: none;
-    color: white;
+    color: var(--primary-dark); /* используем primary-dark для футера в тёмной теме */
     padding: 0;
     margin: 0;
 }
