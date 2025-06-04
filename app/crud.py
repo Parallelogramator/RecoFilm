@@ -58,8 +58,11 @@ def create_user_movie_interaction(
     db.refresh(db_interaction)
     return db_interaction
 
-def get_user_interactions(db: Session, user_id: int) -> List[models_db.UserMovie]:
-    return db.query(models_db.UserMovie).filter(models_db.UserMovie.user_id == user_id).all()
+def get_user_interactions(db: Session, user_id: int, status: str = None) -> List[models_db.UserMovie]:
+    if status:
+        return db.query(models_db.UserMovie).filter(models_db.UserMovie.user_id == user_id).filter(models_db.UserMovie.status == status).all()
+    else:
+        return db.query(models_db.UserMovie).filter(models_db.UserMovie.user_id == user_id).all()
 
 def get_user_liked_movies(db: Session, user_id: int) -> List[models_db.Movie]:
     return db.query(models_db.Movie)\

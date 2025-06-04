@@ -7,7 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
-from .database import get_db_dependency
+from .database import get_db_dependency, create_db_and_tables
 from . import crud, users, movies
 
 app = FastAPI(
@@ -16,7 +16,7 @@ app = FastAPI(
     version="2.0.0"
 )
 
-
+create_db_and_tables()
 # Настройка шаблонов и статических файлов
 templates = Jinja2Templates(directory="app/templates")
 app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")), name="static")
