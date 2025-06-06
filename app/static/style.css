@@ -184,6 +184,7 @@ li {
     border-left: 4px solid var(--primary);
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
 li::before {
@@ -199,6 +200,13 @@ li::before {
 li:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+}
+
+li.expanded {
+    transform: scale(1.05);
+    z-index: 10;
+    grid-column: span 2;
+    padding: 2rem;
 }
 
 .movie-title {
@@ -230,6 +238,25 @@ li:hover {
     flex-wrap: wrap;
     gap: 0.5rem;
     margin-top: 1rem;
+}
+
+.movie-description {
+    font-size: 0.95rem;
+    color: var(--dark);
+    margin-top: 1rem;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
+    opacity: 0;
+    padding: 0;
+    display: none; /* Полностью скрываем описание */
+}
+
+li.expanded .movie-description {
+    max-height: 200px;
+    opacity: 1;
+    padding: 1rem 0;
+    display: block; /* Показываем описание при увеличении */
 }
 
 .genre-tag {
@@ -335,6 +362,11 @@ main > * {
 
     ul {
         grid-template-columns: 1fr;
+    }
+
+    li.expanded {
+        grid-column: span 1;
+        transform: scale(1.02);
     }
 
     .movie-info {

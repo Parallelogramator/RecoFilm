@@ -8,7 +8,7 @@
 {% if interactions %}
 <ul>
     {% for interaction in interactions %}
-    <li>
+    <li class="movie-card">
         <div class="movie-title">{{ interaction.movie.title }}</div>
         <div class="movie-info">
             <div class="movie-year">Год: {{ interaction.movie.year or 'не указан' }}</div>
@@ -20,6 +20,7 @@
             {% endfor %}
         </div>
         <span class="status-tag status-{{ interaction.status.value }}">{{ interaction.status.value }}</span>
+        <div class="movie-description">{{ interaction.movie.description or 'Описание отсутствует' }}</div>
     </li>
     {% endfor %}
 </ul>

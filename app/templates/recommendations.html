@@ -8,7 +8,7 @@
 {% if recommendations %}
 <ul>
     {% for movie in recommendations %}
-    <li>
+    <li class="movie-card">
         <div class="movie-title">{{ movie.title }}</div>
         <div class="movie-info">
             <div class="movie-year">Год: {{ movie.year or 'не указан' }}</div>
@@ -19,6 +19,7 @@
             <span class="genre-tag">{{ genre }}</span>
             {% endfor %}
         </div>
+        <div class="movie-description">{{ movie.description or 'Описание отсутствует' }}</div>
     </li>
     {% endfor %}
 </ul>
