@@ -8,7 +8,7 @@
 {% if recommendations %}
 <ul>
     {% for movie in recommendations %}
-    <li class="movie-card">
+    <li class="movie-card" data-movie-id="{{ movie.id }}">
         <div class="movie-title">{{ movie.title }}</div>
         <div class="movie-info">
             <div class="movie-year">Год: {{ movie.year or 'не указан' }}</div>
@@ -18,6 +18,19 @@
             {% for genre in movie.genres %}
             <span class="genre-tag">{{ genre }}</span>
             {% endfor %}
+        </div>
+        {% if movie.status %}
+        <span class="status-tag status-{{ movie.status.value }}">{{ movie.status.value }}</span>
+        {% endif %}
+        <div class="status-selector">
+            <select>
+                <option value="">Выберите статус</option>
+                <option value="Просмотрено">Просмотрено</option>
+                <option value="Понравилось">Понравилось</option>
+                <option value="Хочу посмотреть">Хочу посмотреть</option>
+                <option value="Брошено">Брошено</option>
+                <option value="Смотрю">Смотрю</option>
+            </select>
         </div>
         <div class="movie-description">{{ movie.description or 'Описание отсутствует' }}</div>
     </li>
