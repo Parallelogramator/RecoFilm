@@ -5,15 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Film Advisor</title>
     <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/scripts.js" defer></script>
 </head>
-<body>
+<body class="light-theme">
     <header>
         <div class="header-container">
             <h1>FILM ADVISOR</h1>
             <nav>
                 <a href="/">Главная</a>
-                <a href="/users/1/recommendations/">Рекомендации</a>
-                <a href="/users/1/interactions/">Библиотека</a>
+                <a href="/recommendations">Рекомендации</a>
+                <div class="dropdown">
+                    <a href="#" class="nav-link" id="library-link" style="line-height: 42px">Библиотека</a>
+                    <div class="dropdown-content">
+                        <a href="/users/1/interactions/watched">Просмотрено</a>
+                        <a href="/users/1/interactions/liked">Понравилось</a>
+                        <a href="/users/1/interactions/want_to_watch">Хочу посмотреть</a>
+                        <a href="/users/1/interactions/dropped">Брошено</a>
+                        <a href="/users/1/interactions/watching">Смотрю</a>
+                    </div>
+                </div>
                 <button class="theme-toggle">🌓</button>
             </nav>
         </div>
@@ -26,35 +36,5 @@
     <footer>
         <p>© 2025 Film Advisor. Все права защищены.</p>
     </footer>
-
-    <script>
-        // Theme toggle
-        const themeToggle = document.querySelector('.theme-toggle');
-        themeToggle.addEventListener('click', () => {
-            document.body.classList.toggle('dark-theme');
-            localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
-        });
-
-        // Load theme from localStorage
-        if (localStorage.getItem('theme') === 'dark') {
-            document.body.classList.add('dark-theme');
-        }
-
-        // Movie card expand functionality
-        document.addEventListener('click', (e) => {
-            const card = e.target.closest('.movie-card');
-            if (!card) return;
-
-            // Close other expanded cards
-            document.querySelectorAll('.movie-card.expanded').forEach(otherCard => {
-                if (otherCard !== card) {
-                    otherCard.classList.remove('expanded');
-                }
-            });
-
-            // Toggle current card
-            card.classList.toggle('expanded');
-        });
-    </script>
 </body>
 </html>

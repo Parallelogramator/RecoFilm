@@ -95,6 +95,7 @@ nav {
     display: flex;
     justify-content: center;
     gap: 2rem;
+    position: relative;
 }
 
 nav a {
@@ -126,6 +127,48 @@ nav a::after {
 
 nav a:hover::after {
     width: 70%;
+}
+
+/* Стили для выпадающего меню */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown .nav-link {
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: var(--gray-light);
+    min-width: 180px;
+    box-shadow: var(--card-shadow);
+    border-radius: 8px;
+    z-index: 100;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    display: block;
+    color: var(--primary-dark);
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: var(--primary-light);
+}
+
+.dropdown:hover .dropdown-content,
+.dropdown-content.active {
+    display: block;
 }
 
 .theme-toggle {
@@ -346,6 +389,13 @@ main > * {
     nav a {
         font-size: 0.95rem;
         padding: 0.5rem;
+        text-align: center;
+    }
+
+    .dropdown-content {
+        left: 0;
+        transform: none;
+        min-width: 140px;
     }
 
     main {
