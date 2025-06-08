@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23fdeffd-dd1b-4f64-b0bc-e95df02254e8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/initial_data/movies.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/users.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/users.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/shared_database.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/environment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/environment.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/Rating_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/Rating_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/db_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/db_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/load_all_movies.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/load_all_movies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/film_advisor_lib/recommendation_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/recommendation_service.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install.py" beforeDir="false" afterPath="$PROJECT_DIR$/install.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movies.db" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.bat" beforeDir="false" afterPath="$PROJECT_DIR$/run.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
-    </list>
+    <list default="true" id="23fdeffd-dd1b-4f64-b0bc-e95df02254e8" name="Changes" comment="fix recomendation and swap dataset" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -135,8 +118,17 @@
       <workItem from="1749291485213" duration="10739000" />
       <workItem from="1749327406760" duration="5046000" />
       <workItem from="1749372662421" duration="11614000" />
-      <workItem from="1749387438295" duration="2949000" />
+      <workItem from="1749387438295" duration="3340000" />
     </task>
+    <task id="LOCAL-00001" summary="fix recomendation and swap dataset">
+      <option name="closed" value="true" />
+      <created>1749391235742</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1749391235742</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -152,6 +144,10 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix recomendation and swap dataset" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix recomendation and swap dataset" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -173,7 +169,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/RecoFilm$test.coverage" NAME="test Coverage Results" MODIFIED="1749381611570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/film_advisor_lib" />
-    <SUITE FILE_PATH="coverage/RecoFilm$filmoteka.coverage" NAME="filmoteka Coverage Results" MODIFIED="1749390841951" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/RecoFilm$filmoteka.coverage" NAME="filmoteka Coverage Results" MODIFIED="1749391014336" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/RecoFilm$main.coverage" NAME="main Coverage Results" MODIFIED="1749242809667" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
     <SUITE FILE_PATH="coverage/RecoFilm$app.coverage" NAME="app Coverage Results" MODIFIED="1749377361489" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
     <SUITE FILE_PATH="coverage/RecoFilm$database.coverage" NAME="database Coverage Results" MODIFIED="1749242800644" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/app" />
