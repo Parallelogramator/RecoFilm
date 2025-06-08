@@ -21,11 +21,17 @@ def get_top_n_by_genres(df, genres, n=10):
     :return: DataFrame с топ-N фильмами
     """
     # Фильтрация: фильм должен содержать все жанры
-    filtered_df = df.copy()
-    for genre in genres:
-        filtered_df = filtered_df[filtered_df['genres'].str.contains(genre, case=False, na=False)]
-    
+    filtered_df = df[
+        ~df['movieId'].isin(exclude_movie_ids) &
+        df['genres'].apply(
+            lambda x: any(genre in x.split(',') for genre in genres) if pd.notna(x) else False
+        )
+        ].copy()
+
+    filtered_df['genre_score'] = filtered_df['genres'].apply(
+        lambda x: sum(genre_weights.get(genre, 0.0) for genre in x.split(','))
+    )
     # Сортировка по рейтингу
     top_n = filtered_df.sort_values(by='mean_rating', ascending=False).head(n)
-    
+
     return top_n[['title', 'mean_rating', 'genres']]

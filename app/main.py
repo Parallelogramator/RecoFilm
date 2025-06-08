@@ -7,8 +7,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
-from .database import get_db_dependency, create_db_and_tables
-from . import crud, users, movies
+from app.database import get_db_dependency, create_db_and_tables
+from app import crud, users, movies
 
 app = FastAPI(
     title="RecoFilm",

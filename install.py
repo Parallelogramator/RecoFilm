@@ -5,19 +5,26 @@ import sys
 import shutil
 from typing import Optional
 
-CONDA_ENV_NAME = "film_advisor_env"
-ENV_FILE = "environment.yml" # В корне проекта
+CONDA_ENV_NAME = "RecoFilm"
+ENV_FILE = "environment.yml"
 
-# Пути теперь указывают внутрь папки app
-APP_DIR = os.path.join(os.path.dirname(__file__), "app")
-DB_PATH_DIR = os.path.join(APP_DIR, "db")
-DB_FILE = os.path.join(DB_PATH_DIR, "test_movies.db")
-INITIAL_DATA_CSV = os.path.join(APP_DIR, "initial_data", "movies.csv")
+PROJECT_ROOT = os.path.dirname(__file__)
+DB_PATH_DIR = os.path.join(PROJECT_ROOT, "data")
+DB_FILE = os.path.join(DB_PATH_DIR, "movies.db")
 
-def run_command(command: list[str], cwd: Optional[str] = None) -> bool:
+
+def run_command(command: list[str], cwd: Optional[str] = None, shell: bool = False) -> bool:
     print(f"Executing: {' '.join(command)}")
     try:
-        process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding='utf-8', cwd=cwd)
+        process = subprocess.Popen(
+            command,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            encoding='utf-8',
+            cwd=cwd,
+            shell=shell
+        )
         if process.stdout:
             for line in iter(process.stdout.readline, ''):
                 print(line.strip())
@@ -33,54 +40,91 @@ def run_command(command: list[str], cwd: Optional[str] = None) -> bool:
         print(f"An unexpected error occurred: {e}")
         return False
 
+
 def find_conda():
     conda_exe = shutil.which("conda")
-    if conda_exe: return conda_exe
+    if conda_exe:
+        return conda_exe
     home = os.path.expanduser("~")
     possible_paths = [
-        os.path.join(home, "anaconda3", "bin", "conda"), os.path.join(home, "miniconda3", "bin", "conda"),
-        os.path.join(home, "Anaconda3", "Scripts", "conda.exe"), os.path.join(home, "Miniconda3", "Scripts", "conda.exe")
+        os.path.join(home, "anaconda3", "bin", "conda"),
+        os.path.join(home, "miniconda3", "bin", "conda"),
+        os.path.join(home, "Anaconda3", "Scripts", "conda.exe"),
+        os.path.join(home, "Miniconda3", "Scripts", "conda.exe")
     ]
     for path in possible_paths:
-        if os.path.exists(path): return path
+        if os.path.exists(path):
+            return path
     return None
 
+
+def get_conda_envs():
+    conda_path = find_conda()
+    if not conda_path:
+        return []
+    result = subprocess.run(
+        [conda_path, "env", "list"],
+        capture_output=True,
+        text=True,
+        encoding='utf-8'
+    )
+    if result.returncode != 0:
+        print("Error listing Conda environments.")
+        return []
+    envs = [
+        line.split()[0]
+        for line in result.stdout.splitlines()
+        if line and not line.startswith("#") and line.split()
+    ]
+    return envs
+
+
+def install_pip_dependencies():
+    print("Installing pip dependencies...")
+    conda_path = find_conda()
+    if not conda_path:
+        print("Error: Conda not found.")
+        return False
+    # Получаем путь к Python в окружении RecoFilm
+    env_path = os.path.join(os.path.dirname(os.path.dirname(conda_path)), "envs", CONDA_ENV_NAME)
+    python_exe = os.path.join(env_path, "Scripts", "python.exe" if os.name == 'nt' else "bin", "python")
+    pip_exe = os.path.join(env_path, "Scripts", "pip.exe" if os.name == 'nt' else "bin", "pip")
+    if not os.path.exists(python_exe):
+        print(f"Error: Python executable not found at {python_exe}")
+        return False
+    # Устанавливаем kagglehub и pydantic
+    return run_command([pip_exe, "install", "pydantic", "kagglehub"])
+
+
 def create_db_and_load_data():
-    """
-    Создает БД и загружает начальные данные.
-    Это требует, чтобы окружение было уже создано,
-    и Python мог импортировать app.database и app.services.
-    Этот скрипт должен запускаться Python-интерпретатором,
-    который может найти эти модули (например, из корня проекта).
-    """
-    print("Creating database and loading initial data...")
+    print("Creating database and loading data...")
     os.makedirs(DB_PATH_DIR, exist_ok=True)
 
-    # Добавляем корень проекта в sys.path, чтобы импорты из app работали
-    project_root = os.path.abspath(os.path.dirname(__file__))
-    if project_root not in sys.path:
-        sys.path.insert(0, project_root)
+    if PROJECT_ROOT not in sys.path:
+        sys.path.insert(0, PROJECT_ROOT)
 
     try:
-        from app import database, services, auth # Импортируем после добавления в sys.path
-        from app.database import SessionLocal
+        from app import database
+        database.create_db_and_tables()
 
-        database.init_db() # Создаст таблицы, если их нет
-
-        with next(database.get_db_session_context()) as db_session:
-            _ = auth.get_default_user(db_session) # Создаст пользователя по умолчанию
-            if os.path.exists(INITIAL_DATA_CSV):
-                services.load_initial_movies_from_csv(db_session, INITIAL_DATA_CSV)
+        db_session = database.SessionLocal()
+        try:
+            print("Loading Kaggle dataset...")
+            load_movies_script = os.path.join(PROJECT_ROOT, "film_advisor_lib", "load_all_movies.py")
+            if os.path.exists(load_movies_script):
+                # Используем Python из текущего окружения
+                run_command([sys.executable, load_movies_script], cwd=PROJECT_ROOT)
             else:
-                print(f"Initial data file {INITIAL_DATA_CSV} not found. Skipping initial data load.")
-        print("Database setup and initial data load (if any) complete.")
+                print(f"Error: {load_movies_script} not found.")
+        finally:
+            db_session.close()
+        print("Database setup complete.")
     except ImportError as e:
-        print(f"Failed to import app modules for DB setup: {e}")
-        print("Ensure Conda environment is created and you are running install.py from project root.")
-        print("Or, activate the environment first and then run this part of the script.")
-        return False # Указываем на ошибку
+        print(f"Failed to import app modules: {e}")
+        print("Ensure you are using the Python interpreter from 'conda activate RecoFilm'.")
+        return False
     except Exception as e:
-        print(f"An error occurred during DB setup: {e}")
+        print(f"Error during DB setup: {e}")
         return False
     return True
 
@@ -89,39 +133,35 @@ def main():
     print("Starting Film Advisor installation...")
     conda_path = find_conda()
     if not conda_path:
-        print("Error: Conda executable not found. Please ensure Conda is installed and in your PATH.")
+        print("Error: Conda executable not found. Ensure Conda is installed.")
         sys.exit(1)
     print(f"Using Conda: {conda_path}")
 
-    # 1. Создание Conda-окружения
-    print(f"\nCreating Conda environment '{CONDA_ENV_NAME}' from {ENV_FILE}...")
-    if not run_command([conda_path, "env", "create", "-f", ENV_FILE, "--force"]):
-        print("Failed to create Conda environment. Please check 'environment.yml' and Conda setup.")
+    if CONDA_ENV_NAME in get_conda_envs():
+        print(f"Conda environment '{CONDA_ENV_NAME}' exists. Removing and recreating...")
+        run_command([conda_path, "env", "remove", "-n", CONDA_ENV_NAME])
+
+    print(f"\nCreating Conda environment '{CONDA_ENV_NAME}'...")
+    if not run_command([conda_path, "env", "create", "-f", ENV_FILE]):
+        print("Failed to create Conda environment.")
         sys.exit(1)
-    print(f"Conda environment '{CONDA_ENV_NAME}' created successfully.")
+    print(f"Conda environment '{CONDA_ENV_NAME}' created.")
 
-    # 2. Установка зависимостей в созданное окружение (на всякий случай, если yml не все покрыл)
-    # Это можно сделать и через environment.yml, но так надежнее для локальных пакетов
-    # conda_run = [conda_path, "run", "-n", CONDA_ENV_NAME]
-    # print("\nEnsuring all dependencies are installed...")
-    # if not run_command(conda_run + ["python", "-m", "pip", "install", "-r", "requirements.txt"]): # Если есть requirements.txt
-    #     print("Failed to install dependencies from requirements.txt.")
-    #     # sys.exit(1) # Не критично, если environment.yml полный
+    print("\nInstalling pip dependencies...")
+    if not install_pip_dependencies():
+        print("Failed to install pip dependencies.")
+        sys.exit(1)
 
-    # 3. Создание базы данных и загрузка данных
-    # Этот шаг выполняется Python-ом из текущего (базового) окружения, но импортирует из app.
-    # Либо можно было бы активировать среду и запустить отдельный скрипт.
-    # Для простоты, делаем здесь, полагаясь на sys.path.
     print("\nSetting up database...")
     if not create_db_and_load_data():
-        print("Database setup failed. Please check logs.")
-        # Можно решить, прерывать ли установку
-        # sys.exit(1)
+        print("Database setup failed.")
+        sys.exit(1)
 
     print("\nInstallation complete!")
     print(f"To run the application:")
-    print(f"1. Activate the Conda environment: conda activate {CONDA_ENV_NAME}")
-    print(f"2. Run the application: python app/main.py (or use run.sh/run.bat)")
+    print(f"1. Activate environment: conda activate {CONDA_ENV_NAME}")
+    print(f"2. Run: uvicorn app.main:app --reload")
+
 
 if __name__ == "__main__":
     main()
