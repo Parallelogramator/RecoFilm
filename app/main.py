@@ -1,14 +1,14 @@
 import os
 import sys
-from typing import List
+from typing import List, Optional
 from fastapi import FastAPI, Depends, Request
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 
-from .database import get_db_dependency, create_db_and_tables
-from . import crud, users, movies
+from app.database import get_db_dependency, create_db_and_tables
+from app import crud, users, movies
 
 app = FastAPI(
     title="RecoFilm",
@@ -24,6 +24,12 @@ app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__
 @app.get("/", response_class=HTMLResponse)
 def index(request: Request, db: Session = Depends(get_db_dependency)):
     movies = crud.get_movies(db, skip=0, limit=10)
+    return templates.TemplateResponse("index.html", {"request": request, "movies": movies})
+
+
+@app.get("/search", response_class=HTMLResponse)
+def index(request: Request, name: Optional[str] = None, year: Optional[int] = None, db: Session = Depends(get_db_dependency)):
+    movies = crud.search_movies(db, name=name, year=year)
     return templates.TemplateResponse("index.html", {"request": request, "movies": movies})
 
 app.include_router(users.router, tags=["users"], prefix="/users")
