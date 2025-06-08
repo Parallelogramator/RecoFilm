@@ -25,6 +25,17 @@ def get_movie(db: Session, movie_id: int) -> Optional[models_db.Movie]:
 def get_movies(db: Session, skip: int = 0, limit: int = 100) -> List[models_db.Movie]:
     return db.query(models_db.Movie).offset(skip).limit(limit).all()
 
+def search_movies(db: Session, skip: int = 0, limit: int = 100, name: Optional[str] = None, year: Optional[int] = None) -> List[models_db.Movie]:
+    query = db.query(models_db.Movie)
+
+    if name is not None:
+        query = query.filter(models_db.Movie.name.contains(name))
+
+    if year is not None:
+        query = query.filter(models_db.Movie.year == year)
+
+    return query.offset(skip).limit(limit).all()
+
 def create_movie(db: Session, movie: schemas_db.MovieCreate) -> models_db.Movie:
     db_movie = models_db.Movie(
         title=movie.title,
