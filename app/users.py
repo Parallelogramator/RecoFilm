@@ -57,7 +57,6 @@ def api_get_user_interactions(request: Request, user_id: int, db: Session = Depe
     interactions = crud.get_user_interactions(db=db, user_id=user_id)
     return templates.TemplateResponse("library.html", {"request": request, "interactions": interactions})
 
-
 @router.get("/{user_id}/interactions/{status}", response_model=List[models_api.UserMovieAPI],
          summary="Все взаимодействия пользователя")
 def api_get_user_interactions(request: Request, user_id: int, status: str, db: Session = Depends(get_db_dependency)):
@@ -68,15 +67,13 @@ def api_get_user_interactions(request: Request, user_id: int, status: str, db: S
          summary="Получить рекомендации")
 def api_get_recommendations_for_user(request: Request, user_id: int, num_recs: int = Query(default=5, ge=1, le=20),
                                      db: Session = Depends(get_db_dependency)):
+    db_user = crud.get_user(db, user_id=user_id)
+    if not db_user:
+        raise HTTPException(status_code=404, detail="User not found")
     try:
-        db_user = crud.get_user(db, user_id=user_id)
-        if not db_user:
-            raise HTTPException(status_code=404, detail="User not found for recommendations")
+        recommendations = get_movie_recommendations_by_user_id(user_id=user_id, count=num_recs)
+        if not recommendations:
+            raise HTTPException(status_code=404, detail="No recommendations available: insufficient user data or movies.")
+        return templates.TemplateResponse("recommendations.html", {"request": request, "recommendations": recommendations})
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-    recommendation = get_movie_recommendations_by_user_id(
-        user_id=user_id,
-        count=num_recs
-    )
-    return templates.TemplateResponse("recommendations.html", {"request": request, "recommendations": recommendation})
+        raise HTTPException(status_code=500, detail=f"Failed to generate recommendations: {str(e)}")
