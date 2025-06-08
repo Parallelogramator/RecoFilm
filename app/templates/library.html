@@ -8,7 +8,7 @@
 {% if interactions %}
 <ul>
     {% for interaction in interactions %}
-    <li class="movie-card">
+    <li class="movie-card" data-movie-id="{{ interaction.movie.id }}">
         <div class="movie-title">{{ interaction.movie.title }}</div>
         <div class="movie-info">
             <div class="movie-year">Год: {{ interaction.movie.year or 'не указан' }}</div>
@@ -20,6 +20,16 @@
             {% endfor %}
         </div>
         <span class="status-tag status-{{ interaction.status.value }}">{{ interaction.status.value }}</span>
+        <div class="status-selector">
+            <select>
+                <option value="">Выберите статус</option>
+                <option value="Просмотрено" {% if interaction.status.value == 'Просмотрено' %}selected{% endif %}>Просмотрено</option>
+                <option value="Понравилось" {% if interaction.status.value == 'Понравилось' %}selected{% endif %}>Понравилось</option>
+                <option value="Хочу посмотреть" {% if interaction.status.value == 'Хочу посмотреть' %}selected{% endif %}>Хочу посмотреть</option>
+                <option value="Брошено" {% if interaction.status.value == 'Брошено' %}selected{% endif %}>Брошено</option>
+                <option value="Смотрю" {% if interaction.status.value == 'Смотрю' %}selected{% endif %}>Смотрю</option>
+            </select>
+        </div>
         <div class="movie-description">{{ interaction.movie.description or 'Описание отсутствует' }}</div>
     </li>
     {% endfor %}
