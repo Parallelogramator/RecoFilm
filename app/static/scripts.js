@@ -99,15 +99,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     card.querySelector('.movie-genres').insertAdjacentElement('afterend', newCardStatusTag);
                 }
 
-                // Отправка запроса на сервер
+                // Отправка POST-запроса на сервер
                 try {
-                    const response = await fetch(`/api/interactions/${movieId}`, {
-                        method: 'PATCH',
+                    const response = await fetch('/users/1/interactions', {
+                        method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ status: newStatus })
+                        body: JSON.stringify({ status: newStatus, movie_id: movieId })
                     });
                     if (!response.ok) {
-                        console.error('Ошибка при обновлении статуса');
+                        console.error('Ошибка при добавлении статуса:', response.statusText);
                     }
                 } catch (error) {
                     console.error('Ошибка сети:', error);
