@@ -57,11 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="status-selector">
                     <select>
                         <option value="">Выберите статус</option>
-                        <option value="Просмотрено" ${currentStatus === 'Просмотрено' ? 'selected' : ''}>Просмотрено</option>
-                        <option value="Понравилось" ${currentStatus === 'Понравилось' ? 'selected' : ''}>Понравилось</option>
-                        <option value="Хочу посмотреть" ${currentStatus === 'Хочу посмотреть' ? 'selected' : ''}>Хочу посмотреть</option>
-                        <option value="Брошено" ${currentStatus === 'Брошено' ? 'selected' : ''}>Брошено</option>
-                        <option value="Смотрю" ${currentStatus === 'Смотрю' ? 'selected' : ''}>Смотрю</option>
+                        <option value="watched" ${currentStatus === 'watched' ? 'selected' : ''}>Watched</option>
+                        <option value="liked" ${currentStatus === 'liked' ? 'selected' : ''}>Liked</option>
+                        <option value="want_to_watch" ${currentStatus === 'want_to_watch' ? 'selected' : ''}>Want to watch</option>
+                        <option value="dropped" ${currentStatus === 'dropped' ? 'selected' : ''}>Dropped</option>
+                        <option value="watching" ${currentStatus === 'watching' ? 'selected' : ''}>Watching</option>
                     </select>
                 </div>
                 <div class="movie-description">${description}</div>

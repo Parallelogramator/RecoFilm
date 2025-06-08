@@ -1,19 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="hero">
-    <h1>Добро пожаловать в Film Advisor</h1>
-    <p>Откройте для себя мир кино с персонализированными рекомендациями</p>
+    <h1>Welcome to Film Advisor</h1>
+    <p>Discover the world of movies with personalized recommendations</p>
 </div>
 
-<h2>Популярные фильмы</h2>
+<h2>Popular movies</h2>
 {% if movies %}
 <ul>
     {% for movie in movies %}
     <li class="movie-card" data-movie-id="{{ movie.id }}">
         <div class="movie-title">{{ movie.title }}</div>
         <div class="movie-info">
-            <div class="movie-year">Год: {{ movie.year or 'не указан' }}</div>
-            <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'не указан' }}</div>
+            <div class="movie-year">Year: {{ movie.year or 'unspecified' }}</div>
+            <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'unspecified' }}</div>
         </div>
         <div class="movie-genres">
             {% for genre in movie.genres %}
@@ -27,7 +27,7 @@
     {% endfor %}
 </ul>
 {% else %}
-<p>Фильмы пока отсутствуют. Добавьте фильм через API!</p>
+<p>No movies are available yet. Add a movie via API!</p>
 {% endif %}
 
 <!-- Modal for displaying movie details -->

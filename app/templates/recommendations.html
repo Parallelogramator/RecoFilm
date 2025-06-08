@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="hero">
-    <h1>Персональные рекомендации</h1>
-    <p>Фильмы, подобранные специально для вас</p>
+    <h1>Personalized recommendations</h1>
+    <p>Movies selected especially for you</p>
 </div>
 
 {% if recommendations %}
@@ -11,8 +11,8 @@
     <li class="movie-card" data-movie-id="{{ movie.id }}">
         <div class="movie-title">{{ movie.title }}</div>
         <div class="movie-info">
-            <div class="movie-year">Год: {{ movie.year or 'не указан' }}</div>
-            <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'не указан' }}</div>
+            <div class="movie-year">Year: {{ movie.year or 'unspecified' }}</div>
+            <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'unspecified' }}</div>
         </div>
         <div class="movie-genres">
             {% for genre in movie.genres %}
@@ -26,7 +26,7 @@
     {% endfor %}
 </ul>
 {% else %}
-<p>Рекомендации пока недоступны.</p>
+<p>Recommendations are not yet available.</p>
 {% endif %}
 
 <!-- Modal for displaying movie details -->
