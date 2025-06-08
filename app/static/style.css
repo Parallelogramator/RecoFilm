@@ -67,7 +67,7 @@ header h1 {
     margin-bottom: 1rem;
     letter-spacing: -1px;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    color: var(--primary-dark); /* используем primary-dark для Film Advisor */
+    color: var(--primary-dark);
     position: relative;
     display: inline-block;
     padding: 0 1rem;
@@ -245,13 +245,6 @@ li:hover {
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
 }
 
-li.expanded {
-    transform: scale(1.05);
-    z-index: 10;
-    grid-column: span 2;
-    padding: 2rem;
-}
-
 .movie-title {
     font-weight: 600;
     font-size: 1.2rem;
@@ -287,19 +280,7 @@ li.expanded {
     font-size: 0.95rem;
     color: var(--dark);
     margin-top: 1rem;
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease, opacity 0.3s ease, padding 0.3s ease;
-    opacity: 0;
-    padding: 0;
-    display: none; /* Полностью скрываем описание */
-}
-
-li.expanded .movie-description {
-    max-height: 200px;
-    opacity: 1;
-    padding: 1rem 0;
-    display: block; /* Показываем описание при увеличении */
+    display: none; /* Скрываем описание, так как оно отображается в модальном окне */
 }
 
 .genre-tag {
@@ -321,7 +302,7 @@ li.expanded .movie-description {
 }
 
 body.dark-theme .status-tag {
-    color: #111827; /* тёмный текст для лучшей читаемости */
+    color: #111827;
 }
 
 .status-watched {
@@ -350,7 +331,6 @@ body.dark-theme .status-tag {
 }
 
 .status-selector {
-    display: none;
     margin-top: 1rem;
 }
 
@@ -393,9 +373,69 @@ footer {
 footer p {
     background-color: transparent;
     box-shadow: none;
-    color: var(--primary-dark); /* используем primary-dark для футера в тёмной теме */
+    color: var(--primary-dark);
     padding: 0;
     margin: 0;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    padding: 0;
+}
+
+.modal-content {
+    background-color: var(--gray-light);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    border-left: 4px solid var(--primary);
+    margin: 0;
+}
+
+.modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    color: var(--primary-dark);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--secondary);
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-body .movie-title {
+    font-size: 1.5rem;
+}
+
+.modal-body .movie-description {
+    display: block;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 /* Animation */
@@ -446,11 +486,6 @@ main > * {
         grid-template-columns: 1fr;
     }
 
-    li.expanded {
-        grid-column: span 1;
-        transform: scale(1.02);
-    }
-
     .movie-info {
         flex-direction: column;
         align-items: flex-start;
@@ -459,5 +494,11 @@ main > * {
 
     .status-selector select {
         max-width: 100%;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+        max-height: 85vh;
     }
 }
