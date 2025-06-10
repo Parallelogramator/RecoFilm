@@ -124,9 +124,3 @@ themeToggle.addEventListener('click', () => {
     // Сохранить выбор темы в localStorage
     localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
 });
-
-// Загрузить сохранённую тему
-const savedTheme = localStorage.getItem('theme');
-if (savedTheme) {
-    document.body.classList.add(savedTheme === 'dark' ? 'dark-theme' : 'light-theme');
-}
