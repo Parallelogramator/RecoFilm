@@ -56,6 +56,14 @@ def get_movies_by_ids(db: Session, movie_ids: List[int]) -> List[models_db.Movie
 
 
 # --- UserMovie CRUD ---
+
+def get_user_movie_interaction(db: Session, user_id: int, movie_id: int) -> models_db.UserMovie | None:
+    return db.query(models_db.UserMovie).filter(
+        models_db.UserMovie.user_id == user_id,
+        models_db.UserMovie.movie_id == movie_id
+    ).first()
+
+
 def create_user_movie_interaction(
     db: Session, user_id: int, interaction: schemas_db.UserMovieCreate
 ) -> models_db.UserMovie:
@@ -68,6 +76,34 @@ def create_user_movie_interaction(
     db.commit()
     db.refresh(db_interaction)
     return db_interaction
+
+
+def update_user_movie_interaction(
+        db: Session, user_id: int, movie_id: int, new_status: str
+) -> models_db.UserMovie | None:
+    """Обновляет статус существующего взаимодействия."""
+    db_interaction = get_user_movie_interaction(db, user_id=user_id, movie_id=movie_id)
+
+    if db_interaction:
+        db_interaction.status = new_status
+        db.commit()
+        db.refresh(db_interaction)
+
+    return db_interaction
+
+
+def delete_user_movie_interaction(
+        db: Session, user_id: int, movie_id: int
+) -> models_db.UserMovie | None:
+    """Удаляет существующее взаимодействие."""
+    db_interaction = get_user_movie_interaction(db, user_id=user_id, movie_id=movie_id)
+
+    if db_interaction:
+        db.delete(db_interaction)
+        db.commit()
+
+    return db_interaction
+
 
 def get_user_interactions(db: Session, user_id: int, status: str = None) -> List[models_db.UserMovie]:
     if status:

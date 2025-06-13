@@ -51,6 +51,43 @@ def api_create_user_movie_interaction(
     interaction_core_create = schemas_db.UserMovieCreate(**interaction.model_dump())
     return crud.create_user_movie_interaction(db=db, user_id=user_id, interaction=interaction_core_create)
 
+
+@router.put("/{user_id}/interactions/", response_model=models_api.UserMovieAPI,
+            summary="Обновить статус взаимодействия")
+def api_update_user_movie_interaction(
+        user_id: int,
+        interaction: models_api.UserMovieCreateAPI,
+        db: Session = Depends(get_db_dependency)
+):
+
+    db_interaction = crud.update_user_movie_interaction(
+        db=db,
+        user_id=user_id,
+        movie_id=interaction.movie_id,
+        new_status=interaction.status
+    )
+    if not db_interaction:
+        raise HTTPException(status_code=404, detail="Interaction not found")
+
+    return db_interaction
+
+
+@router.delete("/{user_id}/interactions/{movie_id}", status_code=200,
+               summary="Удалить взаимодействие")
+def api_delete_user_movie_interaction(
+        user_id: int,
+        interaction: models_api.UserMovieCreateAPI,
+        db: Session = Depends(get_db_dependency)
+):
+    deleted_interaction = crud.delete_user_movie_interaction(
+        db=db, user_id=user_id, movie_id=interaction.movie_id
+    )
+    if not deleted_interaction:
+        raise HTTPException(status_code=404, detail="Interaction not found")
+
+    return {"detail": "Interaction deleted successfully"}
+
+
 @router.get("/{user_id}/interactions/", response_model=List[models_api.UserMovieAPI],
          summary="Все взаимодействия пользователя")
 def api_get_user_interactions(request: Request, user_id: int, db: Session = Depends(get_db_dependency)):
