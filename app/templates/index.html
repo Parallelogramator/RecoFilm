@@ -15,6 +15,7 @@
         <label for="year">Year:</label>
         <input type="number" id="year" name="year" placeholder="Enter year" value="{{ request.query_params.year or '' }}">
     </div>
+    <input type="hidden" id="limit-hidden" name="limit" value="{{ request.query_params.limit or '10' }}">
     <button type="submit">Search</button>
 </form>
 
@@ -24,7 +25,7 @@
         <option value="10" {% if request.query_params.limit == '10' %}selected{% endif %}>10</option>
         <option value="20" {% if request.query_params.limit == '20' %}selected{% endif %}>20</option>
         <option value="50" {% if request.query_params.limit == '50' %}selected{% endif %}>50</option>
-        <option value="100" {% if request.query_params.limit == '50' %}selected{% endif %}>50</option>
+        <option value="100" {% if request.query_params.limit == '100' %}selected{% endif %}>100</option>
     </select>
 </div>
 
@@ -56,7 +57,7 @@
 <!-- Modal for displaying movie details -->
 <div class="modal" id="movieModal">
     <div class="modal-content">
-        <span class="modal-close">&times;</span>
+        <span class="modal-close">×</span>
         <div class="modal-body">
             <!-- Movie details will be injected here by JavaScript -->
         </div>
