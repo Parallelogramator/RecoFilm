@@ -29,7 +29,7 @@ def search_movies(db: Session, skip: int = 0, limit: int = 100, name: Optional[s
     query = db.query(models_db.Movie)
 
     if name is not None:
-        query = query.filter(models_db.Movie.name.contains(name))
+        query = query.filter(models_db.Movie.title.contains(name))
 
     if year is not None:
         query = query.filter(models_db.Movie.year == year)
