@@ -6,5 +6,8 @@ dependencies:
   - jinja2
   - sqlite
   - pip
+  - sqlalchemy
+  - pandas
   - pip:
       - pydantic
+      - kagglehub

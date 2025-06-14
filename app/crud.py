@@ -11,8 +11,8 @@ def get_user(db: Session, user_id: int) -> Optional[models_db.User]:
 def get_user_by_username(db: Session, username: str) -> Optional[models_db.User]:
     return db.query(models_db.User).filter(models_db.User.username == username).first()
 
-def create_user(db: Session, user: schemas_db.UserCreate) -> models_db.User: # ИЗМЕНЕНИЕ: тип user
-    db_user = models_db.User(username=user.username, email=user.email)
+def create_user(db: Session, user: schemas_db.UserCreate) -> models_db.User:
+    db_user = models_db.User(username=user.username)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -25,7 +25,18 @@ def get_movie(db: Session, movie_id: int) -> Optional[models_db.Movie]:
 def get_movies(db: Session, skip: int = 0, limit: int = 100) -> List[models_db.Movie]:
     return db.query(models_db.Movie).offset(skip).limit(limit).all()
 
-def create_movie(db: Session, movie: schemas_db.MovieCreate) -> models_db.Movie: # ИЗМЕНЕНИЕ: тип movie
+def search_movies(db: Session, skip: int = 0, limit: int = 100, name: Optional[str] = None, year: Optional[int] = None) -> List[models_db.Movie]:
+    query = db.query(models_db.Movie)
+
+    if name is not None:
+        query = query.filter(models_db.Movie.title.contains(name))
+
+    if year is not None:
+        query = query.filter(models_db.Movie.year == year)
+
+    return query.offset(skip).limit(limit).all()
+
+def create_movie(db: Session, movie: schemas_db.MovieCreate) -> models_db.Movie:
     db_movie = models_db.Movie(
         title=movie.title,
         year=movie.year,
@@ -44,33 +55,65 @@ def get_movies_by_ids(db: Session, movie_ids: List[int]) -> List[models_db.Movie
     return db.query(models_db.Movie).filter(models_db.Movie.id.in_(movie_ids)).all()
 
 
-# --- UserMovieInteraction CRUD ---
-def create_user_movie_interaction(
-    db: Session, user_id: int, interaction: schemas_db.UserMovieInteractionCreate # ИЗМЕНЕНИЕ: тип interaction
-) -> models_db.UserMovieInteraction:
-    db_interaction = models_db.UserMovieInteraction(
-        user_id=user_id,
-        movie_id=interaction.movie_id,
-        status=interaction.status
-    )
-    db.add(db_interaction)
-    db.commit()
-    db.refresh(db_interaction)
+# --- UserMovie CRUD ---
+
+def get_user_movie_interaction(db: Session, user_id: int, movie_id: int) -> models_db.UserMovie | None:
+    return db.query(models_db.UserMovie).filter(
+        models_db.UserMovie.user_id == user_id,
+        models_db.UserMovie.movie_id == movie_id
+    ).first()
+
+
+def update_user_movie_interaction(
+        db: Session, user_id: int,  interaction: schemas_db.UserMovieCreate
+) -> models_db.UserMovie | None:
+    """Обновляет статус существующего взаимодействия."""
+    db_interaction = get_user_movie_interaction(db, user_id=user_id, movie_id=interaction.movie_id)
+    if db_interaction:
+        db_interaction.status = interaction.status
+        db.commit()
+        db.refresh(db_interaction)
+    else:
+        db_interaction = models_db.UserMovie(
+            user_id=user_id,
+            movie_id=interaction.movie_id,
+            status=interaction.status
+        )
+        db.add(db_interaction)
+        db.commit()
+        db.refresh(db_interaction)
     return db_interaction
 
-def get_user_interactions(db: Session, user_id: int) -> List[models_db.UserMovieInteraction]:
-    return db.query(models_db.UserMovieInteraction).filter(models_db.UserMovieInteraction.user_id == user_id).all()
+
+def delete_user_movie_interaction(
+        db: Session, user_id: int, movie_id: int
+) -> models_db.UserMovie | None:
+    """Удаляет существующее взаимодействие."""
+    db_interaction = get_user_movie_interaction(db, user_id=user_id, movie_id=movie_id)
+
+    if db_interaction:
+        db.delete(db_interaction)
+        db.commit()
+
+    return db_interaction
+
+
+def get_user_interactions(db: Session, user_id: int, status: str = None) -> List[models_db.UserMovie]:
+    if status:
+        return db.query(models_db.UserMovie).filter(models_db.UserMovie.user_id == user_id).filter(models_db.UserMovie.status == status).all()
+    else:
+        return db.query(models_db.UserMovie).filter(models_db.UserMovie.user_id == user_id).all()
 
 def get_user_liked_movies(db: Session, user_id: int) -> List[models_db.Movie]:
     return db.query(models_db.Movie)\
-        .join(models_db.UserMovieInteraction, models_db.Movie.id == models_db.UserMovieInteraction.movie_id)\
-        .filter(models_db.UserMovieInteraction.user_id == user_id)\
-        .filter(models_db.UserMovieInteraction.status == InteractionStatusEnum.LIKED)\
+        .join(models_db.UserMovie, models_db.Movie.id == models_db.UserMovie.movie_id)\
+        .filter(models_db.UserMovie.user_id == user_id)\
+        .filter(models_db.UserMovie.status == InteractionStatusEnum.LIKED)\
         .all()
 
 def get_user_interacted_movie_ids(db: Session, user_id: int) -> Set[int]:
-    interactions = db.query(models_db.UserMovieInteraction.movie_id)\
-        .filter(models_db.UserMovieInteraction.user_id == user_id)\
+    interactions = db.query(models_db.UserMovie.movie_id)\
+        .filter(models_db.UserMovie.user_id == user_id)\
         .distinct()\
         .all()
     return {interaction.movie_id for interaction in interactions}

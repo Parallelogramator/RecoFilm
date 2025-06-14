@@ -1,2 +1,41 @@
 <!DOCTYPE html>
-<html><head><title>Film Advisor</title><link rel="stylesheet" href="/static/style.css"></head><body>{% block content %}{% endblock %}</body></html>
+<html lang="eng">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film Advisor</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/scripts.js" defer></script>
+</head>
+<body class="light-theme">
+    <header>
+        <div class="header-container">
+            <h1>FILM ADVISOR</h1>
+            <nav>
+                <a href="/">Main</a>
+                <a href="/users/1/recommendations">Recommendations</a>
+                <div class="dropdown">
+                    <a href="#" class="nav-link" id="library-link" style="line-height: 42px">Library</a>
+                    <div class="dropdown-content">
+                        <a href="/users/1/interactions/">All</a>
+                        <a href="/users/1/interactions/watched">Watched</a>
+                        <a href="/users/1/interactions/liked">Liked</a>
+                        <a href="/users/1/interactions/want_to_watch">Want to watch</a>
+                        <a href="/users/1/interactions/dropped">Dropped</a>
+                        <a href="/users/1/interactions/watching">Watching</a>
+                    </div>
+                </div>
+                <button class="theme-toggle">🌓</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>© 2025 Film Advisor. All rights reserved.</p>
+    </footer>
+</body>
+</html>

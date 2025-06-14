@@ -1,2 +1,55 @@
 {% extends 'base.html' %}
-{% block content %}<h1>Welcome to Film Advisor</h1>{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1>Welcome to Film Advisor</h1>
+    <p>Discover the world of movies with personalized recommendations</p>
+</div>
+
+<!-- Search form with distinct input cells -->
+<form action="/search" method="get" id="searchForm" style="display: flex; gap: 1rem; align-items: center;">
+    <div class="input-cell" style="background-color: var(--gray-light); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--primary);">
+        <label for="name" style="font-size: 0.9rem; color: var(--primary-dark); margin-right: 0.5rem;">Movie Name:</label>
+        <input type="text" id="name" name="name" placeholder="Enter movie name" value="{{ request.query_params.name or '' }}" style="padding: 0.5rem; border: none; border-radius: 4px; width: 200px; background-color: var(--primary-light); color: var(--primary-dark);">
+    </div>
+    <div class="input-cell" style="background-color: var(--gray-light); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--primary);">
+        <label for="year" style="font-size: 0.9rem; color: var(--primary-dark); margin-right: 0.5rem;">Year:</label>
+        <input type="number" id="year" name="year" placeholder="Enter year" value="{{ request.query_params.year or '' }}" style="padding: 0.5rem; border: none; border-radius: 4px; width: 100px; background-color: var(--primary-light); color: var(--primary-dark); -webkit-appearance: none; -moz-appearance: textfield; appearance: textfield;">
+    </div>
+    <button type="submit" style="padding: 0.5rem 1rem; background-color: var(--primary); color: var(--primary-dark); border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">Search</button>
+</form>
+
+<h2>Popular movies</h2>
+{% if movies %}
+<ul>
+    {% for movie in movies %}
+    <li class="movie-card" data-movie-id="{{ movie.id }}">
+        <div class="movie-title">{{ movie.title }}</div>
+        <div class="movie-info">
+            <div class="movie-year">Year: {{ movie.year or 'unspecified' }}</div>
+            <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'unspecified' }}</div>
+        </div>
+        <div class="movie-genres">
+            {% for genre in movie.genres %}
+            <span class="genre-tag">{{ genre }}</span>
+            {% endfor %}
+        </div>
+        {% if movie.status %}
+        <span class="status-tag status-{{ movie.status.value }}">{{ movie.status.value }}</span>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>No movies are available yet. Add a movie via API!</p>
+{% endif %}
+
+<!-- Modal for displaying movie details -->
+<div class="modal" id="movieModal">
+    <div class="modal-content">
+        <span class="modal-close">×</span>
+        <div class="modal-body">
+            <!-- Movie details will be injected here by JavaScript -->
+        </div>
+    </div>
+</div>
+{% endblock %}

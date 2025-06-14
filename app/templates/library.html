@@ -1,2 +1,39 @@
 {% extends 'base.html' %}
-{% block content %}<h1>Your Library</h1>{% endblock %}
+{% block content %}
+<div class="hero">
+    <h1>Your library</h1>
+    <p>All the movies you've added to your collection</p>
+</div>
+
+{% if interactions %}
+<ul>
+    {% for interaction in interactions %}
+    <li class="movie-card" data-movie-id="{{ interaction.movie.id }}">
+        <div class="movie-title">{{ interaction.movie.title }}</div>
+        <div class="movie-info">
+            <div class="movie-year">Year: {{ interaction.movie.year or 'unspecified' }}</div>
+            <div class="movie-rating">IMDB: {{ interaction.movie.rating_imdb or 'unspecified' }}</div>
+        </div>
+        <div class="movie-genres">
+            {% for genre in interaction.movie.genres %}
+            <span class="genre-tag">{{ genre }}</span>
+            {% endfor %}
+        </div>
+        <span class="status-tag status-{{ interaction.status.value }}">{{ interaction.status.value }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>You don't have any interactions yet.</p>
+{% endif %}
+
+<!-- Modal for displaying movie details -->
+<div class="modal" id="movieModal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <div class="modal-body">
+            <!-- Movie details will be injected here by JavaScript -->
+        </div>
+    </div>
+</div>
+{% endblock %}

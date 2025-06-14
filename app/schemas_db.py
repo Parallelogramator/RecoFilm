@@ -38,16 +38,16 @@ class MovieCore(MovieBase):
         from_attributes = True
 
 
-class UserMovieInteractionBase(BaseModel):
+class UserMovieBase(BaseModel):
     movie_id: int
     status: InteractionStatusEnum
 
 
-class UserMovieInteractionCreate(UserMovieInteractionBase):
+class UserMovieCreate(UserMovieBase):
     pass
 
 
-class UserMovieInteractionCore(UserMovieInteractionBase):
+class UserMovieCore(UserMovieBase):
     id: int
     user_id: int
 
