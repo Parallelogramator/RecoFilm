@@ -1,8 +1,8 @@
 # install.py
-import subprocess
 import os
-import sys
 import shutil
+import subprocess
+import sys
 from typing import Optional
 
 CONDA_ENV_NAME = "RecoFilm"

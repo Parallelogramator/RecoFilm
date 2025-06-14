@@ -1,10 +1,11 @@
-from sqlalchemy.orm import Session
-from .models import UserMovie, Movie
-from typing import List, Dict
-import pandas as pd
-from collections import defaultdict
 import time
+from typing import List, Dict
+
+import pandas as pd
+from sqlalchemy.orm import Session
+
 from app.models_db import InteractionStatusEnum
+from .models import UserMovie, Movie
 
 
 def get_movies_data(session: Session, min_avg_rating: float = 3.0, min_ratings: int = 1) -> pd.DataFrame:

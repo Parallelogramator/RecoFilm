@@ -1,13 +1,16 @@
 from sqlalchemy import Column, Integer, String, Float, Text, Enum as SQLAlchemyEnum, ForeignKey
 from sqlalchemy.orm import relationship
-from .database import Base
+
 from app.models_db import InteractionStatusEnum
+from .database import Base
+
 
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True)
     username = Column(String, unique=True, index=True, nullable=False)
     movies = relationship("UserMovie", back_populates="user")
+
 
 class Movie(Base):
     __tablename__ = "movies"
@@ -28,6 +31,7 @@ class Movie(Base):
     @genres.setter
     def genres(self, value: list[str]):
         self.genres_str = ",".join(genre.strip() for genre in value if genre.strip()) if value else ""
+
 
 class UserMovie(Base):
     __tablename__ = "user_movie"

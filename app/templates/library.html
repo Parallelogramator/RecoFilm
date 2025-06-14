@@ -1,49 +1,52 @@
 {% extends 'base.html' %} <!-- Наследование основного шаблона base.html -->
 {% block content %} <!-- Начало блока content, который заменяет соответствующий блок в base.html -->
 
-<!-- Герой-секция с заголовком библиотеки -->
-<div class="hero">
-    <h1>Your library</h1> <!-- Заголовок раздела -->
-    <p>All the movies you've added to your collection</p> <!-- Подзаголовок с описанием -->
-</div>
+    <!-- Герой-секция с заголовком библиотеки -->
+    <div class="hero">
+        <h1>Your library</h1> <!-- Заголовок раздела -->
+        <p>All the movies you've added to your collection</p> <!-- Подзаголовок с описанием -->
+    </div>
 
-<!-- Проверка наличия фильмов в библиотеке -->
-{% if interactions %} <!-- Если есть взаимодействия с фильмами -->
-<ul> <!-- Начало списка фильмов -->
-    {% for interaction in interactions %} <!-- Цикл по всем взаимодействиям -->
-    <li class="movie-card" data-movie-id="{{ interaction.movie.id }}"> <!-- Карточка фильма с data-атрибутом ID -->
-        <!-- Название фильма -->
-        <div class="movie-title">{{ interaction.movie.title }}</div>
+    <!-- Проверка наличия фильмов в библиотеке -->
+    {% if interactions %} <!-- Если есть взаимодействия с фильмами -->
+        <ul> <!-- Начало списка фильмов -->
+            {% for interaction in interactions %} <!-- Цикл по всем взаимодействиям -->
+                <li class="movie-card" data-movie-id="{{ interaction.movie.id }}">
+                    <!-- Карточка фильма с data-атрибутом ID -->
+                    <!-- Название фильма -->
+                    <div class="movie-title">{{ interaction.movie.title }}</div>
 
-        <!-- Блок с основной информацией о фильме -->
-        <div class="movie-info">
-            <div class="movie-year">Year: {{ interaction.movie.year or 'unspecified' }}</div> <!-- Год выпуска -->
-            <div class="movie-rating">IMDB: {{ interaction.movie.rating_imdb or 'unspecified' }}</div> <!-- Рейтинг IMDB -->
-        </div>
+                    <!-- Блок с основной информацией о фильме -->
+                    <div class="movie-info">
+                        <div class="movie-year">Year: {{ interaction.movie.year or 'unspecified' }}</div>
+                        <!-- Год выпуска -->
+                        <div class="movie-rating">IMDB: {{ interaction.movie.rating_imdb or 'unspecified' }}</div>
+                        <!-- Рейтинг IMDB -->
+                    </div>
 
-        <!-- Блок с жанрами фильма -->
-        <div class="movie-genres">
-            {% for genre in interaction.movie.genres %} <!-- Цикл по жанрам -->
-            <span class="genre-tag">{{ genre }}</span> <!-- Отдельный жанр в виде тега -->
-            {% endfor %}
-        </div>
+                    <!-- Блок с жанрами фильма -->
+                    <div class="movie-genres">
+                        {% for genre in interaction.movie.genres %} <!-- Цикл по жанрам -->
+                            <span class="genre-tag">{{ genre }}</span> <!-- Отдельный жанр в виде тега -->
+                        {% endfor %}
+                    </div>
 
-        <!-- Статус взаимодействия с фильмом (например, "Просмотрено", "Брошено") -->
-        <span class="status-tag status-{{ interaction.status.value }}">{{ interaction.status.value }}</span>
-    </li>
-    {% endfor %} <!-- Конец цикла по взаимодействиям -->
-</ul>
-{% else %} <!-- Если взаимодействий нет -->
-<p>You don't have any interactions yet.</p> <!-- Сообщение об отсутствии фильмов -->
-{% endif %} <!-- Конец условия проверки взаимодействий -->
+                    <!-- Статус взаимодействия с фильмом (например, "Просмотрено", "Брошено") -->
+                    <span class="status-tag status-{{ interaction.status.value }}">{{ interaction.status.value }}</span>
+                </li>
+            {% endfor %} <!-- Конец цикла по взаимодействиям -->
+        </ul>
+    {% else %} <!-- Если взаимодействий нет -->
+        <p>You don't have any interactions yet.</p> <!-- Сообщение об отсутствии фильмов -->
+    {% endif %} <!-- Конец условия проверки взаимодействий -->
 
-<!-- Модальное окно для детальной информации о фильме (аналогично index.html) -->
-<div class="modal" id="movieModal">
-    <div class="modal-content">
-        <span class="modal-close">&times;</span> <!-- Кнопка закрытия модального окна -->
-        <div class="modal-body">
-            <!-- Сюда будет вставлено содержимое через JavaScript -->
+    <!-- Модальное окно для детальной информации о фильме (аналогично index.html) -->
+    <div class="modal" id="movieModal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span> <!-- Кнопка закрытия модального окна -->
+            <div class="modal-body">
+                <!-- Сюда будет вставлено содержимое через JavaScript -->
+            </div>
         </div>
     </div>
-</div>
 {% endblock %} <!-- Конец блока content -->

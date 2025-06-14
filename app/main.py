@@ -8,7 +8,7 @@
 """
 
 import os
-from typing import List, Optional
+from typing import Optional
 
 from fastapi import FastAPI, Depends, Request
 from fastapi.responses import HTMLResponse
@@ -44,9 +44,9 @@ app.mount(
 
 @app.get("/", response_class=HTMLResponse)
 def index(
-    request: Request,
-    limit: Optional[int] = 10,
-    db: Session = Depends(get_db_dependency)
+        request: Request,
+        limit: Optional[int] = 10,
+        db: Session = Depends(get_db_dependency)
 ):
     """
     Отображает главную страницу со списком популярных фильмов.
@@ -67,11 +67,11 @@ def index(
 
 @app.get("/search", response_class=HTMLResponse)
 def search(
-    request: Request,
-    name: Optional[str] = None,
-    year: Optional[int] = None,
-    limit: Optional[int] = 10,
-    db: Session = Depends(get_db_dependency)
+        request: Request,
+        name: Optional[str] = None,
+        year: Optional[int] = None,
+        limit: Optional[int] = 10,
+        db: Session = Depends(get_db_dependency)
 ):
     """
     Выполняет поиск фильмов по названию и/или году и отображает результаты.

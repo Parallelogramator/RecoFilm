@@ -103,8 +103,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     try {
                         const response = await fetch('/users/1/interactions', {
                             method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ status: newStatus, movie_id: movieId })
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify({status: newStatus, movie_id: movieId})
                         });
                         if (!response.ok) {
                             console.error('Ошибка при добавлении статуса:', response.statusText);
