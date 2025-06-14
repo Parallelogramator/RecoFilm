@@ -4,6 +4,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('movieModal');
     const modalBody = modal.querySelector('.modal-body');
     const modalClose = modal.querySelector('.modal-close');
+    const searchForm = document.getElementById('searchForm');
+
+    // Обработка отправки формы поиска
+    if (searchForm) {
+        searchForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const nameInput = document.getElementById('name').value.trim();
+            const yearInput = document.getElementById('year').value.trim();
+            console.log('Name:', nameInput, 'Year:', yearInput);
+            const queryParams = new URLSearchParams();
+            queryParams.append('name', nameInput);
+            if (yearInput) {
+                queryParams.append('year', yearInput);
+            }
+            const searchUrl = `/search?${queryParams.toString()}`;
+            console.log('Redirecting to:', searchUrl);
+            window.location.href = searchUrl;
+        });
+    }
 
     // Открытие/закрытие меню по клику
     dropdownLink.addEventListener('click', (e) => {
@@ -33,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Обработчик для карточек фильмов
     document.querySelectorAll('.movie-card').forEach(card => {
         card.addEventListener('click', (e) => {
-            // Извлечение данных из карточки
             const movieId = card.dataset.movieId;
             const title = card.querySelector('.movie-title').textContent;
             const year = card.querySelector('.movie-year').textContent;
@@ -43,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentStatus = statusTag ? statusTag.textContent : '';
             const description = card.querySelector('.movie-description')?.textContent || 'Описание отсутствует';
 
-            // Формирование содержимого модального окна
             modalBody.innerHTML = `
                 <div class="movie-title">${title}</div>
                 <div class="movie-info">
@@ -67,16 +84,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="movie-description">${description}</div>
             `;
 
-            // Показать модальное окно
             modal.style.display = 'flex';
 
-            // Обработчик выбора статуса в модальном окне
             const statusSelector = modalBody.querySelector('.status-selector select');
             statusSelector.addEventListener('change', async (e) => {
                 const newStatus = e.target.value;
                 const modalStatusTag = modalBody.querySelector('.status-tag');
 
-                // Обновляем статус в модальном окне
                 if (modalStatusTag) {
                     modalStatusTag.textContent = newStatus;
                     modalStatusTag.className = `status-tag status-${newStatus.toLowerCase().replace(/\s+/g, '-')}`;
@@ -87,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     modalBody.querySelector('.movie-genres').insertAdjacentElement('afterend', newStatusTag);
                 }
 
-                // Обновляем статус на карточке
                 const cardStatusTag = card.querySelector('.status-tag');
                 if (cardStatusTag) {
                     cardStatusTag.textContent = newStatus;
@@ -99,7 +112,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     card.querySelector('.movie-genres').insertAdjacentElement('afterend', newCardStatusTag);
                 }
 
-                // Отправка POST-запроса на сервер
                 try {
                     const response = await fetch('/users/1/interactions', {
                         method: 'POST',
@@ -121,6 +133,5 @@ const themeToggle = document.querySelector('.theme-toggle');
 themeToggle.addEventListener('click', () => {
     document.body.classList.toggle('dark-theme');
     document.body.classList.toggle('light-theme');
-    // Сохранить выбор темы в localStorage
     localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
 });
