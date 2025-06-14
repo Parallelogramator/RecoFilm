@@ -5,8 +5,16 @@
     <p>Movies selected especially for you</p>
 </div>
 
-{% if recommendations %}
-<ul>
+<div class="limit-selector">
+    <label for="limit">Show:</label>
+    <select id="limit">
+        <option value="10" {% if request.query_params.limit == '10' %}selected{% endif %}>10</option>
+        <option value="20" {% if request.query_params.limit == '20' %}selected{% endif %}>20</option>
+        <option value="50" {% if request.query_params.limit == '50' %}selected{% endif %}>50</option>
+    </select>
+</div>
+
+<ul id="movie-list">
     {% for movie in recommendations %}
     <li class="movie-card" data-movie-id="{{ movie.id }}">
         <div class="movie-title">{{ movie.title }}</div>
@@ -22,11 +30,12 @@
         {% if movie.status %}
         <span class="status-tag status-{{ movie.status.value }}">{{ movie.status.value }}</span>
         {% endif %}
+        <div class="movie-description" style="display: none;">{{ movie.description or 'No description' }}</div>
     </li>
     {% endfor %}
 </ul>
-{% else %}
-<p>Recommendations are not yet available.</p>
+{% if not recommendations %}
+<p id="no-movies-message">Recommendations are not yet available.</p>
 {% endif %}
 
 <!-- Modal for displaying movie details -->
