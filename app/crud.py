@@ -64,31 +64,24 @@ def get_user_movie_interaction(db: Session, user_id: int, movie_id: int) -> mode
     ).first()
 
 
-def create_user_movie_interaction(
-    db: Session, user_id: int, interaction: schemas_db.UserMovieCreate
-) -> models_db.UserMovie:
-    db_interaction = models_db.UserMovie(
-        user_id=user_id,
-        movie_id=interaction.movie_id,
-        status=interaction.status
-    )
-    db.add(db_interaction)
-    db.commit()
-    db.refresh(db_interaction)
-    return db_interaction
-
-
 def update_user_movie_interaction(
-        db: Session, user_id: int, movie_id: int, new_status: str
+        db: Session, user_id: int,  interaction: schemas_db.UserMovieCreate
 ) -> models_db.UserMovie | None:
     """Обновляет статус существующего взаимодействия."""
-    db_interaction = get_user_movie_interaction(db, user_id=user_id, movie_id=movie_id)
-
+    db_interaction = get_user_movie_interaction(db, user_id=user_id, movie_id=interaction.movie_id)
     if db_interaction:
-        db_interaction.status = new_status
+        db_interaction.status = interaction.status
         db.commit()
         db.refresh(db_interaction)
-
+    else:
+        db_interaction = models_db.UserMovie(
+            user_id=user_id,
+            movie_id=interaction.movie_id,
+            status=interaction.status
+        )
+        db.add(db_interaction)
+        db.commit()
+        db.refresh(db_interaction)
     return db_interaction
 
 
