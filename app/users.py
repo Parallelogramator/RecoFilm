@@ -83,7 +83,7 @@ def api_get_user_interactions(request: Request, user_id: int, status: str, db: S
 
 @router.get("/{user_id}/recommendations/", response_model=List[models_api.MovieAPI],
          summary="Получить рекомендации")
-def api_get_recommendations_for_user(request: Request, user_id: int, num_recs: int = Query(default=5, ge=1, le=20),
+def api_get_recommendations_for_user(request: Request, user_id: int, num_recs: int = Query(default=50, ge=1, le=100),
                                      db: Session = Depends(get_db_dependency)):
     db_user = crud.get_user(db, user_id=user_id)
     if not db_user:
