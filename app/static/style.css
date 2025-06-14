@@ -5,32 +5,32 @@
     box-sizing: border-box;
 }
 
-/* Светлая пастельная тема */
+/* Light Theme */
 body.light-theme {
-    --primary: #81b29a;           /* зелёный шалфей */
+    --primary: #81b29a;           /* sage green */
     --primary-dark: #3d5a40;
     --primary-light: #dbead7;
-    --secondary: #e07a5f;         /* терракотовый */
-    --dark: #2f2f2f;              /* основной текст */
-    --light: #f0e9dc;             /* насыщенный бежевый фон */
+    --secondary: #e07a5f;         /* terracotta */
+    --dark: #2f2f2f;              /* main text */
+    --light: #f0e9dc;             /* rich beige background */
     --gray: #a1a1a1;
-    --gray-light: #e1dbcd;        /* фон карточек */
+    --gray-light: #e1dbcd;        /* card background */
     --header-gradient: linear-gradient(135deg, #3d5a40 0%, #81b29a 100%);
     --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
-/* Тёмная серая тема */
+/* Dark Gray Theme */
 body.dark-theme {
-    --primary: #6b7280;           /* серый */
-    --primary-dark: #b0b7c2;      /* для заголовков, навигации, полоски, Film Advisor и футера */
+    --primary: #6b7280;           /* gray */
+    --primary-dark: #b0b7c2;      /* for headers, nav, buttons, Film Advisor, footer */
     --primary-light: #4b5563;
     --secondary: #9ca3af;
-    --dark: #d1d5db;              /* мелкий текст */
-    --light: #111827;             /* тёмный фон */
+    --dark: #d1d5db;              /* text */
+    --light: #111827;             /* dark background */
     --gray: #9ca3af;
-    --gray-light: #374151;        /* светлее фон карточек для контраста */
+    --gray-light: #374151;        /* lighter card bg for contrast */
     --header-gradient: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* увеличена тень */
+    --card-shadow: 0 4px 6px rgba(0, 0 mixins 0, 0, 0, 0.4); /* increased shadow */
 }
 
 body {
@@ -41,10 +41,11 @@ body {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+HIPS
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* По умолчанию светлая тема */
+/* Default light theme */
 body:not(.dark-theme) {
     background-color: var(--light);
 }
@@ -129,7 +130,7 @@ nav a:hover::after {
     width: 70%;
 }
 
-/* Стили для выпадающего меню */
+/* Dropdown Menu Styles */
 .dropdown {
     position: relative;
     display: inline-block;
@@ -280,7 +281,6 @@ li:hover {
     font-size: 0.95rem;
     color: var(--dark);
     margin-top: 1rem;
-    display: none; /* Скрываем описание, так как оно отображается в модальном окне */
 }
 
 .genre-tag {
@@ -329,6 +329,90 @@ body.light-theme .status-tag {
 .status-selector select:focus {
     outline: none;
     border-color: var(--secondary);
+}
+
+.limit-selector {
+    margin: 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.limit-selector label {
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+}
+
+.limit-selector select {
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+    padding: 0.5rem;
+    border: 1px solid var(--primary);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+}
+
+.limit-selector select:focus {
+    outline: none;
+    border-color: var(--secondary);
+}
+
+.search-form {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.search-form .input-cell {
+    background-color: var(--gray-light);
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.search-form .input-cell label {
+    font-size: 0.9rem;
+    color: var(--primary-dark);
+}
+
+.search-form .input-cell input {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-light);
+    color: var(--primary-dark);
+}
+
+.search-form .input-cell input[type="text"] {
+    width: 200px;
+}
+
+.search-form .input-cell input[type="number"] {
+    width: 100px;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+.search-form button {
+    padding: 0.5rem 1rem;
+    background-color: var(--primary);
+    color: var(--primary-dark);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s ease;
+}
+
+.search-form button:hover {
+    background-color: var(--primary-dark);
 }
 
 p {
@@ -474,6 +558,23 @@ main > * {
 
     .status-selector select {
         max-width: 100%;
+    }
+
+    .limit-selector select {
+        max-width: 100%;
+    }
+
+    .search-form {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .search-form .input-cell {
+        width: 100%;
+    }
+
+    .search-form .input-cell input {
+        width: 100%;
     }
 
     .modal-content {
