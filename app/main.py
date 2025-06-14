@@ -22,14 +22,14 @@ templates = Jinja2Templates(directory="app/templates")
 app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "static")), name="static")
 
 @app.get("/", response_class=HTMLResponse)
-def index(request: Request, db: Session = Depends(get_db_dependency)):
-    movies = crud.get_movies(db, skip=0, limit=10)
+def index(request: Request, limit: Optional[int] = 10, db: Session = Depends(get_db_dependency)):
+    movies = crud.get_movies(db, skip=0, limit=limit)
     return templates.TemplateResponse("index.html", {"request": request, "movies": movies})
 
 
 @app.get("/search", response_class=HTMLResponse)
-def index(request: Request, name: Optional[str] = None, year: Optional[int] = None, db: Session = Depends(get_db_dependency)):
-    movies = crud.search_movies(db, name=name, year=year)
+def search(request: Request, name: Optional[str] = None, year: Optional[int] = None,  limit: Optional[int] = 10, db: Session = Depends(get_db_dependency)):
+    movies = crud.search_movies(db, limit=limit, name=name, year=year)
     return templates.TemplateResponse("index.html", {"request": request, "movies": movies})
 
 app.include_router(users.router, tags=["users"], prefix="/users")
