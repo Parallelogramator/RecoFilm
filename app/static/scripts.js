@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const genres = Array.from(card.querySelectorAll('.genre-tag')).map(genre => genre.textContent);
             const statusTag = card.querySelector('.status-tag');
             const currentStatus = statusTag ? statusTag.textContent : '';
-            const description = card.querySelector('.movie-description')?.textContent || 'Описание отсутствует';
+            const description = card.querySelector('.movie-description')?.textContent || 'No description';
 
             modalBody.innerHTML = `
                 <div class="movie-title">${title}</div>
