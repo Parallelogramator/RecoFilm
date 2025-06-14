@@ -1,24 +1,28 @@
-{% extends 'base.html' %}
-{% block content %}
+{% extends 'base.html' %} <!-- Наследование основного шаблона base.html -->
+{% block content %} <!-- Начало блока content, который заменяет соответствующий блок в base.html -->
+
+<!-- Герой-секция с приветствием -->
 <div class="hero">
     <h1>Welcome to Film Advisor</h1>
     <p>Discover the world of movies with personalized recommendations</p>
 </div>
 
-<!-- Search form -->
+<!-- Форма поиска фильмов -->
 <form action="/search" method="get" id="searchForm" class="search-form">
     <div class="input-cell">
-        <label for="name">Movie Name:</label>
+        <label for="name">Movie Name:</label> <!-- Поле для ввода названия фильма -->
         <input type="text" id="name" name="name" placeholder="Enter movie name" value="{{ request.query_params.name or '' }}">
     </div>
     <div class="input-cell">
-        <label for="year">Year:</label>
+        <label for="year">Year:</label> <!-- Поле для ввода года выпуска -->
         <input type="number" id="year" name="year" placeholder="Enter year" value="{{ request.query_params.year or '' }}">
     </div>
+    <!-- Скрытое поле для лимита результатов (по умолчанию 10) -->
     <input type="hidden" id="limit-hidden" name="limit" value="{{ request.query_params.limit or '10' }}">
-    <button type="submit">Search</button>
+    <button type="submit">Search</button> <!-- Кнопка отправки формы -->
 </form>
 
+<!-- Селектор для выбора количества отображаемых фильмов -->
 <div class="limit-selector">
     <label for="limit">Show:</label>
     <select id="limit">
@@ -29,38 +33,42 @@
     </select>
 </div>
 
+<!-- Секция с популярными фильмами -->
 <h2>Popular movies</h2>
 <ul id="movie-list">
-    {% for movie in movies %}
-    <li class="movie-card" data-movie-id="{{ movie.id }}">
-        <div class="movie-title">{{ movie.title }}</div>
+    {% for movie in movies %} <!-- Цикл по всем фильмам из переданного списка -->
+    <li class="movie-card" data-movie-id="{{ movie.id }}"> <!-- Карточка фильма с data-атрибутом ID -->
+        <div class="movie-title">{{ movie.title }}</div> <!-- Название фильма -->
         <div class="movie-info">
-            <div class="movie-year">Year: {{ movie.year or 'unspecified' }}</div>
-            <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'unspecified' }}</div>
+            <div class="movie-year">Year: {{ movie.year or 'unspecified' }}</div> <!-- Год выпуска -->
+            <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'unspecified' }}</div> <!-- Рейтинг IMDB -->
         </div>
         <div class="movie-genres">
-            {% for genre in movie.genres %}
-            <span class="genre-tag">{{ genre }}</span>
+            {% for genre in movie.genres %} <!-- Цикл по жанрам фильма -->
+            <span class="genre-tag">{{ genre }}</span> <!-- Отдельный жанр в виде тега -->
             {% endfor %}
         </div>
-        {% if movie.status %}
-        <span class="status-tag status-{{ movie.status.value }}">{{ movie.status.value }}</span>
+        {% if movie.status %} <!-- Если у фильма есть статус (например, "Просмотрено") -->
+        <span class="status-tag status-{{ movie.status.value }}">{{ movie.status.value }}</span> <!-- Отображение статуса -->
         {% endif %}
+        <!-- Описание фильма (изначально скрыто) -->
         <div class="movie-description" style="display: none;">{{ movie.description or 'No description' }}</div>
     </li>
     {% endfor %}
 </ul>
+
+<!-- Сообщение, если фильмов нет -->
 {% if not movies %}
 <p id="no-movies-message">No movies are available yet. Add a movie via API!</p>
 {% endif %}
 
-<!-- Modal for displaying movie details -->
+<!-- Модальное окно для деталей фильма (изначально скрыто) -->
 <div class="modal" id="movieModal">
     <div class="modal-content">
-        <span class="modal-close">×</span>
+        <span class="modal-close">×</span> <!-- Кнопка закрытия модального окна -->
         <div class="modal-body">
-            <!-- Movie details will be injected here by JavaScript -->
+            <!-- Сюда будет вставлено содержимое через JavaScript -->
         </div>
     </div>
 </div>
-{% endblock %}
+{% endblock %} <!-- Конец блока content -->
