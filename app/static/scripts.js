@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (yearInput) {
                 queryParams.append('year', yearInput);
             }
-            const searchUrl = `/search?${queryParams.toString()}`;
+            const searchUrl = `/search?${queryParams.toString()}&limit=10`;
             console.log('Redirecting to:', searchUrl);
             window.location.href = searchUrl;
         });
