@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', () => {
         queryParams.set('limit', limit);
 
         const isRecommendationsPage = window.location.pathname.includes('/recommendations');
-        const endpoint = isRecommendationsPage ? '/api/recommendations' : '/api/movies';
+        const endpoint = isRecommendationsPage ? '/users/1/recommendations/';
         const url = `${endpoint}?${queryParams.toString()}`;
 
         try {
