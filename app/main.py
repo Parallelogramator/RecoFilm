@@ -28,8 +28,8 @@ def index(request: Request, limit: Optional[int] = 10, db: Session = Depends(get
 
 
 @app.get("/search", response_class=HTMLResponse)
-def search(request: Request, name: Optional[str] = None, year: Optional[int] = None, db: Session = Depends(get_db_dependency)):
-    movies = crud.search_movies(db, name=name, year=year)
+def search(request: Request, name: Optional[str] = None, year: Optional[int] = None,  limit: Optional[int] = 10, db: Session = Depends(get_db_dependency)):
+    movies = crud.search_movies(db, limit=limit, name=name, year=year)
     return templates.TemplateResponse("index.html", {"request": request, "movies": movies})
 
 app.include_router(users.router, tags=["users"], prefix="/users")
