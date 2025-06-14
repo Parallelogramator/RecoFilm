@@ -1,41 +1,56 @@
 <!DOCTYPE html>
 <html lang="eng">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Film Advisor</title>
-    <link rel="stylesheet" href="/static/style.css">
-    <script src="/static/scripts.js" defer></script>
+    <!-- Базовые настройки документа -->
+    <meta charset="UTF-8"> <!-- Кодировка UTF-8 для поддержки всех символов -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Адаптивность для мобильных устройств -->
+    <title>Film Advisor</title> <!-- Заголовок страницы в браузере -->
+
+    <!-- Подключение внешних ресурсов -->
+    <link rel="stylesheet" href="/static/style.css"> <!-- Основной файл стилей -->
+    <script src="/static/scripts.js" defer></script> <!-- Скрипты с атрибутом defer (загружаются после HTML) -->
 </head>
+
+<!-- Основная часть страницы с классом для темы (по умолчанию светлая) -->
 <body class="light-theme">
+    <!-- Шапка сайта -->
     <header>
         <div class="header-container">
-            <h1>FILM ADVISOR</h1>
+            <h1>FILM ADVISOR</h1> <!-- Логотип/название сайта -->
+
+            <!-- Навигационное меню -->
             <nav>
-                <a href="/">Home</a>
-                <a href="/users/1/recommendations">Recommendations</a>
+                <a href="/">Home</a> <!-- Ссылка на главную страницу -->
+                <a href="/users/1/recommendations">Recommendations</a> <!-- Ссылка на рекомендации -->
+
+                <!-- Выпадающее меню "Library" -->
                 <div class="dropdown">
-                    <a href="#" class="nav-link" id="library-link" style="line-height: 42px">Library</a>
+                    <a href="#" class="nav-link" id="library-link" style="line-height: 42px">Library</a> <!-- Кнопка-триггер -->
                     <div class="dropdown-content">
-                        <a href="/users/1/interactions/">All</a>
-                        <a href="/users/1/interactions/watched">Watched</a>
-                        <a href="/users/1/interactions/liked">Liked</a>
-                        <a href="/users/1/interactions/want_to_watch">Want to watch</a>
-                        <a href="/users/1/interactions/dropped">Dropped</a>
-                        <a href="/users/1/interactions/watching">Watching</a>
+                        <!-- Подпункты меню -->
+                        <a href="/users/1/interactions/">All</a> <!-- Все фильмы -->
+                        <a href="/users/1/interactions/watched">Watched</a> <!-- Просмотренные -->
+                        <a href="/users/1/interactions/liked">Liked</a> <!-- Понравившиеся -->
+                        <a href="/users/1/interactions/want_to_watch">Want to watch</a> <!-- Желаемые к просмотру -->
+                        <a href="/users/1/interactions/dropped">Dropped</a> <!-- Брошенные -->
+                        <a href="/users/1/interactions/watching">Watching</a> <!-- Сейчас смотрятся -->
                     </div>
                 </div>
+
+                <!-- Кнопка переключения темы (светлая/тёмная) -->
                 <button class="theme-toggle">🌓</button>
             </nav>
         </div>
     </header>
 
+    <!-- Основное содержимое страницы -->
     <main>
-        {% block content %}{% endblock %}
+        {% block content %}{% endblock %} <!-- Блок для динамического контента (заполняется в дочерних шаблонах) -->
     </main>
 
+    <!-- Подвал сайта -->
     <footer>
-        <p>© 2025 Film Advisor. All rights reserved.</p>
+        <p>© 2025 Film Advisor. All rights reserved.</p> <!-- Копирайт -->
     </footer>
 </body>
 </html>

@@ -1,585 +1,645 @@
-/* Reset default styles */
+/* Сброс стандартных стилей браузера для единообразия */
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Устанавливает модель box-sizing для всех элементов */
 }
 
-/* Light Theme */
+/* Определение цветовых переменных для светлой темы */
 body.light-theme {
-    --primary: #81b29a;           /* sage green */
-    --primary-dark: #3d5a40;
-    --primary-light: #dbead7;
-    --secondary: #e07a5f;         /* terracotta */
-    --dark: #2f2f2f;              /* main text */
-    --light: #f0e9dc;             /* rich beige background */
-    --gray: #a1a1a1;
-    --gray-light: #e1dbcd;        /* card background */
-    --header-gradient: linear-gradient(135deg, #3d5a40 0%, #81b29a 100%);
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --primary: #81b29a;           /* Основной цвет (салатовый) */
+    --primary-dark: #3d5a40;      /* Тёмный оттенок основного цвета */
+    --primary-light: #dbead7;     /* Светлый оттенок основного цвета */
+    --secondary: #e07a5f;         /* Вторичный цвет (терракотовый) */
+    --dark: #2f2f2f;              /* Цвет текста */
+    --light: #f0e9dc;             /* Цвет фона (бежевый) */
+    --gray: #a1a1a1;              /* Серый цвет для акцентов */
+    --gray-light: #e1dbcd;        /* Цвет фона карточек */
+    --header-gradient: linear-gradient(135deg, #3d5a40 0%, #81b29a 100%); /* Градиент для шапки */
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); /* Тень для карточек */
 }
 
-/* Dark Gray Theme */
+/* Определение цветовых переменных для тёмной темы */
 body.dark-theme {
-    --primary: #6b7280;           /* gray */
-    --primary-dark: #b0b7c2;      /* for headers, nav, buttons, Film Advisor, footer */
-    --primary-light: #4b5563;
-    --secondary: #9ca3af;
-    --dark: #d1d5db;              /* text */
-    --light: #111827;             /* dark background */
-    --gray: #9ca3af;
-    --gray-light: #374151;        /* lighter card bg for contrast */
-    --header-gradient: linear-gradient(135deg, #1f2937 0%, #374151 100%);
-    --card-shadow: 0 4px 6px rgba(0, 0 mixins 0, 0, 0, 0.4); /* increased shadow */
+    --primary: #6b7280;           /* Основной цвет (серый) */
+    --primary-dark: #b0b7c2;      /* Тёмный оттенок для шапки, навигации, кнопок */
+    --primary-light: #4b5563;     /* Светлый оттенок основного цвета */
+    --secondary: #9ca3af;         /* Вторичный цвет */
+    --dark: #d1d5db;              /* Цвет текста */
+    --light: #111827;             /* Тёмный фон */
+    --gray: #9ca3af;              /* Серый цвет для акцентов */
+    --gray-light: #374151;        /* Цвет фона карточек */
+    --header-gradient: linear-gradient(135deg, #1f2937 0%, #374151 100%); /* Градиент для шапки */
+    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.4); /* Усиленная тень для карточек */
 }
 
+/* Базовые стили для body */
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: var(--light);
-    color: var(--dark);
-    line-height: 1.6;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-HIPS
-    transition: background-color 0.3s ease, color 0.3s ease;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* Шрифт по умолчанию */
+    background-color: var(--light); /* Цвет фона */
+    color: var(--dark); /* Цвет текста */
+    line-height: 1.6; /* Межстрочный интервал */
+    min-height: 100vh; /* Минимальная высота для всей страницы */
+    display: flex; /* Используем flexbox */
+    flex-direction: column; /* Вертикальное расположение элементов */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавное переключение темы */
 }
 
-/* Default light theme */
+/* Установка фона для светлой темы по умолчанию */
 body:not(.dark-theme) {
     background-color: var(--light);
 }
 
+/* Стили для шапки */
 header {
-    background: var(--header-gradient);
-    color: white;
-    padding: 1.5rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    transition: background 0.3s ease;
+    background: var(--header-gradient); /* Градиентный фон */
+    color: white; /* Цвет текста */
+    padding: 1.5rem; /* Внутренние отступы */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень */
+    position: sticky; /* Фиксированная шапка */
+    top: 0; /* Привязка к верхнему краю */
+    z-index: 1000; /* Высокий уровень наложения */
+    transition: background 0.3s ease; /* Плавное изменение фона */
 }
 
+/* Стили для заголовка в шапке */
 header h1 {
-    font-size: 2.2rem;
-    font-weight: 800;
-    text-align: center;
-    margin-bottom: 1rem;
-    letter-spacing: -1px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    color: var(--primary-dark);
-    position: relative;
-    display: inline-block;
-    padding: 0 1rem;
+    font-size: 2.2rem; /* Размер шрифта */
+    font-weight: 800; /* Жирный шрифт */
+    text-align: center; /* Выравнивание по центру */
+    margin-bottom: 1rem; /* Отступ снизу */
+    letter-spacing: -1px; /* Межбуквенный интервал */
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Тень текста */
+    color: var(--primary-dark); /* Цвет текста */
+    position: relative; /* Для псевдоэлемента */
+    display: inline-block; /* Для корректного отображения псевдоэлемента */
+    padding: 0 1rem; /* Внутренние отступы */
 }
 
+/* Декоративная линия под заголовком */
 header h1::before {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: linear-gradient(90deg, var(--primary-dark), rgba(255,255,255,0.2));
-    border-radius: 3px;
+    content: ''; /* Пустой контент */
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: -5px; /* Расположение под заголовком */
+    left: 0; /* Выравнивание по левому краю */
+    width: 100%; /* Полная ширина */
+    height: 3px; /* Высота линии */
+    background: linear-gradient(90deg, var(--primary-dark), rgba(255,255,255,0.2)); /* Градиент линии */
+    border-radius: 3px; /* Скругление углов */
 }
 
+/* Контейнер для содержимого шапки */
 header .header-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem 0;
+    display: flex; /* Flexbox для выравнивания */
+    flex-direction: column; /* Вертикальное расположение */
+    align-items: center; /* Центрирование по горизонтали */
+    padding: 1rem 0; /* Внутренние отступы */
 }
 
+/* Стили для навигации */
 nav {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    position: relative;
+    display: flex; /* Flexbox для навигации */
+    justify-content: center; /* Центрирование элементов */
+    gap: 2rem; /* Расстояние между элементами */
+    position: relative; /* Для псевдоэлементов */
 }
 
+/* Стили для ссылок в навигации */
 nav a {
-    color: var(--primary-dark);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    position: relative;
+    color: var(--primary-dark); /* Цвет текста */
+    text-decoration: none; /* Убираем подчёркивание */
+    font-weight: 500; /* Средний вес шрифта */
+    font-size: 1.1rem; /* Размер шрифта */
+    transition: all 0.3s ease; /* Плавные переходы */
+    padding: 0.5rem 1rem; /* Внутренние отступы */
+    border-radius: 50px; /* Скругление углов */
+    position: relative; /* Для псевдоэлемента */
 }
 
+/* Эффект при наведении на ссылку */
 nav a:hover {
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.15); /* Полупрозрачный фон */
 }
 
+/* Декоративная линия под ссылкой при наведении */
 nav a::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background-color: var(--secondary);
-    transition: width 0.3s ease;
+    content: ''; /* Пустой контент */
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: -5px; /* Расположение под ссылкой */
+    left: 50%; /* Центрирование */
+    transform: translateX(-50%); /* Смещение для центрирования */
+    width: 0; /* Начальная ширина */
+    height: 2px; /* Высота линии */
+    background-color: var(--secondary); /* Цвет линии */
+    transition: width 0.3s ease; /* Плавное изменение ширины */
 }
 
+/* Расширение линии при наведении */
 nav a:hover::after {
-    width: 70%;
+    width: 70%; /* Ширина линии при наведении */
 }
 
-/* Dropdown Menu Styles */
+/* Стили для выпадающего меню */
 .dropdown {
-    position: relative;
-    display: inline-block;
+    position: relative; /* Относительное позиционирование */
+    display: inline-block; /* Для корректного отображения */
 }
 
+/* Указатель на возможность взаимодействия */
 .dropdown .nav-link {
     cursor: pointer;
 }
 
+/* Стили для содержимого выпадающего меню */
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: var(--gray-light);
-    min-width: 180px;
-    box-shadow: var(--card-shadow);
-    border-radius: 8px;
-    z-index: 100;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    overflow: hidden;
+    display: none; /* Скрыто по умолчанию */
+    position: absolute; /* Абсолютное позиционирование */
+    background-color: var(--gray-light); /* Цвет фона */
+    min-width: 180px; /* Минимальная ширина */
+    box-shadow: var(--card-shadow); /* Тень */
+    border-radius: 8px; /* Скругление углов */
+    z-index: 100; /* Уровень наложения */
+    top: 100%; /* Расположение под родителем */
+    left: 50%; /* Центрирование */
+    transform: translateX(-50%); /* Смещение для центрирования */
+    overflow: hidden; /* Обрезка содержимого */
 }
 
+/* Стили для ссылок в выпадающем меню */
 .dropdown-content a {
-    display: block;
-    color: var(--primary-dark);
-    padding: 0.75rem 1rem;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: background-color 0.2s ease;
+    display: block; /* Блочное отображение */
+    color: var(--primary-dark); /* Цвет текста */
+    padding: 0.75rem 1rem; /* Внутренние отступы */
+    text-decoration: none; /* Убираем подчёркивание */
+    font-size: 1rem; /* Размер шрифта */
+    transition: background-color 0.2s ease; /* Плавное изменение фона */
 }
 
+/* Эффект при наведении на ссылку в выпадающем меню */
 .dropdown-content a:hover {
-    background-color: var(--primary-light);
+    background-color: var(--primary-light); /* Цвет фона при наведении */
 }
 
+/* Отображение выпадающего меню при наведении или активации */
 .dropdown:hover .dropdown-content,
 .dropdown-content.active {
-    display: block;
+    display: block; /* Показываем меню */
 }
 
+/* Стили для кнопки переключения темы */
 .theme-toggle {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    margin-left: 1rem;
+    background: none; /* Без фона */
+    border: none; /* Без границы */
+    color: white; /* Цвет иконки */
+    font-size: 1.2rem; /* Размер шрифта */
+    cursor: pointer; /* Указатель мыши */
+    transition: transform 0.3s ease; /* Плавное масштабирование */
+    margin-left: 1rem; /* Отступ слева */
 }
 
+/* Эффект при наведении на кнопку темы */
 .theme-toggle:hover {
-    transform: scale(1.2);
+    transform: scale(1.2); /* Увеличение при наведении */
 }
 
+/* Стили для основного контента */
 main {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
-    flex: 1;
+    max-width: 1200px; /* Максимальная ширина */
+    margin: 2rem auto; /* Центрирование с отступами */
+    padding: 0 1.5rem; /* Внутренние отступы */
+    flex: 1; /* Занимает доступное пространство */
 }
 
+/* Стили для заголовков h1 и h2 */
 h1, h2 {
-    color: var(--primary-dark);
-    margin-bottom: 1.5rem;
-    position: relative;
+    color: var(--primary-dark); /* Цвет текста */
+    margin-bottom: 1.5rem; /* Отступ снизу */
+    position: relative; /* Для псевдоэлементов */
 }
 
+/* Стили для h1 */
 h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    letter-spacing: -1px;
+    font-size: 2.5rem; /* Размер шрифта */
+    font-weight: 800; /* Жирный шриф Tina: font-weight: 800; /* Жирный шрифт */
+    letter-spacing: -1px; /* Межбуквенный интервал */
 }
 
+/* Стили для h2 */
 h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin-top: 2rem;
+    font-size: 1.8rem; /* Размер шрифта */
+    font-weight: 700; /* Жирный шрифт */
+    margin-top: 2rem; /* Отступ сверху */
 }
 
+/* Стили для списка (сетка карточек) */
 ul {
-    list-style-type: none;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-top: 2rem;
+    list-style-type: none; /* Убираем маркеры списка */
+    display: grid; /* Используем CSS Grid */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Адаптивная сетка */
+    gap: 1.5rem; /* Расстояние между карточками */
+    margin-top: 2rem; /* Отступ сверху */
 }
 
+/* Стили для элементов списка (карточек) */
 li {
-    background-color: var(--gray-light);
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: var(--card-shadow);
-    transition: all 0.3s ease;
-    border-left: 4px solid var(--primary);
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
+    background-color: var(--gray-light); /* Цвет фона */
+    padding: 1.5rem; /* Внутренние отступы */
+    border-radius: 12px; /* Скругление углов */
+    box-shadow: var(--card-shadow); /* Тень */
+    transition: all 0.3s ease; /* Плавные переходы */
+    border-left: 4px solid var(--primary); /* Цветная полоса слева */
+    position: relative; /* Для псевдоэлемента */
+    overflow: hidden; /* Обрезка содержимого */
+    cursor: pointer; /* Указатель мыши */
 }
 
+/* Декоративная линия сверху карточки */
 li::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    content: ''; /* Пустой контент */
+    position: absolute; /* Абсолютное позиционирование */
+    top: 0; /* Расположение сверху */
+    left: 0; /* Выравнивание по левому краю */
+    width: 100%; /* Полная ширина */
+    height: 4px; /* Высота линии */
+    background: linear-gradient(90deg, var(--primary), var(--secondary)); /* Градиент линии */
 }
 
+/* Эффект при наведении на карточку */
 li:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px); /* Подъём карточки */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2); /* Усиленная тень */
 }
 
+/* Стили для заголовка фильма */
 .movie-title {
-    font-weight: 600;
-    font-size: 1.2rem;
-    color: var(--primary-dark);
-    margin-bottom: 0.5rem;
+    font-weight: 600; /* Полужирный шрифт */
+    font-size: 1.2rem; /* Размер шрифта */
+    color: var(--primary-dark); /* Цвет текста */
+    margin-bottom: 0.5rem; /* Отступ снизу */
 }
 
+/* Контейнер для информации о фильме */
 .movie-info {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-bottom: 0.5rem;
+    display: flex; /* Flexbox для выравнивания */
+    align-items: center; /* Вертикальное центрирование */
+    gap: 1rem; /* Расстояние между элементами */
+    margin-bottom: 0.5rem; /* Отступ снизу */
 }
 
+/* Год выпуска фильма */
 .movie-year {
-    color: var(--gray);
-    font-size: 0.9rem;
+    color: var(--gray); /* Цвет текста */
+    font-size: 0.9rem; /* Размер шрифта */
 }
 
+/* Рейтинг фильма */
 .movie-rating {
-    color: var(--gray);
-    font-size: 0.9rem;
+    color: var(--gray); /* Цвет текста */
+    font-size: 0.9rem; /* Размер шрифта */
 }
 
+/* Контейнер для жанров */
 .movie-genres {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    display: flex; /* Flexbox для выравнивания */
+    flex-wrap: wrap; /* Перенос элементов */
+    gap: 0.5rem; /* Расстояние между тегами */
+    margin-top: 1rem; /* Отступ сверху */
 }
 
+/* Описание фильма */
 .movie-description {
-    font-size: 0.95rem;
-    color: var(--dark);
-    margin-top: 1rem;
+    font-size: 0.95rem; /* Размер шрифта */
+    color: var(--dark); /* Цвет текста */
+    margin-top: 1rem; /* Отступ сверху */
 }
 
+/* Стили для тегов жанров */
 .genre-tag {
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
-    padding: 0.25rem 0.75rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 500;
+    background-color: var(--primary-light); /* Цвет фона */
+    color: var(--primary-dark); /* Цвет текста */
+    padding: 0.25rem 0.75rem; /* Внутренние отступы */
+    border-radius: 50px; /* Скругление углов */
+    font-size: 0.8rem; /* Размер шрифта */
+    font-weight: 500; /* Средний вес шрифта */
 }
 
+/* Стили для тегов статуса */
 .status-tag {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 50px;
-    font-size: 0.8rem;
-    font-weight: 500;
-    margin-top: 0.5rem;
+    display: inline-block; /* Инлайн-блочное отображение */
+    padding: 0.25rem 0.75rem; /* Внутренние отступы */
+    border-radius: 50px; /* Скругление углов */
+    font-size: 0.8rem; /* Размер шрифта */
+    font-weight: 500; /* Средний вес шрифта */
+    margin-top: 0.5rem; /* Отступ сверху */
 }
 
+/* Стили тегов статуса для тёмной темы */
 body.dark-theme .status-tag {
-    background-color: #4b5563;
-    color: #b0b7c2;
+    background-color: #4b5563; /* Цвет фона */
+    color: #b0b7c2; /* Цвет текста */
 }
+
+/* Стили тегов статуса для светлой темы */
 body.light-theme .status-tag {
-    background-color: #dbead7;
-    color: #3d5a40;
+    background-color: #dbead7; /* Цвет фона */
+    color: #3d5a40; /* Цвет текста */
 }
 
+/* Контейнер для селектора статуса */
 .status-selector {
-    margin-top: 1rem;
+    margin-top: 1rem; /* Отступ сверху */
 }
 
+/* Стили для выпадающего списка статуса */
 .status-selector select {
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
-    padding: 0.5rem;
-    border: 1px solid var(--primary);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    width: 100%;
-    max-width: 200px;
+    background-color: var(--primary-light); /* Цвет фона */
+    color: var(--primary-dark); /* Цвет текста */
+    padding: 0.5rem; /* Внутренние отступы */
+    border: 1px solid var(--primary); /* Граница */
+    border-radius: 8px; /* Скругление углов */
+    font-size: 0.9rem; /* Размер шрифта */
+    cursor: pointer; /* Указатель мыши */
+    width: 100%; /* Полная ширина */
+    max-width: 200px; /* Максимальная ширина */
 }
 
+/* Стили при фокусе на селектор статуса */
 .status-selector select:focus {
-    outline: none;
-    border-color: var(--secondary);
+    outline: none; /* Убираем обводку */
+    border-color: var(--secondary); /* Цвет границы при фокусе */
 }
 
+/* Контейнер для селектора лимита */
 .limit-selector {
-    margin: 1rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    margin: 1rem 0; /* Отступы сверху и снизу */
+    display: flex; /* Flexbox для выравнивания */
+    align-items: center; /* Вертикальное центрирование */
+    gap: 0.5rem; /* Расстояние между элементами */
 }
 
+/* Метка для селектора лимита */
 .limit-selector label {
-    font-size: 0.9rem;
-    color: var(--primary-dark);
+    font-size: 0.9rem; /* Размер шрифта */
+    color: var(--primary-dark); /* Цвет текста */
 }
 
+/* Стили для выпадающего списка лимита */
 .limit-selector select {
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
-    padding: 0.5rem;
-    border: 1px solid var(--primary);
-    border-radius: 8px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: border-color 0.3s ease;
+    background-color: var(--primary-light); /* Цвет фона */
+    color: var(--primary-dark); /* Цвет текста */
+    padding: 0.5rem; /* Внутренние отступы */
+    border: 1px solid var(--primary); /* Граница */
+    border-radius: 8px; /* Скругление углов */
+    font-size: 0.9rem; /* Размер шрифта */
+    cursor: pointer; /* Указатель мыши */
+    transition: border-color 0.3s ease; /* Плавное изменение границы */
 }
 
+/* Стили при фокусе на селектор лимита */
 .limit-selector select:focus {
-    outline: none;
-    border-color: var(--secondary);
+    outline: none; /* Убираем обводку */
+    border-color: var(--secondary); /* Цвет границы при фокусе */
 }
 
+/* Стили для формы поиска */
 .search-form {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    margin-bottom: 1rem;
+    display: flex; /* Flexbox для выравнивания */
+    gap: 1rem; /* Расстояние между элементами */
+    align-items: center; /* Вертикальное центрирование */
+    margin-bottom: 1rem; /* Отступ снизу */
 }
 
+/* Контейнер для полей ввода формы поиска */
 .search-form .input-cell {
-    background-color: var(--gray-light);
-    padding: 0.75rem;
-    border-radius: 8px;
-    border: 1px solid var(--primary);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    background-color: var(--gray-light); /* Цвет фона */
+    padding: 0.75rem; /* Внутренние отступы */
+    border-radius: 8px; /* Скругление углов */
+    border: 1px solid var(--primary); /* Граница */
+    display: flex; /* Flexbox для выравнивания */
+    align-items: center; /* Вертикальное центрирование */
+    gap: 0.5rem; /* Расстояние между элементами */
 }
 
+/* Метка для полей ввода */
 .search-form .input-cell label {
-    font-size: 0.9rem;
-    color: var(--primary-dark);
+    font-size: 0.9rem; /* Размер шрифта */
+    color: var(--primary-dark); /* Цвет текста */
 }
 
+/* Стили для полей ввода */
 .search-form .input-cell input {
-    padding: 0.5rem;
-    border: none;
-    border-radius: 4px;
-    background-color: var(--primary-light);
-    color: var(--primary-dark);
+    padding: 0.5rem; /* Внутренние отступы */
+    border: none; /* Без границы */
+    border-radius: 4px; /* Скругление углов */
+    background-color: var(--primary-light); /* Цвет фона */
+    color: var(--primary-dark); /* Цвет текста */
 }
 
+/* Поле ввода для текста */
 .search-form .input-cell input[type="text"] {
-    width: 200px;
+    width: 200px; /* Фиксированная ширина */
 }
 
+/* Поле ввода для чисел */
 .search-form .input-cell input[type="number"] {
-    width: 100px;
-    -webkit-appearance: none;
-    -moz-appearance: textfield;
-    appearance: textfield;
+    width: 100px; /* Фиксированная ширина */
+    -webkit-appearance: none; /* Убираем стандартный вид в WebKit */
+    -moz-appearance: textfield; /* Убираем стандартный вид в Firefox */
+    appearance: textfield; /* Убираем стандартный вид */
 }
 
+/* Стили для кнопки формы поиска */
 .search-form button {
-    padding: 0.5rem 1rem;
-    background-color: var(--primary);
-    color: var(--primary-dark);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: background-color 0.3s ease;
+    padding: 0.5rem 1rem; /* Внутренние отступы */
+    background-color: var(--primary); /* Цвет фона */
+    color: var(--primary-dark); /* Цвет текста */
+    border: none; /* Без границы */
+    border-radius: 8px; /* Скругление углов */
+    cursor: pointer; /* Указатель мыши */
+    font-size: 0.9rem; /* Размер шрифта */
+    transition: background-color 0.3s ease; /* Плавное изменение фона */
 }
 
+/* Эффект при наведении на кнопку */
 .search-form button:hover {
-    background-color: var(--primary-dark);
+    background-color: var(--primary-dark); /* Тёмный оттенок при наведении */
 }
 
+/* Стили для параграфов */
 p {
-    font-size: 1.1rem;
-    color: var(--gray);
-    text-align: center;
-    padding: 2rem;
-    background-color: var(--gray-light);
-    border-radius: 12px;
-    box-shadow: var(--card-shadow);
-    margin: 2rem 0;
+    font-size: 1.1rem; /* Размер шрифта */
+    color: var(--gray); /* Цвет текста */
+    text-align: center; /* Выравнивание по центру */
+    padding: 2rem; /* Внутренние отступы */
+    background-color: var(--gray-light); /* Цвет фона */
+    border-radius: 12px; /* Скругление углов */
+    box-shadow: var(--card-shadow); /* Тень */
+    margin: 2rem 0; /* Отступы сверху и снизу */
 }
 
+/* Стили для футера */
 footer {
-    text-align: center;
-    padding: 1.5rem;
-    background: var(--header-gradient);
-    color: white;
-    margin-top: auto;
+    text-align: center; /* Выравнивание по центру */
+    padding: 1.5rem; /* Внутренние отступы */
+    background: var(--header-gradient); /* Градиентный фон */
+    color: white; /* Цвет текста */
+    margin-top: auto; /* Привязка к нижней части страницы */
 }
 
+/* Стили для параграфов в футере */
 footer p {
-    background-color: transparent;
-    box-shadow: none;
-    color: var(--primary-dark);
-    padding: 0;
-    margin: 0;
+    background-color: transparent; /* Прозрачный фон */
+    box-shadow: none; /* Без тени */
+    color: var(--primary-dark); /* Цвет текста */
+    padding: 0; /* Без отступов */
+    margin: 0; /* Без отступов */
 }
 
-/* Modal Styles */
+/* Стили для модального окна */
 .modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-    overflow: auto;
-    padding: 0;
+    display: none; /* Скрыто по умолчанию */
+    position: fixed; /* Фиксированное позиционирование */
+    top: 0; /* Привязка к верхнему краю */
+    left: 0; /* Привязка к левому краю */
+    width: 100vw; /* Полная ширина */
+    height: 100vh; /* Полная высота */
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    z-index: 1000; /* Высокий уровень наложения */
+    align-items: center; /* Центрирование по вертикали */
+    justify-content: center; /* Центрирование по горизонтали */
+    overflow: auto; /* Прокрутка при необходимости */
+    padding: 0; /* Без отступов */
 }
 
+/* Стили для содержимого модального окна */
 .modal-content {
-    background-color: var(--gray-light);
-    padding: 2rem;
-    border-radius: 12px;
-    box-shadow: var(--card-shadow);
-    max-width: 500px;
-    width: 90%;
-    max-height: 80vh;
-    overflow-y: auto;
-    position: relative;
-    border-left: 4px solid var(--primary);
-    margin: 0;
+    background-color: var(--gray-light); /* Цвет фона */
+    padding: 2rem; /* Внутренние отступы */
+    border-radius: 12px; /* Скругление углов */
+    box-shadow: var(--card-shadow); /* Тень */
+    max-width: 500px; /* Максимальная ширина */
+    width: 90%; /* Ширина относительно экрана */
+    max-height: 80vh; /* Максимальная высота */
+    overflow-y: auto; /* Прокрутка по вертикали */
+    position: relative; /* Для псевдоэлементов */
+    border-left: 4px solid var(--primary); /* Цветная полоса слева */
+    margin: 0; /* Без отступов */
 }
 
+/* Кнопка закрытия модального окна */
 .modal-close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 1.5rem;
-    color: var(--primary-dark);
-    cursor: pointer;
-    transition: color 0.3s ease;
+    position: absolute; /* Абсолютное позиционирование */
+    top: 1rem; /* Отступ сверху */
+    right: 1rem; /* Отступ справа */
+    font-size: 1.5rem; /* Размер шрифта */
+    color: var(--primary-dark); /* Цвет иконки */
+    cursor: pointer; /* Указатель мыши */
+    transition: color 0.3s ease; /* Плавное изменение цвета */
 }
 
+/* Эффект при наведении на кнопку закрытия */
 .modal-close:hover {
-    color: var(--secondary);
+    color: var(--secondary); /* Цвет при наведении */
 }
 
+/* Тело модального окна */
 .modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    display: flex; /* Flexbox для выравнивания */
+    flex-direction: column; /* Вертикальное расположение */
+    gap: 1rem; /* Расстояние между элементами */
 }
 
+/* Заголовок фильма в модальном окне */
 .modal-body .movie-title {
-    font-size: 1.5rem;
+    font-size: 1.5rem; /* Размер шрифта */
 }
 
+/* Описание фильма в модальном окне */
 .modal-body .movie-description {
-    display: block;
-    max-height: 200px;
-    overflow-y: auto;
+    display: block; /* Блочное отображение */
+    max-height: 200px; /* Максимальная высота */
+    overflow-y: auto; /* Прокрутка по вертикали */
 }
 
-/* Animation */
+/* Анимация появления элементов */
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(10px); } /* Начальное состояние */
+    to { opacity: 1; transform: translateY(0); } /* Конечное состояние */
 }
 
+/* Применение анимации к дочерним элементам main */
 main > * {
-    animation: fadeIn 0.5s ease forwards;
+    animation: fadeIn 0.5s ease forwards; /* Анимация появления */
 }
 
-/* Responsive Design */
+/* Адаптивные стили для экранов до 768px */
 @media (max-width: 768px) {
     header h1 {
-        font-size: 1.8rem;
+        font-size: 1.8rem; /* Уменьшение размера заголовка */
     }
 
     nav {
-        gap: 0.5rem;
+        gap: 0.5rem; /* Уменьшение расстояния между ссылками */
     }
 
     nav a {
-        font-size: 0.95rem;
-        padding: 0.5rem;
-        text-align: center;
+        font-size: 0.95rem; /* Уменьшение размера шрифта */
+        padding: 0.5rem; /* Уменьшение отступов */
+        text-align: center; /* Выравнивание по центру */
     }
 
     .dropdown-content {
-        left: 0;
-        transform: none;
-        min-width: 140px;
+        left: 0; /* Выравнивание по левому краю */
+        transform: none; /* Убираем смещение */
+        min-width: 140px; /* Уменьшение минимальной ширины */
     }
 
     main {
-        padding: 0 1rem;
+        padding: 0 1rem; /* Уменьшение отступов */
     }
 
     h1 {
-        font-size: 2rem;
+        font-size: 2rem; /* Уменьшение размера заголовка */
     }
 
     h2 {
-        font-size: 1.5rem;
+        font-size: 1.5rem; /* Уменьшение размера подзаголовка */
     }
 
     ul {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Одна колонка для списка */
     }
 
     .movie-info {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
+        flex-direction: column; /* Вертикальное расположение */
+        align-items: flex-start; /* Выравнивание по левому краю */
+        gap: 0.5rem; /* Уменьшение расстояния */
     }
 
     .status-selector select {
-        max-width: 100%;
+        max-width: 100%; /* Полная ширина */
     }
 
     .limit-selector select {
-        max-width: 100%;
+        max-width: 100%; /* Полная ширина */
     }
 
     .search-form {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: column; /* Вертикальное расположение */
+        align-items: flex-start; /* Выравнивание по левому краю */
     }
 
     .search-form .input-cell {
-        width: 100%;
+        width: 100%; /* Полная ширина */
     }
 
     .search-form .input-cell input {
-        width: 100%;
+        width: 100%; /* Полная ширина полей ввода */
     }
 
     .modal-content {
-        width: 95%;
-        padding: 1.5rem;
-        max-height: 85vh;
+        width: 95%; /* Увеличение ширины модального окна */
+        padding: 1.5rem; /* Уменьшение отступов */
+        max-height: 85vh; /* Увеличение максимальной высоты */
     }
 }
