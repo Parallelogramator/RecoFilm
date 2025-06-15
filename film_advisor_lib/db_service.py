@@ -1,7 +1,9 @@
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from .models import User, Movie, UserMovie
+from sqlalchemy.orm import Session
+
 from app.models_db import InteractionStatusEnum
+from .models import User, Movie, UserMovie
+
 
 def add_user(session: Session, username: str) -> User:
     user = session.query(User).filter(User.username == username).first()
@@ -10,6 +12,7 @@ def add_user(session: Session, username: str) -> User:
         session.add(user)
         session.commit()
     return user
+
 
 def add_movie(session: Session, movie_id: int, title: str, genres: str) -> Movie:
     movie = session.query(Movie).filter(Movie.id == movie_id).first()
@@ -25,6 +28,7 @@ def add_movie(session: Session, movie_id: int, title: str, genres: str) -> Movie
         session.rollback()
         movie = session.query(Movie).filter(Movie.id == movie_id).first()
     return movie
+
 
 def add_user_movie_relation(
         session: Session,
@@ -50,6 +54,7 @@ def add_user_movie_relation(
         session.add(relation)
     session.commit()
     return relation
+
 
 def get_user_movies_grouped_by_status(session: Session, user_id: int) -> dict:
     movies = session.query(UserMovie.status, Movie.id, Movie.title, Movie.genres_str, UserMovie.rate) \

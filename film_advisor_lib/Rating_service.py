@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def make_rating_df():
     movies_df = pd.read_csv("./ml-32m/movies.csv")
     ratings_df = pd.read_csv("./ml-32m/ratings.csv")
@@ -10,6 +11,7 @@ def make_rating_df():
     rate_movies = ratings_df.groupby('movieId')['rating'].mean().reset_index()
     rate_movies.columns = ['movieId', 'mean_rating']
     rate_movies = pd.merge(rate_movies, movies_df, on='movieId', how='inner')
+
 
 def get_top_n_by_genres(df, genres, n=10):
     """
