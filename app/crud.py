@@ -238,7 +238,7 @@ def update_user_movie_interaction(
 
     if db_interaction:
         # Если да, обновляем его статус
-        db_interaction.status = interaction.status
+        db_interaction.status = interaction.status.value
         db.commit()
         db.refresh(db_interaction)
     else:
@@ -246,7 +246,7 @@ def update_user_movie_interaction(
         db_interaction = models_db.UserMovie(
             user_id=user_id,
             movie_id=interaction.movie_id,
-            status=interaction.status
+            status=interaction.status.value
         )
         db.add(db_interaction)
 
