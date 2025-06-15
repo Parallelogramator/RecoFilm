@@ -200,43 +200,39 @@ def get_user_movie_interaction(
     ).first()
 
 
-def update_user_movie_interaction(
-        db: Session, user_id: int, interaction: schemas_db.UserMovieCreate
-) -> models_db.UserMovie:
+def get_all_movies(db: Session) -> List[models_db.Movie]:
     """
-    Создает или обновляет взаимодействие пользователя с фильмом.
-
-    Если взаимодействие уже существует, обновляет его статус.
-    Если нет - создает новое.
+    Получает все фильмы из базы данных без ограничений.
 
     Args:
         db: Сессия базы данных.
-        user_id: ID пользователя.
-        interaction: Схема с данными о взаимодействии (movie_id, status).
 
     Returns:
-        Созданный или обновленный объект взаимодействия.
+        Список всех объектов фильмов.
     """
-    # Проверяем, существует ли уже такое взаимодействие
-    db_interaction = get_user_movie_interaction(
-        db, user_id=user_id, movie_id=interaction.movie_id
-    )
+    return db.query(models_db.Movie).all()
 
+
+def update_user_movie_interaction(
+        db: Session, user_id: int, interaction: schemas_db.UserMovieCreate
+) -> models_db.UserMovie:
+    if interaction.status not in [e.value for e in InteractionStatusEnum]:
+        raise ValueError(f"Invalid status: {interaction.status}")
+    db_interaction = get_user_movie_interaction(db, user_id=user_id, movie_id=interaction.movie_id)
+    status_value = interaction.status  # Значение перечисления (e.g., 'watched')
     if db_interaction:
-        # Если да, обновляем его статус
-        db_interaction.status = interaction.status
+        db_interaction.status = status_value
     else:
-        # Если нет, создаем новую запись
         db_interaction = models_db.UserMovie(
             user_id=user_id,
             movie_id=interaction.movie_id,
-            status=interaction.status
+            status=status_value
         )
         db.add(db_interaction)
-
-    # Сохраняем изменения и обновляем объект
     db.commit()
     db.refresh(db_interaction)
+    # Явное преобразование статуса для возвращаемого объекта
+    db_interaction.status = status_value  # Убеждаемся, что возвращается строка
     return db_interaction
 
 
