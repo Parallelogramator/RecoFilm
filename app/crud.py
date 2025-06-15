@@ -6,7 +6,7 @@
 Содержит функции для взаимодействия с моделями User, Movie и UserMovie.
 """
 
-from typing import List, Optional, Set, Type
+from typing import List, Optional, Set, Type, Any
 
 from sqlalchemy import desc
 from sqlalchemy.orm import Session
@@ -102,7 +102,7 @@ def get_movies(db: Session, skip: int = 0, limit: int = 100) -> list[Type[Movie]
     query = db.query(models_db.Movie)
 
     # Применяем сортировку
-    query = query.order_by(desc(models_db.Movie.rating_imdb).nullslast())
+    query = query.order_by(desc(models_db.Movie.rating_imdb))
 
     # Применяем пагинацию
     query = query.offset(skip)
@@ -120,7 +120,7 @@ def search_movies(
         limit: int = 100,
         name: Optional[str] = None,
         year: Optional[int] = None
-) -> List[models_db.Movie]:
+) -> list[Type[Movie]]:
     """
     Ищет фильмы по названию и/или году выпуска.
 
@@ -166,7 +166,7 @@ def create_movie(db: Session, movie: schemas_db.MovieCreate) -> models_db.Movie:
         year=movie.year,
         description=movie.description,
         rating_imdb=movie.rating_imdb,
-        genres=movie.genres  # Используем property-setter для жанров
+        genres=movie.genres
     )
     db.add(db_movie)
     db.commit()
@@ -174,7 +174,7 @@ def create_movie(db: Session, movie: schemas_db.MovieCreate) -> models_db.Movie:
     return db_movie
 
 
-def get_movies_by_ids(db: Session, movie_ids: List[int]) -> List[models_db.Movie]:
+def get_movies_by_ids(db: Session, movie_ids: List[int]) -> list[Any] | list[Type[Movie]]:
     """
     Получает список фильмов по списку их ID.
 
