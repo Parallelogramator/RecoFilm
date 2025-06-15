@@ -22,8 +22,9 @@
                 </div>
 
                 <!-- Блок с жанрами фильма -->
+                {% set genre_list = movie.genres_str.split(',') %}
                 <div class="movie-genres">
-                    {% for genre in movie.genres %} <!-- Цикл по жанрам -->
+                    {% for genre in genre_list %} <!-- Цикл по жанрам -->
                         <span class="genre-tag">{{ genre }}</span> <!-- Отдельный жанр в виде тега -->
                     {% endfor %}
                 </div>
