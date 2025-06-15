@@ -1,5 +1,3 @@
-# app/crud.py
-
 """
 Модуль для операций CRUD (Create, Read, Update, Delete) с базой данных.
 
