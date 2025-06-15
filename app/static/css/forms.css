@@ -1,0 +1,119 @@
+/* Контейнер для селектора статуса */
+.status-selector {
+    margin-top: 1rem; /* Отступ сверху */
+}
+
+/* Стили для выпадающего списка статуса */
+.status-selector select {
+    background-color: var(--primary-light); /* Цвет фона */
+    color: var(--primary-dark); /* Цвет текста */
+    padding: 0.5rem; /* Внутренние отступы */
+    border: 1px solid var(--primary); /* Граница */
+    border-radius: 8px; /* Скругление углов */
+    font-size: 0.9rem; /* Размер шрифта */
+    cursor: pointer; /* Указатель мыши */
+    width: 100%; /* Полная ширина */
+    max-width: 200px; /* Максимальная ширина */
+}
+
+/* Стили при фокусе на селектор статуса */
+.status-selector select:focus {
+    outline: none; /* Убираем обводку */
+    border-color: var(--secondary); /* Цвет границы при фокусе */
+}
+
+/* Контейнер для селектора лимита */
+.limit-selector {
+    margin: 1rem 0; /* Отступы сверху и снизу */
+    display: flex; /* Flexbox для выравнивания */
+    align-items: center; /* Вертикальное центрирование */
+    gap: 0.5rem; /* Расстояние между элементами */
+}
+
+/* Метка для селектора лимита */
+.limit-selector label {
+    font-size: 0.9rem; /* Размер шрифта */
+    color: var(--primary-dark); /* Цвет текста */
+}
+
+/* Стили для выпадающего списка лимита */
+.limit-selector select {
+    background-color: var(--primary-light); /* Цвет фона */
+    color: var(--primary-dark); /* Цвет текста */
+    padding: 0.5rem; /* Внутренние отступы */
+    border: 1px solid var(--primary); /* Граница */
+    border-radius: 8px; /* Скругление углов */
+    font-size: 0.9rem; /* Размер шрифта */
+    cursor: pointer; /* Указатель мыши */
+    transition: border-color 0.3s ease; /* Плавное изменение границы */
+}
+
+/* Стили при фокусе на селектор лимита */
+.limit-selector select:focus {
+    outline: none; /* Убираем обводку */
+    border-color: var(--secondary); /* Цвет границы при фокусе */
+}
+
+/* Стили для формы поиска */
+.search-form {
+    display: flex; /* Flexbox для выравнивания */
+    gap: 1rem; /* Расстояние между элементами */
+    align-items: center; /* Вертикальное центрирование */
+    margin-bottom: 1rem; /* Отступ снизу */
+}
+
+/* Контейнер для полей ввода формы поиска */
+.search-form .input-cell {
+    background-color: var(--gray-light); /* Цвет фона */
+    padding: 0.75rem; /* Внутренние отступы */
+    border-radius: 8px; /* Скругление углов */
+    border: 1px solid var(--primary); /* Граница */
+    display: flex; /* Flexbox для выравнивания */
+    align-items: center; /* Вертикальное центрирование */
+    gap: 0.5rem; /* Расстояние между элементами */
+}
+
+/* Метка для полей ввода */
+.search-form .input-cell label {
+    font-size: 0.9rem; /* Размер шрифта */
+    color: var(--primary-dark); /* Цвет текста */
+}
+
+/* Стили для полей ввода */
+.search-form .input-cell input {
+    padding: 0.5rem; /* Внутренние отступы */
+    border: none; /* Без границы */
+    border-radius: 4px; /* Скругление углов */
+    background-color: var(--primary-light); /* Цвет фона */
+    color: var(--primary-dark); /* Цвет текста */
+}
+
+/* Поле ввода для текста */
+.search-form .input-cell input[type="text"] {
+    width: 200px; /* Фиксированная ширина */
+}
+
+/* Поле ввода для чисел */
+.search-form .input-cell input[type="number"] {
+    width: 100px; /* Фиксированная ширина */
+    -webkit-appearance: none; /* Убираем стандартный вид в WebKit */
+    -moz-appearance: textfield; /* Убираем стандартный вид в Firefox */
+    appearance: textfield; /* Убираем стандартный вид */
+}
+
+/* Стили для кнопки формы поиска */
+.search-form button {
+    padding: 0.5rem 1rem; /* Внутренние отступы */
+    background-color: var(--primary); /* Цвет фона */
+    color: var(--primary-dark); /* Цвет текста */
+    border: none; /* Без границы */
+    border-radius: 8px; /* Скругление углов */
+    cursor: pointer; /* Указатель мыши */
+    font-size: 0.9rem; /* Размер шрифта */
+    transition: background-color 0.3s ease; /* Плавное изменение фона */
+}
+
+/* Эффект при наведении на кнопку */
+.search-form button:hover {
+    background-color: var(--primary-dark); /* Тёмный оттенок при наведении */
+}

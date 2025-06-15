@@ -1,0 +1,71 @@
+/* Адаптивные стили для экранов до 768px */
+@media (max-width: 768px) {
+    header h1 {
+        font-size: 1.8rem; /* Уменьшение размера заголовка */
+    }
+
+    nav {
+        gap: 0.5rem; /* Уменьшение расстояния между ссылками */
+    }
+
+    nav a {
+        font-size: 0.95rem; /* Уменьшение размера шрифта */
+        padding: 0.5rem; /* Уменьшение отступов */
+        text-align: center; /* Выравнивание по центру */
+    }
+
+    .dropdown-content {
+        left: 0; /* Выравнивание по левому краю */
+        transform: none; /* Убираем смещение */
+        min-width: 140px; /* Уменьшение минимальной ширины */
+    }
+
+    main {
+        padding: 0 1rem; /* Уменьшение отступов */
+    }
+
+    h1 {
+        font-size: 2rem; /* Уменьшение размера заголовка */
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Уменьшение размера подзаголовка */
+    }
+
+    ul {
+        grid-template-columns: 1fr; /* Одна колонка для списка */
+    }
+
+    .movie-info {
+        flex-direction: column; /* Вертикальное расположение */
+        align-items: flex-start; /* Выравнивание по левому краю */
+        gap: 0.5rem; /* Уменьшение расстояния */
+    }
+
+    .status-selector select {
+        max-width: 100%; /* Полная ширина */
+    }
+
+    .limit-selector select {
+        max-width: 100%; /* Полная ширина */
+    }
+
+    .search-form {
+        flex-direction: column; /* Вертикальное расположение */
+        align-items: flex-start; /* Выравнивание по левому краю */
+    }
+
+    .search-form .input-cell {
+        width: 100%; /* Полная ширина */
+    }
+
+    .search-form .input-cell input {
+        width: 100%; /* Полная ширина полей ввода */
+    }
+
+    .modal-content {
+        width: 95%; /* Увеличение ширины модального окна */
+        padding: 1.5rem; /* Уменьшение отступов */
+        max-height: 85vh; /* Увеличение максимальной высоты */
+    }
+}

@@ -1,0 +1,151 @@
+/* Стили для шапки */
+header {
+    background: var(--header-gradient); /* Градиентный фон */
+    color: white; /* Цвет текста */
+    padding: 1.5rem; /* Внутренние отступы */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Тень */
+    position: sticky; /* Фиксированная шапка */
+    top: 0; /* Привязка к верхнему краю */
+    z-index: 1000; /* Высокий уровень наложения */
+    transition: background 0.3s ease; /* Плавное изменение фона */
+}
+
+/* Стили для заголовка в шапке */
+header h1 {
+    font-size: 2.2rem; /* Размер шрифта */
+    font-weight: 800; /* Жирный шрифт */
+    text-align: center; /* Выравнивание по центру */
+    margin-bottom: 1rem; /* Отступ снизу */
+    letter-spacing: -1px; /* Межбуквенный интервал */
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2); /* Тень текста */
+    color: var(--primary-dark); /* Цвет текста */
+    position: relative; /* Для псевдоэлемента */
+    display: inline-block; /* Для корректного отображения псевдоэлемента */
+    padding: 0 1rem; /* Внутренние отступы */
+}
+
+/* Декоративная линия под заголовком */
+header h1::before {
+    content: ''; /* Пустой контент */
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: -5px; /* Расположение под заголовком */
+    left: 0; /* Выравнивание по левому краю */
+    width: 100%; /* Полная ширина */
+    height: 3px; /* Высота линии */
+    background: linear-gradient(90deg, var(--primary-dark), rgba(255, 255, 255, 0.2)); /* Градиент линии */
+    border-radius: 3px; /* Скругление углов */
+}
+
+/* Контейнер для содержимого шапки */
+header .header-container {
+    display: flex; /* Flexbox для выравнивания */
+    flex-direction: column; /* Вертикальное расположение */
+    align-items: center; /* Центрирование по горизонтали */
+    padding: 1rem 0; /* Внутренние отступы */
+}
+
+/* Стили для навигации */
+nav {
+    display: flex; /* Flexbox для навигации */
+    justify-content: center; /* Центрирование элементов */
+    gap: 2rem; /* Расстояние между элементами */
+    position: relative; /* Для псевдоэлементов */
+}
+
+/* Стили для ссылок в навигации */
+nav a {
+    color: var(--primary-dark); /* Цвет текста */
+    text-decoration: none; /* Убираем подчёркивание */
+    font-weight: 500; /* Средний вес шрифта */
+    font-size: 1.1rem; /* Размер шрифта */
+    transition: all 0.3s ease; /* Плавные переходы */
+    padding: 0.5rem 1rem; /* Внутренние отступы */
+    border-radius: 50px; /* Скругление углов */
+    position: relative; /* Для псевдоэлемента */
+}
+
+/* Эффект при наведении на ссылку */
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.15); /* Полупрозрачный фон */
+}
+
+/* Декоративная линия под ссылкой при наведении */
+nav a::after {
+    content: ''; /* Пустой контент */
+    position: absolute; /* Абсолютное позиционирование */
+    bottom: -5px; /* Расположение под ссылкой */
+    left: 50%; /* Центрирование */
+    transform: translateX(-50%); /* Смещение для центрирования */
+    width: 0; /* Начальная ширина */
+    height: 2px; /* Высота линии */
+    background-color: var(--secondary); /* Цвет линии */
+    transition: width 0.3s ease; /* Плавное изменение ширины */
+}
+
+/* Расширение линии при наведении */
+nav a:hover::after {
+    width: 70%; /* Ширина линии при наведении */
+}
+
+/* Стили для выпадающего меню */
+.dropdown {
+    position: relative; /* Относительное позиционирование */
+    display: inline-block; /* Для корректного отображения */
+}
+
+/* Указатель на возможность взаимодействия */
+.dropdown .nav-link {
+    cursor: pointer;
+}
+
+/* Стили для содержимого выпадающего меню */
+.dropdown-content {
+    display: none; /* Скрыто по умолчанию */
+    position: absolute; /* Абсолютное позиционирование */
+    background-color: var(--gray-light); /* Цвет фона */
+    min-width: 180px; /* Минимальная ширина */
+    box-shadow: var(--card-shadow); /* Тень */
+    border-radius: 8px; /* Скругление углов */
+    z-index: 100; /* Уровень наложения */
+    top: 100%; /* Расположение под родителем */
+    left: 50%; /* Центрирование */
+    transform: translateX(-50%); /* Смещение для центрирования */
+    overflow: hidden; /* Обрезка содержимого */
+}
+
+/* Стили для ссылок в выпадающем меню */
+.dropdown-content a {
+    display: block; /* Блочное отображение */
+    color: var(--primary-dark); /* Цвет текста */
+    padding: 0.75rem 1rem; /* Внутренние отступы */
+    text-decoration: none; /* Убираем подчёркивание */
+    font-size: 1rem; /* Размер шрифта */
+    transition: background-color 0.2s ease; /* Плавное изменение фона */
+}
+
+/* Эффект при наведении на ссылку в выпадающем меню */
+.dropdown-content a:hover {
+    background-color: var(--primary-light); /* Цвет фона при наведении */
+}
+
+/* Отображение выпадающего меню при наведении или активации */
+.dropdown:hover .dropdown-content,
+.dropdown-content.active {
+    display: block; /* Показываем меню */
+}
+
+/* Стили для кнопки переключения темы */
+.theme-toggle {
+    background: none; /* Без фона */
+    border: none; /* Без границы */
+    color: white; /* Цвет иконки */
+    font-size: 1.2rem; /* Размер шрифта */
+    cursor: pointer; /* Указатель мыши */
+    transition: transform 0.3s ease; /* Плавное масштабирование */
+    margin-left: 1rem; /* Отступ слева */
+}
+
+/* Эффект при наведении на кнопку темы */
+.theme-toggle:hover {
+    transform: scale(1.2); /* Увеличение при наведении */
+}

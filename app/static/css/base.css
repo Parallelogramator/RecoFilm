@@ -1,0 +1,49 @@
+/* Базовые стили для body */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; /* Шрифт по умолчанию */
+    background-color: var(--light); /* Цвет фона */
+    color: var(--dark); /* Цвет текста */
+    line-height: 1.6; /* Межстрочный интервал */
+    min-height: 100vh; /* Минимальная высота для всей страницы */
+    display: flex; /* Используем flexbox */
+    flex-direction: column; /* Вертикальное расположение элементов */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Плавное переключение темы */
+}
+
+/* Установка фона для светлой темы по умолчанию */
+body:not(.dark-theme) {
+    background-color: var(--light);
+}
+
+/* Стили для заголовков h1 и h2 */
+h1, h2 {
+    color: var(--primary-dark); /* Цвет текста */
+    margin-bottom: 1.5rem; /* Отступ снизу */
+    position: relative; /* Для псевдоэлементов */
+}
+
+/* Стили для h1 */
+h1 {
+    font-size: 2.5rem; /* Размер шрифта */
+    font-weight: 800; /* Жирный шрифт */
+    letter-spacing: -1px; /* Межбуквенный интервал */
+}
+
+/* Стили для h2 */
+h2 {
+    font-size: 1.8rem; /* Размер шрифта */
+    font-weight: 700; /* Жирный шрифт */
+    margin-top: 2rem; /* Отступ сверху */
+}
+
+/* Стили для параграфов */
+p {
+    font-size: 1.1rem; /* Размер шрифта */
+    color: var(--gray); /* Цвет текста */
+    text-align: center; /* Выравнивание по центру */
+    padding: 2rem; /* Внутренние отступы */
+    background-color: var(--gray-light); /* Цвет фона */
+    border-radius: 12px; /* Скругление углов */
+    box-shadow: var(--card-shadow); /* Тень */
+    margin: 2rem 0; /* Отступы сверху и снизу */
+}
