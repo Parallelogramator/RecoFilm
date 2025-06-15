@@ -24,7 +24,7 @@ def print_user_movies(session: Session, user_id: int, username: str):
                 f"  - {movie['movie_name']} (ID: {movie['movie_id']}, Оценка: {movie['rate']}, Жанры: {movie['genres']})")
 
 
-def get_movie_recommendations_by_user_id(user_id: int, count: int):
+def get_movie_recommendations_by_user_id(user_id: int, count: int) -> list[int]:
     session = SessionLocal()
     try:
         recommendations = get_recommended_movies(session, user_id, n=count)

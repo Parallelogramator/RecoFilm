@@ -7,7 +7,7 @@
 from typing import List, Optional, Set, Type, Any
 
 from sqlalchemy import desc
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.models_db import Movie, UserMovie
 from . import models_db, schemas_db
@@ -291,7 +291,10 @@ def get_user_interactions(
     Returns:
         Список взаимодействий пользователя.
     """
-    query = db.query(models_db.UserMovie).filter(models_db.UserMovie.user_id == user_id)
+    query = db.query(models_db.UserMovie)
+    query = query.options(joinedload(models_db.UserMovie.movie))
+
+    query = query.filter(models_db.UserMovie.user_id == user_id)
     if status:
         query = query.filter(models_db.UserMovie.status == status)
     return query.all()
@@ -316,6 +319,21 @@ def get_user_liked_movies(db: Session, user_id: int) -> list[Type[Movie]]:
         .filter(models_db.UserMovie.status == InteractionStatusEnum.LIKED)
         .all()
     )
+
+
+def get_user_recommendations_movies(db: Session, movie_ids: list[int]) -> list[Type[Movie]]:
+    """
+    Получает список фильмов, которые пользователь отметил как 'liked'.
+
+    Args:
+        db: Сессия базы данных.
+        movie_ids: ID фильмов.
+
+    Returns:
+        Список рекомендованных фильмов.
+    """
+
+    return db.query(models_db.Movie).filter(models_db.Movie.id.in_(movie_ids)).all()
 
 
 def get_user_interacted_movie_ids(db: Session, user_id: int) -> Set[int]:

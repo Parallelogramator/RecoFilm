@@ -118,7 +118,7 @@ def get_recommended_movies(
         n: int,
         min_avg_rating: float = 3.0,
         min_ratings: int = 1
-) -> List[Dict]:
+) -> List[int]:
     """Формирует список рекомендованных фильмов для пользователя."""
     genre_profile = get_user_genre_profile(session, user_id)
     if not genre_profile:
@@ -140,16 +140,7 @@ def get_recommended_movies(
             return []
 
         top_n = get_top_n_by_genres(movies_df, relevant_genres, genre_profile, user_movie_ids, n=n)
-        result = [
-            {
-                "id": int(row['movieId']),
-                "title": row['title'],
-                "genres_str": row['genres'],
-                "rating_imdb": float(row['mean_rating']),
-                "score": float(row['final_score'])
-            }
-            for _, row in top_n.iterrows()
-        ]
+        result = [int(row['movieId'])  for _, row in top_n.iterrows()]
         return result
     except Exception as e:
         print(f"Error generating recommendations: {e}")

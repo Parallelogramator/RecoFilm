@@ -4,6 +4,7 @@ from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
 from . import crud, models_api, schemas_db
+from .crud import get_user_recommendations_movies
 from .database import get_db_dependency
 from .models_db import InteractionStatusEnum
 
@@ -13,7 +14,7 @@ except ImportError:
     print("Warning: film_advisor_lib not found. Recommendations will not work.")
 
 
-    def get_movie_recommendations_by_user_id(user_id, count):
+    def get_movie_recommendations_by_user_id(user_id, count) -> list[int]:
         return []  # Заглушка, если библиотека отсутствует
 
 # Создаем роутер и настраиваем шаблоны
@@ -212,7 +213,13 @@ async def page_get_recommendations_for_user(
     if not crud.get_user(db, user_id=user_id):
         raise HTTPException(status_code=404, detail="User not found")
     try:
-        recommendations = get_movie_recommendations_by_user_id(user_id=user_id, count=limit)
+        movies_ids = get_movie_recommendations_by_user_id(user_id=user_id, count=limit)
+        if not movies_ids:
+            raise HTTPException(
+                status_code=404,
+                detail="No recommendations available: insufficient user data or movies."
+            )
+        recommendations = get_user_recommendations_movies(db, movies_ids)
         if not recommendations:
             raise HTTPException(
                 status_code=404,
