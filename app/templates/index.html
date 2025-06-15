@@ -32,6 +32,7 @@
             <option value="20" {% if request.query_params.limit == '20' %}selected{% endif %}>20</option>
             <option value="50" {% if request.query_params.limit == '50' %}selected{% endif %}>50</option>
             <option value="100" {% if request.query_params.limit == '100' %}selected{% endif %}>100</option>
+            <option value="None" {% if request.query_params.limit == 'None' %}selected{% endif %}>All</option>
         </select>
     </div>
 
