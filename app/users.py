@@ -213,23 +213,24 @@ async def page_get_recommendations_for_user(
     """
     if not crud.get_user(db, user_id=user_id):
         raise HTTPException(status_code=404, detail="User not found")
-    try:
-        movies_ids = get_movie_recommendations_by_user_id(user_id=user_id, count=limit)
-        if not movies_ids:
-            raise HTTPException(
-                status_code=404,
-                detail="No recommendations available: insufficient user data or movies."
-            )
-        recommendations = get_user_recommendations_movies(db, movies_ids)
-        if not recommendations:
-            raise HTTPException(
-                status_code=404,
-                detail="No recommendations available: insufficient user data or movies."
-            )
-        return templates.TemplateResponse(
-            "recommendations.html",
-            {"request": request, "recommendations": recommendations}
+
+    movies_ids = get_movie_recommendations_by_user_id(user_id=user_id, count=limit)
+    if not movies_ids:
+        raise HTTPException(
+            status_code=404,
+            detail="No recommendations available: insufficient user data or movies."
         )
+    try:
+        recommendations = get_user_recommendations_movies(db, movies_ids)
     except Exception as e:
         # Отлавливаем любые ошибки от рекомендательной системы
         raise HTTPException(status_code=500, detail=f"Failed to generate recommendations: {str(e)}")
+    if not recommendations:
+        raise HTTPException(
+            status_code=404,
+            detail="No recommendations available: insufficient user data or movies."
+        )
+    return templates.TemplateResponse(
+        "recommendations.html",
+        {"request": request, "recommendations": recommendations}
+    )
