@@ -22,8 +22,7 @@ def find_conda_executable():
         'C:\\Anaconda3\\Scripts\\conda.exe',
         # Добавьте другие типичные пути, если Conda установлена не в USERPROFILE
         'C:\\ProgramData\\Miniconda3\\Scripts\\conda.exe',
-        'C:\\ProgramData\\Anaconda3\\Scripts\\conda.exe',
-        "F:\Program Files\\anaconda3\Scripts\conda.exe"
+        'C:\\ProgramData\\Anaconda3\\Scripts\\conda.exe'
     ]
     for path in potential_paths:
         if os.path.exists(path):
