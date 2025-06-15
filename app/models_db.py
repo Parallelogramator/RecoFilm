@@ -47,7 +47,7 @@ class UserMovie(Base):
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
     movie_id = Column(Integer, ForeignKey("movies.id", ondelete="CASCADE"), nullable=False)
-    status = Column(String(50), CheckConstraint(f"status IN ('{','.join(InteractionStatusEnum)}')"), nullable=False)
+    status = Column(String(50), nullable=False)
     rate = Column(Float)
     user = relationship("User", back_populates="interactions")
     movie = relationship("Movie", back_populates="interactions")

@@ -42,19 +42,18 @@ def add_user_movie_relation(
         UserMovie.movie_id == movie_id
     ).first()
     if relation:
-        relation.status = status
+        relation.status = status.value  # Используем значение перечисления (e.g., 'watched')
         relation.rate = rate
     else:
         relation = UserMovie(
             user_id=user_id,
             movie_id=movie_id,
-            status=status,
+            status=status.value,  # Используем значение перечисления
             rate=rate
         )
         session.add(relation)
     session.commit()
     return relation
-
 
 def get_user_movies_grouped_by_status(session: Session, user_id: int) -> dict:
     movies = session.query(UserMovie.status, Movie.id, Movie.title, Movie.genres_str, UserMovie.rate) \
