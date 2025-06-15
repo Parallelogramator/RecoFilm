@@ -1,10 +1,11 @@
-import pandas as pd
 import json
 import os
 import sys
-from sqlalchemy.orm import sessionmaker
+
+import pandas as pd
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import sessionmaker
 
 # Add project root to sys.path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -14,6 +15,7 @@ if project_root not in sys.path:
 from app.models_db import Movie, User
 from app.database import DATABASE_URL, Base
 import kagglehub
+
 
 def load_movies():
     dataset_path = kagglehub.dataset_download("rounakbanik/the-movies-dataset")
@@ -119,6 +121,7 @@ def load_movies():
     finally:
         if 'session' in locals():
             session.close()
+
 
 if __name__ == "__main__":
     load_movies()

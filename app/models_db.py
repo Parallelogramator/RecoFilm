@@ -1,7 +1,10 @@
+import enum
+
 from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey, CheckConstraint
 from sqlalchemy.orm import relationship
-import enum
+
 from .database import Base
+
 
 class InteractionStatusEnum(str, enum.Enum):
     WATCHED = "watched"
@@ -10,11 +13,13 @@ class InteractionStatusEnum(str, enum.Enum):
     DROPPED = "dropped"
     WATCHING = "watching"
 
+
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(255), unique=True, index=True, nullable=False)
     interactions = relationship("UserMovie", back_populates="user")
+
 
 class Movie(Base):
     __tablename__ = "movies"
@@ -35,6 +40,7 @@ class Movie(Base):
     @genres.setter
     def genres(self, value: list[str]):
         self.genres_str = ",".join(genre.strip() for genre in value if genre.strip()) if value else ""
+
 
 class UserMovie(Base):
     __tablename__ = "user_movie"

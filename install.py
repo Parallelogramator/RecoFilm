@@ -1,12 +1,11 @@
-import subprocess
 import os
+import subprocess
 import sys
-import shutil
-import time
 
 CONDA_ENV_NAME = "RecoFilm"
 ENV_FILE = "environment.yml"
 PROJECT_ROOT = os.path.dirname(__file__)
+
 
 def find_conda_executable():
     """Находит путь к исполняемому файлу Conda (conda.exe)."""
@@ -45,10 +44,10 @@ def run_command(command: list[str], cwd: str = None, check_returncode: bool = Tr
             stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT,
             text=True,
-            encoding='utf-8', # Указываем UTF-8 для корректного вывода
+            encoding='utf-8',  # Указываем UTF-8 для корректного вывода
             cwd=cwd,
-            shell=False # Для большинства команд Conda shell=False более безопасно.
-                        # Если Conda активирована, она должна быть в PATH.
+            shell=False  # Для большинства команд Conda shell=False более безопасно.
+            # Если Conda активирована, она должна быть в PATH.
         )
         for line in iter(process.stdout.readline, ''):
             print(line.strip())
@@ -64,6 +63,7 @@ def run_command(command: list[str], cwd: str = None, check_returncode: bool = Tr
         print(f"Произошла ошибка: {e}")
         return False
 
+
 def get_conda_envs(conda_path: str) -> list[str]:
     """Возвращает список имен существующих Conda-окружений."""
     result = subprocess.run([conda_path, "env", "list", "--json"], capture_output=True, text=True, encoding='utf-8')
@@ -75,6 +75,7 @@ def get_conda_envs(conda_path: str) -> list[str]:
     else:
         print(f"Ошибка при получении списка Conda окружений: {result.stderr}")
         return []
+
 
 def main():
     print("Начало установки RecoFilm на хост-машину...")
@@ -110,7 +111,8 @@ def main():
 
     print("\n--- ВАЖНО: Настройка MySQL ---")
     print("Пожалуйста, убедитесь, что у вас установлен и запущен MySQL-сервер на вашей машине.")
-    print("Вам также необходимо создать базу данных 'recofilm' и пользователя 'recofilm_user' (или использовать свои) с правами доступа.")
+    print(
+        "Вам также необходимо создать базу данных 'recofilm' и пользователя 'recofilm_user' (или использовать свои) с правами доступа.")
     print("Вы можете использовать SQL-скрипт 'init_mysql.sql' для начальной настройки.")
     print("Пример выполнения init_mysql.sql:")
     print(f"  В PowerShell: Get-Content {os.path.join(PROJECT_ROOT, 'init_mysql.sql')} | mysql -u root -p")
@@ -148,6 +150,7 @@ def main():
     print("\nУстановка завершена успешно!")
     print("Теперь вы можете запустить приложение командой: ./run.sh")
     print("Приложение будет доступно по адресу: http://localhost:8000")
+
 
 if __name__ == "__main__":
     main()

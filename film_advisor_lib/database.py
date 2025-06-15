@@ -1,7 +1,8 @@
 import os
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -23,9 +24,11 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+
 def get_db_session():
     """Создает и возвращает сессию БД. Вызывающий должен закрыть её."""
     return SessionLocal()
+
 
 def get_db_dependency():
     """FastAPI-зависимость для получения сессии базы данных."""
@@ -34,6 +37,7 @@ def get_db_dependency():
         yield db
     finally:
         db.close()
+
 
 def create_db_and_tables():
     from . import models_db

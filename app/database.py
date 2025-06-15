@@ -1,7 +1,8 @@
 import os
+
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -13,7 +14,7 @@ os.makedirs(DATA_DIR, exist_ok=True)
 # MySQL database configuration
 MYSQL_USER = os.getenv("MYSQL_USER")
 MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
-MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost") # Убедитесь, что по умолчанию 'localhost' или берется из .env
+MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")  # Убедитесь, что по умолчанию 'localhost' или берется из .env
 MYSQL_PORT = os.getenv("MYSQL_PORT", "3306")
 MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
 DATABASE_URL = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}"
@@ -23,8 +24,10 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+
 def get_db_session():
     return SessionLocal()
+
 
 def get_db_dependency():
     db = SessionLocal()
@@ -33,6 +36,6 @@ def get_db_dependency():
     finally:
         db.close()
 
+
 def create_db_and_tables():
-    from . import models_db
     Base.metadata.create_all(bind=engine)

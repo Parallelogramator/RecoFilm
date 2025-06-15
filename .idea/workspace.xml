@@ -4,18 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23fdeffd-dd1b-4f64-b0bc-e95df02254e8" name="Changes" comment="Added cards">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/init_mysql.sql" afterDir="false" />
+    <list default="true" id="23fdeffd-dd1b-4f64-b0bc-e95df02254e8" name="Changes" comment="Switch db from sqllite to mysql">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/database.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/models_db.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models_db.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/environment.yml" beforeDir="false" afterPath="$PROJECT_DIR$/environment.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/film_advisor_lib/database.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/database.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/film_advisor_lib/db_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/db_service.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/film_advisor_lib/load_all_movies.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/load_all_movies.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/install.py" beforeDir="false" afterPath="$PROJECT_DIR$/install.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.bat" beforeDir="false" afterPath="$PROJECT_DIR$/run.bat" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" afterPath="$PROJECT_DIR$/run.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/film_advisor_lib/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/film_advisor_lib/recommendation_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/film_advisor_lib/recommendation_service.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -149,7 +146,7 @@
       <workItem from="1749927793033" duration="592000" />
       <workItem from="1749928402142" duration="5338000" />
       <workItem from="1749934188842" duration="686000" />
-      <workItem from="1749979834579" duration="3122000" />
+      <workItem from="1749979834579" duration="3825000" />
     </task>
     <task id="LOCAL-00001" summary="fix recomendation and swap dataset">
       <option name="closed" value="true" />
@@ -175,7 +172,15 @@
       <option name="project" value="LOCAL" />
       <updated>1749553083261</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Switch db from sqllite to mysql">
+      <option name="closed" value="true" />
+      <created>1749983989436</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1749983989436</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,21 +200,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix recomendation and swap dataset" />
     <MESSAGE value="Added cards" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added cards" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/app/models_api.py</url>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/film_advisor_lib/recommendation_service.py</url>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="Switch db from sqllite to mysql" />
+    <option name="LAST_COMMIT_MESSAGE" value="Switch db from sqllite to mysql" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/RecoFilm$test.coverage" NAME="test Coverage Results" MODIFIED="1749381611570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/film_advisor_lib" />
