@@ -291,8 +291,20 @@ def get_user_interactions(
     Returns:
         Список взаимодействий пользователя.
     """
-    query = db.query(models_db.UserMovie)
-    query = query.options(joinedload(models_db.UserMovie.movie))
+    query = db.query(
+        # Явно перечисляем поля и даем им псевдонимы через label(), чтобы избежать конфликтов
+        models_db.UserMovie.id.label("interaction_id"),
+        models_db.UserMovie.status,
+        models_db.UserMovie.rate,
+        models_db.Movie.id.label("id"),
+        models_db.Movie.title,
+        models_db.Movie.year,
+        models_db.Movie.genres_str,
+        models_db.Movie.description,
+        models_db.Movie.rating_imdb
+    )
+
+    query = query.join(models_db.Movie, models_db.UserMovie.movie_id == models_db.Movie.id)
 
     query = query.filter(models_db.UserMovie.user_id == user_id)
     if status:
