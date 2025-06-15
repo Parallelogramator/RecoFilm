@@ -214,19 +214,6 @@ def get_user_movie_interaction(
     ).first()
 
 
-def get_all_movies(db: Session) -> list[Type[Movie]]:
-    """
-    Получает все фильмы из базы данных без ограничений.
-
-    Args:
-        db: Сессия базы данных.
-
-    Returns:
-        Список всех объектов фильмов.
-    """
-    return db.query(models_db.Movie).all()
-
-
 def update_user_movie_interaction(
         db: Session, user_id: int, interaction: schemas_db.UserMovieCreate
 ) -> models_db.UserMovie:
