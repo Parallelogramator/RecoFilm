@@ -22,7 +22,8 @@ def find_conda_executable():
         'C:\\Anaconda3\\Scripts\\conda.exe',
         # Добавьте другие типичные пути, если Conda установлена не в USERPROFILE
         'C:\\ProgramData\\Miniconda3\\Scripts\\conda.exe',
-        'C:\\ProgramData\\Anaconda3\\Scripts\\conda.exe'
+        'C:\\ProgramData\\Anaconda3\\Scripts\\conda.exe',
+        "F:\Program Files\\anaconda3\Scripts\conda.exe"
     ]
     for path in potential_paths:
         if os.path.exists(path):
@@ -33,6 +34,8 @@ def find_conda_executable():
         conda_exec = os.path.join(path_dir, "conda.exe")
         if os.path.exists(conda_exec):
             return conda_exec
+
+
     return None
 
 
@@ -66,14 +69,44 @@ def run_command(command: list[str], cwd: str = None, check_returncode: bool = Tr
 
 def get_conda_envs(conda_path: str) -> list[str]:
     """Возвращает список имен существующих Conda-окружений."""
-    result = subprocess.run([conda_path, "env", "list", "--json"], capture_output=True, text=True, encoding='utf-8')
-    if result.returncode == 0:
+    try:
+        # shell=True на Windows может быть более надежным для вызова conda,
+        # но попробуем сначала исправить парсинг.
+        result = subprocess.run(
+            [conda_path, "env", "list", "--json"],
+            capture_output=True, text=True, encoding='utf-8', check=False
+        )
+        if result.returncode != 0:
+            print(f"Ошибка при получении списка Conda окружений (код {result.returncode}):\n{result.stderr}")
+            return []
+
+        output_str = result.stdout
+
+        # Ищем начало JSON-объекта, т.к. Conda может выводить доп. информацию
+        json_start_index = output_str.find('{')
+
+        if json_start_index == -1:
+            print("Ошибка: Не удалось найти JSON в выводе команды 'conda env list --json'.")
+            print("Полный вывод команды:")
+            print(output_str)
+            return []
+
+        # Обрезаем все, что было до JSON
+        json_str = output_str[json_start_index:]
+
         import json
-        envs_data = json.loads(result.stdout)
-        # Извлекаем только имена окружений (последний компонент пути)
-        return [os.path.basename(env_path) for env_path in envs_data["envs"]]
-    else:
-        print(f"Ошибка при получении списка Conda окружений: {result.stderr}")
+        try:
+            envs_data = json.loads(json_str)
+            # Извлекаем только имена окружений (последний компонент пути)
+            return [os.path.basename(env_path) for env_path in envs_data.get("envs", [])]
+        except json.JSONDecodeError as e:
+            print(f"Ошибка при разборе JSON из вывода Conda: {e}")
+            print("Полученный (обрезанный) текст для разбора:")
+            print(json_str)
+            return []
+
+    except Exception as e:
+        print(f"Критическая ошибка при вызове conda: {e}")
         return []
 
 

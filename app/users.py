@@ -1,23 +1,20 @@
-# app/users.py
-
-"""
-Маршрутизатор (роутер) FastAPI для операций, связанных с пользователями.
-
-Предоставляет API-эндпоинты для создания пользователей, получения информации о них,
-управления их взаимодействиями с фильмами и получения рекомендаций.
-"""
-
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 
-from film_advisor_lib.main import get_movie_recommendations_by_user_id
 from . import crud, models_api, schemas_db
 from .database import get_db_dependency
+from .models_db import InteractionStatusEnum
 
-# Предполагается, что рекомендательная библиотека установлена и доступна
-# from film_advisor_lib.main import get_movie_recommendations_by_user_id
+try:
+    from film_advisor_lib.main import get_movie_recommendations_by_user_id
+except ImportError:
+    print("Warning: film_advisor_lib not found. Recommendations will not work.")
+
+
+    def get_movie_recommendations_by_user_id(user_id, count):
+        return []  # Заглушка, если библиотека отсутствует
 
 # Создаем роутер и настраиваем шаблоны
 router = APIRouter()
@@ -26,7 +23,8 @@ templates = Jinja2Templates(directory="app/templates")
 
 @router.post("/", response_model=models_api.UserAPI, summary="Создать пользователя")
 def api_create_user(
-        user: models_api.UserCreateAPI, db: Session = Depends(get_db_dependency)
+        user: models_api.UserCreateAPI,
+        db: Session = Depends(get_db_dependency)
 ):
     """
     API-эндпоинт для создания нового пользователя.
@@ -94,8 +92,12 @@ def api_create_or_update_user_movie_interaction(
     # Проверяем существование пользователя и фильма
     if not crud.get_user(db, user_id=user_id):
         raise HTTPException(status_code=404, detail="User not found")
+
     if not crud.get_movie(db, movie_id=interaction.movie_id):
         raise HTTPException(status_code=404, detail="Movie not found")
+
+    if interaction.status not in [e.value for e in InteractionStatusEnum]:
+        raise HTTPException(status_code=422, detail=f"Invalid status: {interaction.status}")
 
     interaction_core_create = schemas_db.UserMovieCreate(**interaction.model_dump())
     return crud.update_user_movie_interaction(
@@ -186,7 +188,7 @@ def page_get_user_interactions_by_status(
 
 @router.get("/{user_id}/recommendations/", response_class=HTMLResponse,
             summary="Получить и отобразить рекомендации")
-def page_get_recommendations_for_user(
+async def page_get_recommendations_for_user(
         request: Request,
         user_id: int,
         limit: int = Query(default=50, ge=1, le=100),
