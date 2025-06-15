@@ -6,10 +6,12 @@
 Содержит функции для взаимодействия с моделями User, Movie и UserMovie.
 """
 
-from typing import List, Optional, Set
+from typing import List, Optional, Set, Type, Any
 
+from sqlalchemy import desc
 from sqlalchemy.orm import Session
 
+from app.models_db import Movie, UserMovie
 from . import models_db, schemas_db
 from .models_db import InteractionStatusEnum
 
@@ -84,7 +86,7 @@ def get_movie(db: Session, movie_id: int) -> Optional[models_db.Movie]:
     return db.query(models_db.Movie).filter(models_db.Movie.id == movie_id).first()
 
 
-def get_movies(db: Session, skip: int = 0, limit: int = 100) -> List[models_db.Movie]:
+def get_movies(db: Session, skip: int = 0, limit: int = 100) -> list[Type[Movie]]:
     """
     Получает список фильмов с пагинацией.
 
@@ -97,7 +99,19 @@ def get_movies(db: Session, skip: int = 0, limit: int = 100) -> List[models_db.M
         Список объектов фильмов.
     """
     # Запрос с пропуском (offset) и ограничением (limit)
-    return db.query(models_db.Movie).offset(skip).limit(limit).all()
+    query = db.query(models_db.Movie)
+
+    # Применяем сортировку
+    query = query.order_by(desc(models_db.Movie.rating_imdb))
+
+    # Применяем пагинацию
+    query = query.offset(skip)
+
+    # Применяем лимит, только если он задан
+    if limit is not None:
+        query = query.limit(limit)
+
+    return query.all()
 
 
 def search_movies(
@@ -106,7 +120,7 @@ def search_movies(
         limit: int = 100,
         name: Optional[str] = None,
         year: Optional[int] = None
-) -> List[models_db.Movie]:
+) -> list[Type[Movie]]:
     """
     Ищет фильмы по названию и/или году выпуска.
 
@@ -152,7 +166,7 @@ def create_movie(db: Session, movie: schemas_db.MovieCreate) -> models_db.Movie:
         year=movie.year,
         description=movie.description,
         rating_imdb=movie.rating_imdb,
-        genres=movie.genres  # Используем property-setter для жанров
+        genres=movie.genres
     )
     db.add(db_movie)
     db.commit()
@@ -160,7 +174,7 @@ def create_movie(db: Session, movie: schemas_db.MovieCreate) -> models_db.Movie:
     return db_movie
 
 
-def get_movies_by_ids(db: Session, movie_ids: List[int]) -> List[models_db.Movie]:
+def get_movies_by_ids(db: Session, movie_ids: List[int]) -> list[Any] | list[Type[Movie]]:
     """
     Получает список фильмов по списку их ID.
 
@@ -200,39 +214,45 @@ def get_user_movie_interaction(
     ).first()
 
 
-def get_all_movies(db: Session) -> List[models_db.Movie]:
-    """
-    Получает все фильмы из базы данных без ограничений.
-
-    Args:
-        db: Сессия базы данных.
-
-    Returns:
-        Список всех объектов фильмов.
-    """
-    return db.query(models_db.Movie).all()
-
-
 def update_user_movie_interaction(
         db: Session, user_id: int, interaction: schemas_db.UserMovieCreate
 ) -> models_db.UserMovie:
-    if interaction.status not in [e.value for e in InteractionStatusEnum]:
-        raise ValueError(f"Invalid status: {interaction.status}")
-    db_interaction = get_user_movie_interaction(db, user_id=user_id, movie_id=interaction.movie_id)
-    status_value = interaction.status  # Значение перечисления (e.g., 'watched')
+    """
+    Создает или обновляет взаимодействие пользователя с фильмом.
+
+    Если взаимодействие уже существует, обновляет его статус.
+    Если нет - создает новое.
+
+    Args:
+        db: Сессия базы данных.
+        user_id: ID пользователя.
+        interaction: Схема с данными о взаимодействии (movie_id, status).
+
+    Returns:
+        Созданный или обновленный объект взаимодействия.
+    """
+    # Проверяем, существует ли уже такое взаимодействиеAdd commentMore actions
+    db_interaction = get_user_movie_interaction(
+        db, user_id=user_id, movie_id=interaction.movie_id
+    )
+
     if db_interaction:
-        db_interaction.status = status_value
+        # Если да, обновляем его статус
+        db_interaction.status = interaction.status.value
+        db.commit()
+        db.refresh(db_interaction)
     else:
+        # Если нет, создаем новую запись
         db_interaction = models_db.UserMovie(
             user_id=user_id,
             movie_id=interaction.movie_id,
-            status=status_value
+            status=interaction.status.value
         )
         db.add(db_interaction)
+
+    # Сохраняем изменения и обновляем объект
     db.commit()
     db.refresh(db_interaction)
-    # Явное преобразование статуса для возвращаемого объекта
-    db_interaction.status = status_value  # Убеждаемся, что возвращается строка
     return db_interaction
 
 
@@ -261,7 +281,7 @@ def delete_user_movie_interaction(
 
 def get_user_interactions(
         db: Session, user_id: int, status: Optional[str] = None
-) -> List[models_db.UserMovie]:
+) -> list[Type[UserMovie]]:
     """
     Получает все взаимодействия пользователя, опционально фильтруя по статусу.
 
@@ -279,7 +299,7 @@ def get_user_interactions(
     return query.all()
 
 
-def get_user_liked_movies(db: Session, user_id: int) -> List[models_db.Movie]:
+def get_user_liked_movies(db: Session, user_id: int) -> list[Type[Movie]]:
     """
     Получает список фильмов, которые пользователь отметил как 'liked'.
 
