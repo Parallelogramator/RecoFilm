@@ -37,9 +37,3 @@ def get_db_dependency():
         yield db
     finally:
         db.close()
-
-
-def create_db_and_tables():
-    from . import models_db
-    Base.metadata.create_all(bind=engine)
-    print(f"Таблицы базы данных созданы (если не существуют) в {DATABASE_URL}")

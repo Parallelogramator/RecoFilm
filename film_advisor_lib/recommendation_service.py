@@ -31,7 +31,7 @@ def get_movies_data(session: Session, min_avg_rating: float = 3.0, min_ratings: 
                 'title': movie.title,
                 'genres': movie.genres or '',
                 'mean_rating': movie.mean_rating or 0.0,
-                'rating_count': 1  # У нас нет данных о количестве оценок, ставим 1
+                'rating_count': 1
             }
             for movie in movies
         ])
@@ -120,7 +120,6 @@ def get_recommended_movies(
         min_ratings: int = 1
 ) -> List[Dict]:
     """Формирует список рекомендованных фильмов для пользователя."""
-    start_time = time.time()
     genre_profile = get_user_genre_profile(session, user_id)
     if not genre_profile:
         print("No genre preferences found for user.")
@@ -143,15 +142,14 @@ def get_recommended_movies(
         top_n = get_top_n_by_genres(movies_df, relevant_genres, genre_profile, user_movie_ids, n=n)
         result = [
             {
-                "movie_id": int(row['movieId']),
+                "id": int(row['movieId']),
                 "title": row['title'],
-                "genres": row['genres'].split(',') if row['genres'] else [],
-                "avg_rating": float(row['mean_rating']),
+                "genres_str": row['genres'],
+                "rating_imdb": float(row['mean_rating']),
                 "score": float(row['final_score'])
             }
             for _, row in top_n.iterrows()
         ]
-        print(f"Total recommendation time: {time.time() - start_time:.2f} sec")
         return result
     except Exception as e:
         print(f"Error generating recommendations: {e}")
