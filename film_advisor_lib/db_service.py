@@ -42,13 +42,13 @@ def add_user_movie_relation(
         UserMovie.movie_id == movie_id
     ).first()
     if relation:
-        relation.status = status.value  # Используем значение перечисления (e.g., 'watched')
+        relation.status = status.value
         relation.rate = rate
     else:
         relation = UserMovie(
             user_id=user_id,
             movie_id=movie_id,
-            status=status.value,  # Используем значение перечисления
+            status=status.value,
             rate=rate
         )
         session.add(relation)
