@@ -193,7 +193,7 @@ def page_get_user_interactions_by_status(
 async def page_get_recommendations_for_user(
         request: Request,
         user_id: int,
-        limit: int = Query(default=50, ge=1, le=100),
+        limit: int = Query(default=10, ge=1, le=100),
         db: Session = Depends(get_db_dependency)
 ):
     """
