@@ -1,39 +1,55 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="hero">
-    <h1>Your library</h1>
-    <p>All the movies you've added to your collection</p>
-</div>
+{% extends 'base.html' %} <!-- Наследование основного шаблона base.html -->
+{% block content %} <!-- Начало блока content, который заменяет соответствующий блок в base.html -->
 
-{% if interactions %}
-<ul>
-    {% for interaction in interactions %}
-    <li class="movie-card" data-movie-id="{{ interaction.movie.id }}">
-        <div class="movie-title">{{ interaction.movie.title }}</div>
-        <div class="movie-info">
-            <div class="movie-year">Year: {{ interaction.movie.year or 'unspecified' }}</div>
-            <div class="movie-rating">IMDB: {{ interaction.movie.rating_imdb or 'unspecified' }}</div>
-        </div>
-        <div class="movie-genres">
-            {% for genre in interaction.movie.genres %}
-            <span class="genre-tag">{{ genre }}</span>
-            {% endfor %}
-        </div>
-        <span class="status-tag status-{{ interaction.status.value }}">{{ interaction.status.value }}</span>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>You don't have any interactions yet.</p>
-{% endif %}
+    <!-- Герой-секция с заголовком библиотеки -->
+    <div class="hero">
+        <h1>Your library</h1> <!-- Заголовок раздела -->
+        <p>All the movies you've added to your collection</p> <!-- Подзаголовок с описанием -->
+    </div>
 
-<!-- Modal for displaying movie details -->
-<div class="modal" id="movieModal">
-    <div class="modal-content">
-        <span class="modal-close">&times;</span>
-        <div class="modal-body">
-            <!-- Movie details will be injected here by JavaScript -->
+    <!-- Проверка наличия фильмов в библиотеке -->
+    {% if interactions %} <!-- Если есть взаимодействия с фильмами -->
+    <ul id="movie-list">
+        {% for movie in interactions %} <!-- Цикл по взаимодействиям -->
+            <li class="movie-card" data-movie-id="{{ movie.id }}"> <!-- Карточка фильма с data-атрибутом ID -->
+                <!-- Название фильма -->
+                <div class="movie-title">{{ movie.title }}</div>
+
+                <!-- Блок с основной информацией о фильме -->
+                <div class="movie-info">
+                    <div class="movie-year">Year: {{ movie.year or 'unspecified' }}</div> <!-- Год выпуска -->
+                    <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'unspecified' }}</div> <!-- Рейтинг IMDB -->
+                </div>
+
+                <!-- Блок с жанрами фильма -->
+                {% set genre_list = movie.genres_str.split(',') %}
+                <div class="movie-genres">
+                    {% for genre in genre_list %} <!-- Цикл по жанрам -->
+                        <span class="genre-tag">{{ genre }}</span> <!-- Отдельный жанр в виде тега -->
+                    {% endfor %}
+                </div>
+
+                <!-- Статус фильма (если есть) -->
+                {% if movie.status %}
+                    <span class="status-tag status-{{ movie.status.value }}">{{ movie.status.value }}</span>
+                {% endif %}
+
+                <!-- Описание фильма (изначально скрыто) -->
+                <div class="movie-description" style="display: none;">{{ movie.description or 'No description' }}</div>
+            </li>
+        {% endfor %} <!-- Конец цикла по рекомендациям -->
+    </ul>
+    {% else %} <!-- Если взаимодействий нет -->
+        <p>You don't have any interactions yet.</p> <!-- Сообщение об отсутствии фильмов -->
+    {% endif %} <!-- Конец условия проверки взаимодействий -->
+
+    <!-- Модальное окно для детальной информации о фильме -->
+    <div class="modal" id="movieModal">
+        <div class="modal-content">
+            <span class="modal-close">×</span> <!-- Кнопка закрытия модального окна -->
+            <div class="modal-body">
+                <!-- Сюда будет вставлено содержимое через JavaScript -->
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+{% endblock %} <!-- Конец блока content -->

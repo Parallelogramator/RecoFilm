@@ -1,14 +1,16 @@
+import time
+
+from sqlalchemy import inspect
+from sqlalchemy.orm import Session
+
+from app.models_db import InteractionStatusEnum
 from .database import SessionLocal, engine, Base
 from .db_service import add_user, add_movie, add_user_movie_relation, get_user_movies_grouped_by_status
+from .models import Movie, UserMovie
 from .recommendation_service import get_recommended_movies, get_user_genre_profile
-from .models import User, Movie, UserMovie
-from app.models_db import InteractionStatusEnum
-from sqlalchemy.orm import Session
-from sqlalchemy import inspect
-import time
-import os
 
 Base.metadata.create_all(bind=engine)
+
 
 def print_user_movies(session: Session, user_id: int, username: str):
     print(f"\nФильмы пользователя {username}:")
@@ -21,13 +23,15 @@ def print_user_movies(session: Session, user_id: int, username: str):
             print(
                 f"  - {movie['movie_name']} (ID: {movie['movie_id']}, Оценка: {movie['rate']}, Жанры: {movie['genres']})")
 
-def get_movie_recommendations_by_user_id(user_id: int, count: int):
+
+def get_movie_recommendations_by_user_id(user_id: int, count: int) -> list[int]:
     session = SessionLocal()
     try:
         recommendations = get_recommended_movies(session, user_id, n=count)
         return recommendations
     finally:
         session.close()
+
 
 def main():
     session = SessionLocal()
@@ -111,6 +115,7 @@ def main():
         session.rollback()
     finally:
         session.close()
+
 
 if __name__ == "__main__":
     main()

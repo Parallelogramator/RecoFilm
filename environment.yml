@@ -1,13 +1,17 @@
 name: RecoFilm
+channels:
+  - conda-forge
+  - defaults
 dependencies:
   - python=3.11
-  - fastapi
-  - uvicorn
-  - jinja2
-  - sqlite
+  - fastapi>=0.115.0
+  - uvicorn>=0.32.0
+  - jinja2>=3.1.4
+  - sqlalchemy>=2.0.35
+  - pandas>=2.2.3
+  - cryptography>=43.0.1
   - pip
-  - sqlalchemy
-  - pandas
   - pip:
-      - pydantic
-      - kagglehub
+      - pydantic>=2.9.2
+      - kagglehub>=0.3.0
+      - pymysql>=1.1.0

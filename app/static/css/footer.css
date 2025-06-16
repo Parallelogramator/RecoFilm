@@ -1,0 +1,17 @@
+/* Стили для футера */
+footer {
+    text-align: center; /* Выравнивание по центру */
+    padding: 1.5rem; /* Внутренние отступы */
+    background: var(--header-gradient); /* Градиентный фон */
+    color: white; /* Цвет текста */
+    margin-top: auto; /* Привязка к нижней части страницы */
+}
+
+/* Стили для параграфов в футере */
+footer p {
+    background-color: transparent; /* Прозрачный фон */
+    box-shadow: none; /* Без тени */
+    color: var(--primary-dark); /* Цвет текста */
+    padding: 0; /* Без отступов */
+    margin: 0; /* Без отступов */
+}

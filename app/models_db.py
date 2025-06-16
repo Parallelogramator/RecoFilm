@@ -1,8 +1,10 @@
-from sqlalchemy import Column, Integer, String, Float, Text, Enum as SQLAlchemyEnum, ForeignKey
-from sqlalchemy.orm import relationship
 import enum
 
+from sqlalchemy import Column, Integer, String, Float, Text, ForeignKey, CheckConstraint, Enum
+from sqlalchemy.orm import relationship
+
 from .database import Base
+
 
 class InteractionStatusEnum(str, enum.Enum):
     WATCHED = "watched"
@@ -11,19 +13,20 @@ class InteractionStatusEnum(str, enum.Enum):
     DROPPED = "dropped"
     WATCHING = "watching"
 
+
 class User(Base):
     __tablename__ = "users"
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True, nullable=False)
+    username = Column(String(255), unique=True, index=True, nullable=False)
     interactions = relationship("UserMovie", back_populates="user")
 
 
 class Movie(Base):
     __tablename__ = "movies"
     id = Column(Integer, primary_key=True)
-    title = Column(String, index=True, nullable=False)
+    title = Column(String(255), index=True, nullable=False)
     year = Column(Integer, nullable=True)
-    genres_str = Column("genres", String, nullable=True)
+    genres_str = Column("genres", String(255), nullable=True)
     description = Column(Text, nullable=True)
     rating_imdb = Column(Float, nullable=True)
     interactions = relationship("UserMovie", back_populates="movie")
@@ -39,13 +42,12 @@ class Movie(Base):
         self.genres_str = ",".join(genre.strip() for genre in value if genre.strip()) if value else ""
 
 
-
 class UserMovie(Base):
     __tablename__ = "user_movie"
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    movie_id = Column(Integer, ForeignKey("movies.id"), nullable=False)
-    status = Column(SQLAlchemyEnum(InteractionStatusEnum), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    movie_id = Column(Integer, ForeignKey("movies.id", ondelete="CASCADE"), nullable=False)
+    status = Column(Enum(InteractionStatusEnum), nullable=False)
     rate = Column(Float)
     user = relationship("User", back_populates="interactions")
     movie = relationship("Movie", back_populates="interactions")

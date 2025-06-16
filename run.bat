@@ -1,7 +1,7 @@
 @echo off
-call conda activate film_advisor_env
+call conda activate RecoFilm
 if %ERRORLEVEL% neq 0 (
-    echo Error: Failed to activate Conda environment. Please run 'conda activate film_advisor_env' manually.
+    echo Error: Failed to activate Conda environment. Please run 'conda activate RecoFilm' manually.
     exit /b 1
 )
 

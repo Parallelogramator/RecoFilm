@@ -1,0 +1,121 @@
+/* Стили для основного контента */
+main {
+    max-width: 1200px; /* Максимальная ширина */
+    margin: 2rem auto; /* Центрирование с отступами */
+    padding: 0 1.5rem; /* Внутренние отступы */
+    flex: 1; /* Занимает доступное пространство */
+}
+
+/* Стили для списка (сетка карточек) */
+ul {
+    list-style-type: none; /* Убираем маркеры списка */
+    display: grid; /* Используем CSS Grid */
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Адаптивная сетка */
+    gap: 1.5rem; /* Расстояние между карточками */
+    margin-top: 2rem; /* Отступ сверху */
+}
+
+/* Стили для элементов списка (карточек) */
+li {
+    background-color: var(--gray-light); /* Цвет фона */
+    padding: 1.5rem; /* Внутренние отступы */
+    border-radius: 12px; /* Скругление углов */
+    box-shadow: var(--card-shadow); /* Тень */
+    transition: all 0.3s ease; /* Плавные переходы */
+    border-left: 4px solid var(--primary); /* Цветная полоса слева */
+    position: relative; /* Для псевдоэлемента */
+    overflow: hidden; /* Обрезка содержимого */
+    cursor: pointer; /* Указатель мыши */
+}
+
+/* Декоративная линия сверху карточки */
+li::before {
+    content: ''; /* Пустой контент */
+    position: absolute; /* Абсолютное позиционирование */
+    top: 0; /* Расположение сверху */
+    left: 0; /* Выравнивание по левому краю */
+    width: 100%; /* Полная ширина */
+    height: 4px; /* Высота линии */
+    background: linear-gradient(90deg, var(--primary), var(--secondary)); /* Градиент линии */
+}
+
+/* Эффект при наведении на карточку */
+li:hover {
+    transform: translateY(-5px); /* Подъём карточки */
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2); /* Усиленная тень */
+}
+
+/* Стили для заголовка фильма */
+.movie-title {
+    font-weight: 600; /* Полужирный шрифт */
+    font-size: 1.2rem; /* Размер шрифта */
+    color: var(--primary-dark); /* Цвет текста */
+    margin-bottom: 0.5rem; /* Отступ снизу */
+}
+
+/* Контейнер для информации о фильме */
+.movie-info {
+    display: flex; /* Flexbox для выравнивания */
+    align-items: center; /* Вертикальное центрирование */
+    gap: 1rem; /* Расстояние между элементами */
+    margin-bottom: 0.5rem; /* Отступ снизу */
+}
+
+/* Год выпуска фильма */
+.movie-year {
+    color: var(--gray); /* Цвет текста */
+    font-size: 0.9rem; /* Размер шрифта */
+}
+
+/* Рейтинг фильма */
+.movie-rating {
+    color: var(--gray); /* Цвет текста */
+    font-size: 0.9rem; /* Размер шрифта */
+}
+
+/* Контейнер для жанров */
+.movie-genres {
+    display: flex; /* Flexbox для выравнивания */
+    flex-wrap: wrap; /* Перенос элементов */
+    gap: 0.5rem; /* Расстояние между тегами */
+    margin-top: 1rem; /* Отступ сверху */
+}
+
+/* Описание фильма */
+.movie-description {
+    font-size: 0.95rem; /* Размер шрифта */
+    color: var(--dark); /* Цвет текста */
+    margin-top: 1rem; /* Отступ сверху */
+}
+
+/* Стили для тегов жанров */
+.genre-tag {
+    background-color: var(--primary-light); /* Цвет фона */
+    color: var(--primary-dark); /* Цвет текста */
+    padding: 0.25rem 0.75rem; /* Внутренние отступы */
+    border-radius: 50px; /* Скругление углов */
+    font-size: 0.8rem; /* Размер шрифта */
+    font-weight: 500; /* Средний вес шрифта */
+}
+
+/* Стили для тегов статуса */
+.status-tag {
+    display: inline-block; /* Инлайн-блочное отображение */
+    padding: 0.25rem 0.75rem; /* Внутренние отступы */
+    border-radius: 50px; /* Скругление углов */
+    font-size: 0.8rem; /* Размер шрифта */
+    font-weight: 500; /* Средний вес шрифта */
+    margin-top: 0.5rem; /* Отступ сверху */
+}
+
+/* Стили тегов статуса для тёмной темы */
+body.dark-theme .status-tag {
+    background-color: #4b5563; /* Цвет фона */
+    color: #b0b7c2; /* Цвет текста */
+}
+
+/* Стили тегов статуса для светлой темы */
+body.light-theme .status-tag {
+    background-color: #dbead7; /* Цвет фона */
+    color: #3d5a40; /* Цвет текста */
+}

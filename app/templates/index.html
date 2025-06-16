@@ -1,55 +1,78 @@
-{% extends 'base.html' %}
-{% block content %}
-<div class="hero">
-    <h1>Welcome to Film Advisor</h1>
-    <p>Discover the world of movies with personalized recommendations</p>
-</div>
+{% extends 'base.html' %} <!-- Наследование основного шаблона base.html -->
+{% block content %} <!-- Начало блока content, который заменяет соответствующий блок в base.html -->
 
-<!-- Search form with distinct input cells -->
-<form action="/search" method="get" id="searchForm" style="display: flex; gap: 1rem; align-items: center;">
-    <div class="input-cell" style="background-color: var(--gray-light); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--primary);">
-        <label for="name" style="font-size: 0.9rem; color: var(--primary-dark); margin-right: 0.5rem;">Movie Name:</label>
-        <input type="text" id="name" name="name" placeholder="Enter movie name" value="{{ request.query_params.name or '' }}" style="padding: 0.5rem; border: none; border-radius: 4px; width: 200px; background-color: var(--primary-light); color: var(--primary-dark);">
+    <!-- Герой-секция с приветствием -->
+    <div class="hero">
+        <h1>Welcome to Film Advisor</h1>
+        <p>Discover the world of movies with personalized recommendations</p>
     </div>
-    <div class="input-cell" style="background-color: var(--gray-light); padding: 0.75rem; border-radius: 8px; border: 1px solid var(--primary);">
-        <label for="year" style="font-size: 0.9rem; color: var(--primary-dark); margin-right: 0.5rem;">Year:</label>
-        <input type="number" id="year" name="year" placeholder="Enter year" value="{{ request.query_params.year or '' }}" style="padding: 0.5rem; border: none; border-radius: 4px; width: 100px; background-color: var(--primary-light); color: var(--primary-dark); -webkit-appearance: none; -moz-appearance: textfield; appearance: textfield;">
-    </div>
-    <button type="submit" style="padding: 0.5rem 1rem; background-color: var(--primary); color: var(--primary-dark); border: none; border-radius: 8px; cursor: pointer; font-size: 0.9rem;">Search</button>
-</form>
 
-<h2>Popular movies</h2>
-{% if movies %}
-<ul>
-    {% for movie in movies %}
-    <li class="movie-card" data-movie-id="{{ movie.id }}">
-        <div class="movie-title">{{ movie.title }}</div>
-        <div class="movie-info">
-            <div class="movie-year">Year: {{ movie.year or 'unspecified' }}</div>
-            <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'unspecified' }}</div>
+    <!-- Форма поиска фильмов -->
+    <form action="/search" method="get" id="searchForm" class="search-form">
+        <div class="input-cell">
+            <label for="name">Movie Name:</label> <!-- Поле для ввода названия фильма -->
+            <input type="text" id="name" name="name" placeholder="Enter movie name"
+                   value="{{ request.query_params.name or '' }}">
         </div>
-        <div class="movie-genres">
-            {% for genre in movie.genres %}
-            <span class="genre-tag">{{ genre }}</span>
-            {% endfor %}
+        <div class="input-cell">
+            <label for="year">Year:</label> <!-- Поле для ввода года выпуска -->
+            <input type="number" id="year" name="year" placeholder="Enter year"
+                   value="{{ request.query_params.year or '' }}">
         </div>
-        {% if movie.status %}
-        <span class="status-tag status-{{ movie.status.value }}">{{ movie.status.value }}</span>
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>No movies are available yet. Add a movie via API!</p>
-{% endif %}
+        <!-- Скрытое поле для лимита результатов (по умолчанию 10) -->
+        <input type="hidden" id="limit-hidden" name="limit" value="{{ request.query_params.limit or '10' }}">
+        <button type="submit">Search</button> <!-- Кнопка отправки формы -->
+    </form>
 
-<!-- Modal for displaying movie details -->
-<div class="modal" id="movieModal">
-    <div class="modal-content">
-        <span class="modal-close">×</span>
-        <div class="modal-body">
-            <!-- Movie details will be injected here by JavaScript -->
+    <!-- Селектор для выбора количества отображаемых фильмов -->
+    <div class="limit-selector">
+        <label for="limit">Show:</label>
+        <select id="limit">
+            <option value="10" {% if request.query_params.limit == '10' %}selected{% endif %}>10</option>
+            <option value="20" {% if request.query_params.limit == '20' %}selected{% endif %}>20</option>
+            <option value="50" {% if request.query_params.limit == '50' %}selected{% endif %}>50</option>
+            <option value="100" {% if request.query_params.limit == '100' %}selected{% endif %}>100</option>
+            <option value="None" {% if request.query_params.limit == 'None' %}selected{% endif %}>All</option>
+        </select>
+    </div>
+
+    <!-- Секция с популярными фильмами -->
+    <h2>Popular movies</h2>
+    <ul id="movie-list">
+        {% for movie in movies %} <!-- Цикл по всем фильмам из переданного списка -->
+            <li class="movie-card" data-movie-id="{{ movie.id }}"> <!-- Карточка фильма с data-атрибутом ID -->
+                <div class="movie-title">{{ movie.title }}</div> <!-- Название фильма -->
+                <div class="movie-info">
+                    <div class="movie-year">Year: {{ movie.year or 'unspecified' }}</div> <!-- Год выпуска -->
+                    <div class="movie-rating">IMDB: {{ movie.rating_imdb or 'unspecified' }}</div> <!-- Рейтинг IMDB -->
+                </div>
+                <div class="movie-genres">
+                    {% for genre in movie.genres %} <!-- Цикл по жанрам фильма -->
+                        <span class="genre-tag">{{ genre }}</span> <!-- Отдельный жанр в виде тега -->
+                    {% endfor %}
+                </div>
+                {% if movie.status %} <!-- Если у фильма есть статус (например, "Просмотрено") -->
+                    <span class="status-tag status-{{ movie.status.value }}">{{ movie.status.value }}</span>
+                    <!-- Отображение статуса -->
+                {% endif %}
+                <!-- Описание фильма (изначально скрыто) -->
+                <div class="movie-description" style="display: none;">{{ movie.description or 'No description' }}</div>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Сообщение, если фильмов нет -->
+    {% if not movies %}
+        <p id="no-movies-message">No movies are available yet. Add a movie via API!</p>
+    {% endif %}
+
+    <!-- Модальное окно для деталей фильма (изначально скрыто) -->
+    <div class="modal" id="movieModal">
+        <div class="modal-content">
+            <span class="modal-close">×</span> <!-- Кнопка закрытия модального окна -->
+            <div class="modal-body">
+                <!-- Сюда будет вставлено содержимое через JavaScript -->
+            </div>
         </div>
     </div>
-</div>
-{% endblock %}
+{% endblock %} <!-- Конец блока content -->

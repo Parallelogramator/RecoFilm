@@ -1,10 +1,15 @@
 #!/bin/bash
-source "$(conda info --base)/etc/profile.d/conda.sh"
-conda activate film_advisor_env
+
+echo "Запуск RecoFilm через Docker Compose..."
+# -d запускает в открепленном режиме
+# --build обеспечивает сборку образов, если произошли изменения в Dockerfile
+# --force-recreate обеспечивает пересоздание контейнеров для применения изменений
+docker-compose up -d --build --force-recreate
+
 if [ $? -ne 0 ]; then
-    echo "Error: Failed to activate Conda environment. Please run 'conda activate film_advisor_env' manually."
+    echo "Ошибка: Не удалось запустить Docker Compose."
     exit 1
 fi
 
-python -c "from app.database import SessionLocal, engine; from sqlalchemy import inspect; inspector = inspect(engine); has_movies = 'movies' in inspector.get_table_names(); if not has_movies: from film_advisor_lib.load_all_movies import load_movies; load_movies()"
-uvicorn app.main:app --reload
+echo "RecoFilm запущен. Откройте http://localhost:8000 в вашем браузере."
+echo "Для просмотра логов: docker-compose logs -f"

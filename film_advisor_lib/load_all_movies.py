@@ -1,17 +1,19 @@
-import pandas as pd
 import json
 import os
 import sys
-from sqlalchemy.orm import sessionmaker
+
+import pandas as pd
 from sqlalchemy import create_engine
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import sessionmaker
 
 # Add project root to sys.path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-from app.models_db import Movie
-from app.database import SQLALCHEMY_DATABASE_URL, Base
+from app.models_db import Movie, User
+from app.database import DATABASE_URL, Base
 import kagglehub
 
 
@@ -48,17 +50,12 @@ def load_movies():
             'vote_average': 'rating_imdb'
         })
 
-        print("Initial data for id=2, 11, 12:")
-        print(movies_df[movies_df['id'].isin(['2', '11', '12'])][['id', 'title', 'genres']])
-
+        # Clean data
         movies_to_load['id'] = pd.to_numeric(movies_to_load['id'], errors='coerce').astype('Int64')
         movies_to_load['year'] = movies_to_load['year'].fillna(0).astype('Int64')
         movies_to_load['rating_imdb'] = pd.to_numeric(movies_to_load['rating_imdb'], errors='coerce').fillna(0.0)
         movies_to_load['description'] = movies_to_load['description'].fillna('')
         movies_to_load = movies_to_load.dropna(subset=['id', 'title'])
-
-        print("Sample data after processing:")
-        print(movies_to_load[movies_to_load['id'].isin([2, 11, 12])][['id', 'genres_str']])
 
         print(f"Cleaned movies to load: {len(movies_to_load)}")
 
@@ -67,15 +64,23 @@ def load_movies():
             print(f"Warning: Found {duplicate_ids} duplicate ids. Removing duplicates...")
             movies_to_load = movies_to_load.drop_duplicates(subset=['id'], keep='first')
 
-        engine = create_engine(SQLALCHEMY_DATABASE_URL)
+        # Initialize database
+        engine = create_engine(DATABASE_URL)
         Base.metadata.create_all(engine)
         Session = sessionmaker(bind=engine)
         session = Session()
 
-        Base.metadata.drop_all(engine, tables=[Movie.__table__], checkfirst=True)
-        Base.metadata.create_all(engine, tables=[Movie.__table__])
-        session.commit()
+        # Create default user with ID 1 if not exists
+        default_user = session.query(User).filter(User.id == 1).first()
+        if not default_user:
+            default_user = User(username="default_user")
+            session.add(default_user)
+            session.commit()
+            print("Created default user with ID 1 and username 'default_user'")
+        else:
+            print("Default user with ID 1 already exists")
 
+        # Update existing movies instead of dropping table
         existing_ids = {row[0] for row in session.query(Movie.id).all()}
         new_movies = movies_to_load[~movies_to_load['id'].isin(existing_ids)]
         print(f"Movies to load: {len(new_movies)}")
@@ -84,11 +89,14 @@ def load_movies():
 
         if movies_to_insert:
             try:
-                session.bulk_insert_mappings(Movie, movies_to_insert)
-                session.commit()
+                for movie in movies_to_insert:
+                    try:
+                        session.merge(Movie(**movie))
+                        session.commit()
+                    except IntegrityError as e:
+                        session.rollback()
+                        print(f"Skipping movie ID {movie['id']} due to error: {e}")
                 print("Movies successfully loaded.")
-                check_data = session.query(Movie.id, Movie.genres_str).filter(Movie.id.in_([2, 11, 12])).all()
-                print("Inserted data check:", check_data)
             except Exception as e:
                 session.rollback()
                 with open('error.log', 'w', encoding='utf-8') as f:

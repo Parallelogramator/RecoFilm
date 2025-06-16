@@ -1,0 +1,65 @@
+/* Стили для модального окна */
+.modal {
+    display: none; /* Скрыто по умолчанию */
+    position: fixed; /* Фиксированное позиционирование */
+    top: 0; /* Привязка к верхнему краю */
+    left: 0; /* Привязка к левому краю */
+    width: 100vw; /* Полная ширина */
+    height: 100vh; /* Полная высота */
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+    z-index: 1000; /* Высокий уровень наложения */
+    align-items: center; /* Центрирование по вертикали */
+    justify-content: center; /* Центрирование по горизонтали */
+    overflow: auto; /* Прокрутка при необходимости */
+    padding: 0; /* Без отступов */
+}
+
+/* Стили для содержимого модального окна */
+.modal-content {
+    background-color: var(--gray-light); /* Цвет фона */
+    padding: 2rem; /* Внутренние отступы */
+    border-radius: 12px; /* Скругление углов */
+    box-shadow: var(--card-shadow); /* Тень */
+    max-width: 500px; /* Максимальная ширина */
+    width: 90%; /* Ширина относительно экрана */
+    max-height: 80vh; /* Максимальная высота */
+    overflow-y: auto; /* Прокрутка по вертикали */
+    position: relative; /* Для псевдоэлементов */
+    border-left: 4px solid var(--primary); /* Цветная полоса слева */
+    margin: 0; /* Без отступов */
+}
+
+/* Кнопка закрытия модального окна */
+.modal-close {
+    position: absolute; /* Абсолютное позиционирование */
+    top: 1rem; /* Отступ сверху */
+    right: 1rem; /* Отступ справа */
+    font-size: 1.5rem; /* Размер шрифта */
+    color: var(--primary-dark); /* Цвет иконки */
+    cursor: pointer; /* Указатель мыши */
+    transition: color 0.3s ease; /* Плавное изменение цвета */
+}
+
+/* Эффект при наведении на кнопку закрытия */
+.modal-close:hover {
+    color: var(--secondary); /* Цвет при наведении */
+}
+
+/* Тело модального окна */
+.modal-body {
+    display: flex; /* Flexbox для выравнивания */
+    flex-direction: column; /* Вертикальное расположение */
+    gap: 1rem; /* Расстояние между элементами */
+}
+
+/* Заголовок фильма в модальном окне */
+.modal-body .movie-title {
+    font-size: 1.5rem; /* Размер шрифта */
+}
+
+/* Описание фильма в модальном окне */
+.modal-body .movie-description {
+    display: block; /* Блочное отображение */
+    max-height: 200px; /* Максимальная высота */
+    overflow-y: auto; /* Прокрутка по вертикали */
+}
