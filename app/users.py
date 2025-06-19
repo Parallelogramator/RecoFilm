@@ -1,3 +1,5 @@
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
@@ -193,7 +195,7 @@ def page_get_user_interactions_by_status(
 async def page_get_recommendations_for_user(
         request: Request,
         user_id: int,
-        limit: int = Query(default=10, ge=1, le=100),
+        limit: Optional[int] = 10,
         db: Session = Depends(get_db_dependency)
 ):
     """
