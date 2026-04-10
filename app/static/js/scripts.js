@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <div class="movie-genres">
                         ${genres.map(genre => `<span class="genre-tag">${escapeHtml(genre)}</span>`).join('')}
                     </div>
-                    ${statusTag ? `<span class="status-tag status-${escapeHtml(currentStatus.toLowerCase().replace(/\s+/g, '-'))}">${escapeHtml(currentStatus)}</span>` : ''}
+                    ${statusTag ? `<span class="status-tag status-${currentStatus.toLowerCase().replace(/\s+/g, '-')}">${escapeHtml(currentStatus)}</span>` : ''}
                     <div class="status-selector">
                         <select>
                             <option value="">Выберите статус</option>
