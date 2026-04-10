@@ -10,7 +10,7 @@
 import os
 from typing import Optional
 
-from fastapi import FastAPI, Depends, Request
+from fastapi import FastAPI, Depends, Request, Query
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -45,7 +45,7 @@ app.mount(
 @app.get("/", response_class=HTMLResponse)
 def index(
         request: Request,
-        limit: Optional[int] = 10,
+        limit: Optional[int] = Query(default=10, ge=1, le=200),
         db: Session = Depends(get_db_dependency)
 ):
     """
@@ -70,7 +70,7 @@ def search(
         request: Request,
         name: Optional[str] = None,
         year: Optional[int] = None,
-        limit: Optional[int] = 10,
+        limit: Optional[int] = Query(default=10, ge=1, le=200),
         db: Session = Depends(get_db_dependency)
 ):
     """

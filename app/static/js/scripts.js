@@ -1,3 +1,10 @@
+// Safely escape a string for insertion into HTML to prevent XSS
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.appendChild(document.createTextNode(text));
+    return div.innerHTML;
+}
+
 // Ожидание полной загрузки DOM перед выполнением скриптов
 document.addEventListener('DOMContentLoaded', () => {
     // Получение элементов DOM
@@ -46,15 +53,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Заполнение модального окна данными о фильме
                 modalBody.innerHTML = `
-                    <div class="movie-title">${title}</div>
+                    <div class="movie-title">${escapeHtml(title)}</div>
                     <div class="movie-info">
-                        <div class="movie-year">${year}</div>
-                        <div class="movie-rating">${rating}</div>
+                        <div class="movie-year">${escapeHtml(year)}</div>
+                        <div class="movie-rating">${escapeHtml(rating)}</div>
                     </div>
                     <div class="movie-genres">
-                        ${genres.map(genre => `<span class="genre-tag">${genre}</span>`).join('')}
+                        ${genres.map(genre => `<span class="genre-tag">${escapeHtml(genre)}</span>`).join('')}
                     </div>
-                    ${statusTag ? `<span class="status-tag status-${currentStatus.toLowerCase().replace(/\s+/g, '-')}">${currentStatus}</span>` : ''}
+                    ${statusTag ? `<span class="status-tag status-${escapeHtml(currentStatus.toLowerCase().replace(/\s+/g, '-'))}">${escapeHtml(currentStatus)}</span>` : ''}
                     <div class="status-selector">
                         <select>
                             <option value="">Выберите статус</option>
@@ -65,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <option value="watching" ${currentStatus === 'watching' ? 'selected' : ''}>Watching</option>
                         </select>
                     </div>
-                    <div class="movie-description">${description}</div>
+                    <div class="movie-description">${escapeHtml(description)}</div>
                 `;
 
                 modal.style.display = 'flex'; // Отображение модального окна (см. .modal display: flex в CSS)

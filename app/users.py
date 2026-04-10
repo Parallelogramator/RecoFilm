@@ -195,7 +195,7 @@ def page_get_user_interactions_by_status(
 async def page_get_recommendations_for_user(
         request: Request,
         user_id: int,
-        limit: Optional[int] = 10,
+        limit: Optional[int] = Query(default=10, ge=1, le=200),
         db: Session = Depends(get_db_dependency)
 ):
     """
@@ -226,7 +226,7 @@ async def page_get_recommendations_for_user(
         recommendations = get_user_recommendations_movies(db, movies_ids)
     except Exception as e:
         # Отлавливаем любые ошибки от рекомендательной системы
-        raise HTTPException(status_code=500, detail=f"Failed to generate recommendations: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to generate recommendations.")
     if not recommendations:
         raise HTTPException(
             status_code=404,
